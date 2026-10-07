@@ -17,4 +17,4 @@ Publish this folder as a static site on GitHub Pages. Do not modify, rebuild or 
 
 Site structure (keep exactly): `index.html`, `styles.css`, `_ds_bundle.js`, `tokens/`, `assets/`, `components/`, `ui_kits/pitch-deck/`, `sparkplug/`.
 
-To update later: replace changed files, then `git add -A && git commit -m "update" && git push`.
+To update later: develop on the `concepts` or `sparkplug` branch (see `readme.md` for the branch map), then open a PR into `main` and merge — `main` is what Pages serves, so it should only move via reviewed merges, never direct pushes of in-progress work.

@@ -1,8 +1,23 @@
-# Williams Racing — AI Paddock Experience · Design System
+# Williams Racing — AI Experience
 
-A dark, high-energy presentation system for a **Williams Racing (F1) AI-powered guest experience**: smart glasses worn by VIP guests, sponsors and creators during paddock and pit-lane walks, with a "synthetic race engineer" you talk to ("Hey Williams, …"), live POV streaming, and automated highlight recaps.
+**Live site:** https://itsberti1.github.io/williams-concepts/
 
-The only product surface in the source is a **1920×1080 pitch deck** (8 frames). There is no app/web codebase; in-product UI appears only as mock overlays inside slides (livestream chrome, liquid-glass voice prompts).
+Two things live in this repo:
+1. **The Concepts hub** — a pitch-deck style showcase of four AI concept ideas for Williams Racing (SparkPlug Studio, Ideation Studio, AI Glasses, Time Capsule).
+2. **SparkPlug Studio** — an interactive front-end prototype of one of those concepts (an AI tool that turns race data into a generated highlight reel), currently a mocked demo with no real backend, on its way to becoming a genuine product over the next month.
+
+## Branch map
+
+| Branch | Purpose | Deploys? |
+|---|---|---|
+| `main` | **Production.** Always matches the live site above. Only updated by merging in finished work from the other branches — never develop directly on it. | Yes — GitHub Pages serves `main` / `/` (see `DEPLOY.md`). |
+| `concepts` | Ongoing development of the Concepts hub / pitch deck (`ui_kits/pitch-deck/`). | No — merge into `main` to ship. |
+| `sparkplug` | Active development of SparkPlug Studio (`sparkplug/`). This is where the month of "make it a real product" work happens — moving off the current single-file mocked demo toward a real app with an actual backend and real AI generation calls. | No — merge into `main` to ship. |
+
+Work on `concepts` or `sparkplug`, open a PR into `main` when a change is ready to go live, merge, confirm Pages rebuilds (`gh api repos/<owner>/williams-concepts/pages`). `main` should always be in a deployable state.
+
+## Original design system
+The sections below are from the original Figma-to-code import that produced the pitch deck's visual language (colors, type, components) and are kept for reference — they predate SparkPlug and the branch structure above.
 
 ## Sources
 - **Figma:** `Williams.fig` (attached, mounted read-only). Pages: `Williams` (8 slide frames, node ids 1223:307 / 310 / 318 / 340 / 348 / 405 / 409 / 412), `page` (empty), `High-Quality-Resources-for-UI-Designers` (a third-party Pixsellz promo frame — treated as demo content and **not** imported, except the `bolt` / `eco` glyphs it hosts).
