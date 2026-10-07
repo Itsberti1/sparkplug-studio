@@ -97,10 +97,10 @@ function IXUsersSlide({ index }) {
 
 /* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. Laid out 3-up so Time Capsule wraps to sit below SparkPlug Studio and Ideation Studio reads second. */
 const IX_DECKS = [
-  { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'SparkPlug Studio turns raw Williams race data into cinematic, comic-style animations',
+  { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'SparkPlug Studio turns raw Williams race data into cinematic, stylised animations',
     backLabel:'THE WILLIAMS SPARKPLUG STUDIO', head:'Every race, a cinematic recap',
-    body:'After every race, the Williams SparkPlug Studio turns race data, footage and media into a cinematic, high-energy animation in a bespoke comic-style aesthetic, made with Higgsfield. A stylised summary of the team’s day, built for Williams’ channels.',
-    tags:['Race data', 'Higgsfield', 'Comic style'] },
+    body:'After every race, the Williams SparkPlug Studio turns race data, footage and media into a cinematic, high-energy animation, made with Higgsfield in a style tailored to each fan. A bespoke summary of the team’s day, built for Williams’ channels.',
+    tags:['Race data', 'Higgsfield', 'Stylised'] },
   { n:'02', eyebrow:'DECK 02', name:'Ideation Studio', grey:true, ph:'concept image to come', sub:'Ideation Studio gives Williams creative teams a streamlined way to ideate concepts and activations',
     backLabel:'THE WILLIAMS IDEATION STUDIO', head:'From blank page to pitch-ready, in minutes',
     body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations — turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
