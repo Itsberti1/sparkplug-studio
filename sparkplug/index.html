@@ -109,6 +109,9 @@
 
   <sc-if value="{{ walkActive }}">
     <div aria-hidden="true" style="position:absolute;z-index:55;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 1400ms cubic-bezier(.4,0,.2,1),top 1400ms cubic-bezier(.4,0,.2,1),width 1400ms cubic-bezier(.4,0,.2,1),height 1400ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
+    <sc-if value="{{ walkHotzone }}">
+      <div onClick="{{ walkClick }}" aria-label="Generate" style="position:absolute;z-index:57;cursor:pointer;background:transparent;border:0;padding:0;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }}"></div>
+    </sc-if>
     <sc-if value="{{ walkShowCard }}">
       <div style="position:absolute;z-index:56;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 1400ms cubic-bezier(.4,0,.2,1),top 1400ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
         <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1fc7ff">Step {{ walkStepNum }}/{{ walkTotal }} · {{ walkTitle }}</span>
@@ -1089,6 +1092,7 @@ class Component extends DCLogic {
   startVfxIntro(){
     this.clearPostTimers();
     this.setState({postStep:'vfxIntro', postRect:this.viewRectOf('vfxFixBtnRef'), postText:'Noticed something to tweak? Press VFX Fix, you can change it seamlessly, right here.'});
+    this.postAfter(()=>{ if(this.state.postStep==='vfxIntro'){ const r=this.viewRectOf('vfxFixBtnRef'); if(r) this.setState({postRect:r}); } },520);
   }
   runVfxDemo(){
     this.setState({postStep:'vfxDemo', postText:'', fix:true, box:null, choice:false, pPlay:false});
@@ -1164,6 +1168,7 @@ class Component extends DCLogic {
   }
   startPlayPrompt(){
     this.setState({postStep:'play', postRect:this.viewRectOf('playToggleRef'), postText:'Press play to watch your updated reel.'});
+    this.postAfter(()=>{ if(this.state.postStep==='play'){ const r=this.viewRectOf('playToggleRef'); if(r) this.setState({postRect:r}); } },300);
   }
   clearPost(){ this.clearPostTimers(); this.setState({postStep:null,postRect:null,postText:''}); }
   componentDidUpdate(){
@@ -1539,6 +1544,8 @@ class Component extends DCLogic {
           walkBtnBg:s.walkReady?'rgb(24,170,245)':'rgba(255,255,255,0.1)', walkBtnColor:s.walkReady?'#fff':'rgba(255,255,255,0.35)', walkBtnHover:s.walkReady?'brightness(1.12)':'none',
           walkHL:{l:(wr?wr.left-PAD:0)+'px',t:(wr?wr.top-PAD:0)+'px',w:(wr?wr.width+PAD*2:0)+'px',h:(wr?wr.height+PAD*2:0)+'px',op:wr?1:0},
           walkCard:{l:cardLeft+'px',t:cardTop+'px',op:wr?1:0,w:cardW+'px'},
+          walkHotzone:!!wstep&&wstep.card===false,
+          walkClick:()=>{ const r=this.genRef.current; r&&r.click(); },
         };
       })(),
       ...(()=>{
