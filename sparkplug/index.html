@@ -86,13 +86,18 @@
 
   <sc-if value="{{ introOpen }}">
     <div style="position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:radial-gradient(ellipse 60% 50% at 50% 45%,rgba(0,66,255,0.16),rgba(0,66,255,0) 70%),rgba(6,8,14,0.82);backdrop-filter:blur(28px) saturate(1.2);-webkit-backdrop-filter:blur(28px) saturate(1.2)">
-      <div style="position:relative;width:380px;max-width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:18px;padding:36px 32px 32px;border-radius:24px;border:1px solid transparent;background:linear-gradient(180deg,rgb(20,23,33),rgb(13,15,23)) padding-box,linear-gradient(150deg,rgba(110,170,255,0.55),rgba(255,255,255,0.06) 30%,rgba(255,255,255,0.03) 70%,rgba(0,66,255,0.45)) border-box;box-shadow:0 50px 120px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.06);text-align:center">
-        <img src="assets/albon-bot.png" alt="" style="flex:none;width:72px;height:72px;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,10,50,0.45))"></img>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1fc7ff">AskAlbon</span>
-          <p style="margin:0;font-size:16px;line-height:1.5;color:rgba(255,255,255,0.88);text-wrap:pretty">This is a walkthrough experience. The tool isn't active right now, but I'll guide you step by step to your final output.</p>
+      <div style="position:relative;width:400px;max-width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 34px 32px;border-radius:24px;border:1px solid transparent;background:linear-gradient(180deg,rgb(20,23,33),rgb(13,15,23)) padding-box,linear-gradient(150deg,rgba(110,170,255,0.55),rgba(255,255,255,0.06) 30%,rgba(255,255,255,0.03) 70%,rgba(0,66,255,0.45)) border-box;box-shadow:0 50px 120px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.06);text-align:center">
+        <img src="assets/williams-wordmark-white.png" alt="Williams Racing" style="height:16px;width:auto;opacity:0.9"></img>
+        <div style="width:220px;height:1px;margin:18px 0 22px;background:linear-gradient(90deg,rgba(0,104,223,0) 0%,rgba(0,104,223,0.8) 50%,rgba(0,104,223,0) 100%)"></div>
+        <div style="position:relative;flex:none;width:84px;height:84px;margin-bottom:14px">
+          <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(31,199,255,0.35),rgba(0,66,255,0) 65%)"></div>
+          <img src="assets/albon-bot.png" alt="" style="position:relative;width:100%;height:100%;pointer-events:none;filter:drop-shadow(0 8px 14px rgba(0,10,50,0.5))"></img>
         </div>
-        <button onClick="{{ startExperience }}" style="position:relative;overflow:hidden;width:100%;height:52px;flex:none;border:0;border-radius:14px;margin-top:4px;background:radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%);color:#fff;font-size:16px;font-weight:600;letter-spacing:0.02em;cursor:pointer;text-shadow:0 1px 2px rgba(0,20,90,0.45);box-shadow:0 5px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 12px 30px rgba(0,82,255,0.5),0 0 40px rgba(0,104,223,0.3),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.25),inset 0 -8px 18px rgba(0,30,140,0.35);transition:transform 120ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="filter:brightness(1.08) saturate(1.1)" style-active="transform:translateY(3px);box-shadow:0 2px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 22px rgba(0,82,255,0.45),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.22)">
+        <span style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#1fc7ff">AskAlbon</span>
+        <span style="margin-top:3px;font-size:11px;font-weight:500;letter-spacing:0.04em;color:rgba(255,255,255,0.4)">Your Williams race engineer</span>
+        <h3 style="margin:18px 0 0;font-size:21px;font-weight:700;color:#fff;letter-spacing:-0.01em">Hi Team</h3>
+        <p style="margin:10px 0 0;font-size:14.5px;line-height:1.55;color:rgba(255,255,255,0.68);text-wrap:pretty">This is a walkthrough experience. The tool isn't active right now, but I'll guide you step by step to your final output.</p>
+        <button onClick="{{ startExperience }}" style="position:relative;overflow:hidden;width:100%;height:52px;flex:none;border:0;border-radius:14px;margin-top:24px;background:radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%);color:#fff;font-size:16px;font-weight:600;letter-spacing:0.02em;cursor:pointer;text-shadow:0 1px 2px rgba(0,20,90,0.45);box-shadow:0 5px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 12px 30px rgba(0,82,255,0.5),0 0 40px rgba(0,104,223,0.3),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.25),inset 0 -8px 18px rgba(0,30,140,0.35);transition:transform 120ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="filter:brightness(1.08) saturate(1.1)" style-active="transform:translateY(3px);box-shadow:0 2px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 22px rgba(0,82,255,0.45),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.22)">
           <span style="position:absolute;inset:0;border-radius:inherit;background:radial-gradient(90% 70% at 50% -10%,rgba(255,255,255,0.28),rgba(255,255,255,0) 70%);pointer-events:none"></span>
           <span style="position:relative">Start Experience</span>
         </button>
@@ -101,14 +106,19 @@
   </sc-if>
 
   <sc-if value="{{ walkActive }}">
-    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:13px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 7px rgba(31,199,255,0.18),0 0 26px rgba(31,199,255,0.4);transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),width 650ms cubic-bezier(.22,1,.36,1),height 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
-    <div aria-hidden="true" style="position:absolute;z-index:341;pointer-events:none;width:22px;height:22px;transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkCur.l }};top:{{ walkCur.t }};opacity:{{ walkCur.op }}">
+    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),width 1100ms cubic-bezier(.4,0,.2,1),height 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
+    <div aria-hidden="true" style="position:absolute;z-index:341;pointer-events:none;width:22px;height:22px;transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkCur.l }};top:{{ walkCur.t }};opacity:{{ walkCur.op }}">
       <svg width="22" height="22" viewBox="0 0 24 24" style="display:block;filter:drop-shadow(0 3px 6px rgba(0,20,80,0.6))"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="#0068DF" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"></path></svg>
     </div>
-    <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
+    <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
       <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1fc7ff">Step {{ walkStepNum }}/{{ walkTotal }} · {{ walkTitle }}</span>
       <p style="margin:0;font-size:13px;line-height:1.45;color:rgba(255,255,255,0.84)">{{ walkDesc }}</p>
-      <button onClick="{{ walkNext }}" style="align-self:flex-start;height:32px;padding:0 16px;border:0;border-radius:999px;background:rgb(24,170,245);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="filter:brightness(1.12)">{{ walkBtnLabel }}</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <sc-if value="{{ walkCanBack }}">
+          <button onClick="{{ walkPrev }}" style="height:32px;padding:0 14px;border:1px solid rgba(255,255,255,0.18);border-radius:999px;background:transparent;color:rgba(255,255,255,0.75);font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="border-color:rgba(255,255,255,0.4);color:#fff">Back</button>
+        </sc-if>
+        <button onClick="{{ walkNext }}" style="height:32px;padding:0 16px;border:0;border-radius:999px;background:rgb(24,170,245);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="filter:brightness(1.12)">{{ walkBtnLabel }}</button>
+      </div>
     </div>
   </sc-if>
 
@@ -883,10 +893,10 @@ const WALK_STEPS=[
     apply:s=>({gp:'R6',open:null,picked:{...s.picked,gp:true},conf:{...s.conf,gp:true},phase:'idle',p:0,t:0}) },
   { ref:'drvWrapRef', title:'Driver', desc:'Choose which driver’s race the reel follows.', openKey:'drv', optionText:'Albon',
     apply:s=>({drv:['albon'],teamEdit:false,open:null,picked:{...s.picked,drv:true},conf:{...s.conf,drv:true},phase:'idle',p:0,t:0}) },
-  { ref:'audWrapRef', title:'Audience', desc:'Pick who the reel speaks to — it shapes the tone and language.', openKey:'aud', optionText:'UK',
-    apply:s=>({auds:['uk'],open:null,picked:{...s.picked,aud:true},conf:{...s.conf,aud:true},phase:'idle',p:0,t:0}) },
+  { ref:'audWrapRef', title:'Audience', desc:'Pick who the reel speaks to — it shapes the tone and language.', openKey:'aud', optionText:'Japan',
+    apply:s=>({auds:['jp'],open:null,picked:{...s.picked,aud:true},conf:{...s.conf,aud:true},phase:'idle',p:0,t:0}) },
   { ref:'styWrapRef', title:'Style', desc:'Choose the visual style the reel is rendered in.', openKey:'style', optionText:'Anime',
-    apply:s=>({sty:'anime',langStyle:{...s.langStyle,uk:'anime'},open:null,picked:{...s.picked,sty:true},conf:{...s.conf,sty:true},phase:'idle',p:0,t:0}) },
+    apply:s=>({sty:'anime',langStyle:{...s.langStyle,jp:'anime'},open:null,picked:{...s.picked,sty:true},conf:{...s.conf,sty:true},phase:'idle',p:0,t:0}) },
   { ref:'promptRef', title:'Scene focus', desc:'Optional. Focus the reel on one moment, or leave it blank for full highlights.', optionText:'Lights Out',
     apply:s=>({prompt:'A tense, high impact race start, from the formation lap to lights out and the run into Turn 1',phase:'idle',p:0,t:0}) },
   { ref:'lenWrapRef', title:'Length', desc:'Set how long the finished reel should be.', typeDur:'40',
@@ -946,10 +956,10 @@ class Component extends DCLogic {
     if(!step){this.setState({walkStep:null,walkRect:null}); return;}
     this.clearWalkTimers();
     this.setState({walkStep:n,walkRect:this.rectOf(step.ref)});
-    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),700);
-    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),700);
-    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),700);
-    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),900);
+    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),1300);
+    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),1300);
+    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),1300);
+    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),1300);
   }
   openAndPick(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -958,14 +968,14 @@ class Component extends DCLogic {
     this._walkTo2=setTimeout(()=>{
       const oRect=this.optionRect(step.ref,step.optionText);
       if(oRect) this.setState({walkRect:oRect});
-      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),650);
-    },350);
+      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),1250);
+    },600);
   }
   pickOption(n){
     const step=WALK_STEPS[n]; if(!step) return;
     const oRect=this.optionRect(step.ref,step.optionText);
     if(oRect) this.setState({walkRect:oRect});
-    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),650);
+    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),1250);
   }
   runTypeAnim(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -973,14 +983,14 @@ class Component extends DCLogic {
     this._skipUnconfirm=true;
     this.setState({dur:'custom',customDur:''});
     let i=0;
-    const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo2=setTimeout(tick,170); else this._walkTo3=setTimeout(()=>this.applyWalkStep(n),500); };
-    this._walkTo2=setTimeout(tick,250);
+    const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo2=setTimeout(tick,260); else this._walkTo3=setTimeout(()=>this.applyWalkStep(n),750); };
+    this._walkTo2=setTimeout(tick,400);
   }
   applyWalkStep(n){
     const step=WALK_STEPS[n]; if(!step) return;
     this._skipUnconfirm=true;
     this.setState(st=>({...step.apply(st)}));
-    if(step.openKey||step.optionText) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },60);
+    if(step.openKey||step.optionText) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },80);
   }
   nextWalkStep(){
     const n=this.state.walkStep; if(n==null) return;
@@ -989,6 +999,11 @@ class Component extends DCLogic {
     const next=n+1;
     if(next>=WALK_STEPS.length){this.setState({walkStep:null,walkRect:null}); return;}
     this.goWalkStep(next);
+  }
+  prevWalkStep(){
+    const n=this.state.walkStep; if(n==null||n<=0) return;
+    this.clearWalkTimers();
+    this.goWalkStep(n-1);
   }
   componentDidUpdate(){
     if(this.state.walkStep!=null&&this._ps&&(this._ps.vw!==this.state.vw||this._ps.vh!==this.state.vh)){
@@ -1330,14 +1345,14 @@ class Component extends DCLogic {
         const wn=s.walkStep, wstep=wn!=null?WALK_STEPS[wn]:null, wr=s.walkRect;
         const vw2=s.vw||(typeof window!=='undefined'?window.innerWidth:1440);
         const sy=(typeof window!=='undefined'?window.scrollY:0)||0;
-        const cardW=272, cardH=150, gap=14, cx=wr?wr.left+wr.width/2:0, cy=wr?wr.top+wr.height/2:0;
+        const PAD=10, cardW=272, cardH=150, gap=22, cx=wr?wr.left+wr.width/2:0, cy=wr?wr.top+wr.height/2:0;
         const cardLeft=wr?Math.min(Math.max(wr.left,16),Math.max(16,vw2-cardW-16)):16;
         const cardTop=wr?Math.max(sy+8,wr.top-cardH-gap):8;
         return {
           walkActive:!!wstep, walkStepNum:wn!=null?wn+1:0, walkTotal:WALK_STEPS.length,
           walkTitle:wstep?wstep.title:'', walkDesc:wstep?wstep.desc:'', walkBtnLabel:wstep?(wstep.btn||'Next step'):'',
-          walkNext:()=>this.nextWalkStep(),
-          walkHL:{l:(wr?wr.left:0)+'px',t:(wr?wr.top:0)+'px',w:(wr?wr.width:0)+'px',h:(wr?wr.height:0)+'px',op:wr?1:0},
+          walkNext:()=>this.nextWalkStep(), walkPrev:()=>this.prevWalkStep(), walkCanBack:wn!=null&&wn>0,
+          walkHL:{l:(wr?wr.left-PAD:0)+'px',t:(wr?wr.top-PAD:0)+'px',w:(wr?wr.width+PAD*2:0)+'px',h:(wr?wr.height+PAD*2:0)+'px',op:wr?1:0},
           walkCur:{l:(cx-3)+'px',t:(cy-3)+'px',op:wr?1:0},
           walkCard:{l:cardLeft+'px',t:cardTop+'px',op:wr?1:0,w:cardW+'px'},
         };
