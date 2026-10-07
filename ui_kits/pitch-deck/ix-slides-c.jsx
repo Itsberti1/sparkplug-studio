@@ -134,7 +134,7 @@ function IXDeckCard({ u }) {
 }
 function IXPortalSlide({ index }) {
   return (
-    <IXSlide index={index} hud={false}>
+    <IXSlide index={index} hud={false} home={false}>
       <IXWMark />
       <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:48 }}>
         <div style={{ display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', fontFamily:'var(--font-body)' }}>

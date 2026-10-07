@@ -57,7 +57,7 @@ if (!IX.barBound) {
 }
 
 /* Wraps one slide: tracks active state, build steps, and pointer parallax (--mx/--my). */
-function IXSlide({ index, total = 11, steps = 0, onStep, children, style, className = '', hud = true, field = true, hudFinal = false }) {
+function IXSlide({ index, total = 11, steps = 0, onStep, children, style, className = '', hud = true, field = true, hudFinal = false, home = true }) {
   const [active, setActive] = React.useState(false);
   const [prev, setPrev] = React.useState(0);
   const [step, setStep] = React.useState(0);
@@ -98,6 +98,7 @@ function IXSlide({ index, total = 11, steps = 0, onStep, children, style, classN
         style={{ position:'relative', width:1920, height:1080, overflow:'hidden', background:'var(--wr-night)', color:'#fff', '--mx':0, '--my':0, ...style }}>
         {field && <CrossField />}
         {children}
+        {home && <IXHomeButton />}
         {hud && <LapHUD final={hudFinal} />}
       </div>
     </IXCtx.Provider>
@@ -224,4 +225,14 @@ function IXLogo({ l, t, d = 0 }) {
   return <B fx="fade" d={d} style={{ position:'absolute', left:l, top:t + 3 }}><IXDS.WilliamsLogo src={IXA('logo/williams-wordmark-white.png')} width={210} /></B>;
 }
 
-Object.assign(window, { IXDrawer, CrossField, IXCtx, IXSlide, PX, B, LapHUD, IXLogo, IXA, IXDS });
+/* Sleek, subtle top-left link back to the concepts portal (slide 0). */
+function IXHomeButton() {
+  const goHome = (e) => { e.stopPropagation(); const d = document.querySelector('deck-stage'); d && d.goTo(0); };
+  return (
+    <button type="button" aria-label="Back to concepts" onClick={goHome} className="ix-home-btn" style={{ position:'absolute', left:32, top:32, zIndex:60, width:42, height:42, padding:0, border:0, borderRadius:'50%', cursor:'pointer', backdropFilter:'blur(10px)', WebkitBackdropFilter:'blur(10px)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <svg width="17" height="16" viewBox="0 0 17 16" fill="none"><path d="M1.5 7.2L8.5 1.5L15.5 7.2" stroke="#fff" strokeOpacity="0.85" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /><path d="M3.3 5.9V14.1C3.3 14.4 3.55 14.6 3.8 14.6H6.6V10.4C6.6 10.1 6.85 9.9 7.1 9.9H9.9C10.15 9.9 10.4 10.1 10.4 10.4V14.6H13.2C13.45 14.6 13.7 14.4 13.7 14.1V5.9" stroke="#fff" strokeOpacity="0.85" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </button>
+  );
+}
+
+Object.assign(window, { IXDrawer, CrossField, IXCtx, IXSlide, PX, B, LapHUD, IXLogo, IXHomeButton, IXA, IXDS });
