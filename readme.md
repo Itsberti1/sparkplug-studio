@@ -1,6 +1,6 @@
 # Williams Racing — AI Experience
 
-**Live site:** https://itsberti1.github.io/williams-concepts/
+**Live site:** https://itsberti1.github.io/sparkplug-studio/
 
 Two things live in this repo:
 1. **The Concepts hub** — a pitch-deck style showcase of four AI concept ideas for Williams Racing (SparkPlug Studio, Ideation Studio, AI Glasses, Time Capsule).
@@ -14,7 +14,7 @@ Two things live in this repo:
 | `concepts` | Ongoing development of the Concepts hub / pitch deck (`ui_kits/pitch-deck/`). | No — merge into `main` to ship. |
 | `sparkplug` | Active development of SparkPlug Studio (`sparkplug/`). This is where the month of "make it a real product" work happens — moving off the current single-file mocked demo toward a real app with an actual backend and real AI generation calls. | No — merge into `main` to ship. |
 
-Work on `concepts` or `sparkplug`, open a PR into `main` when a change is ready to go live, merge, confirm Pages rebuilds (`gh api repos/<owner>/williams-concepts/pages`). `main` should always be in a deployable state.
+Work on `concepts` or `sparkplug`, open a PR into `main` when a change is ready to go live, merge, confirm Pages rebuilds (`gh api repos/<owner>/sparkplug-studio/pages`). `main` should always be in a deployable state.
 
 ## Original design system
 The sections below are from the original Figma-to-code import that produced the pitch deck's visual language (colors, type, components) and are kept for reference — they predate SparkPlug and the branch structure above.
