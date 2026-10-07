@@ -1,0 +1,302 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/brand/**",
+              "components/broadcast/**",
+              "components/cards/**",
+              "components/glass/**",
+              "components/icons/**",
+              "ui_kits/pitch-deck-saved-2026-09-25/**",
+              "ui_kits/pitch-deck-saved-2026-09-29/**",
+              "ui_kits/pitch-deck/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Space Grotesk))/i]",
+        "message": "Font not provided by the design system. Available: Space Grotesk."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CommentRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|message|avatarSrc|style|key|ref|className|style|children)$/]",
+        "message": "<CommentRow> doesn't accept that prop. Declared props: name, message, avatarSrc, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='GlassPrompt'] > JSXAttribute > JSXIdentifier[name!=/^(?:text|side|tilt|style|key|ref|className|style|children)$/]",
+        "message": "<GlassPrompt> doesn't accept that prop. Declared props: text, side, tilt, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='GlassPrompt'] > JSXAttribute[name.name='side'] > Literal[value!=/^(?:left|right)$/]",
+        "message": "<GlassPrompt> side must be one of 'left' | 'right'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icons'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|state|dark|size|color|style|key|ref|className|style|children)$/]",
+        "message": "<Icons> doesn't accept that prop. Declared props: name, state, dark, size, color, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icons'] > JSXAttribute[name.name='state'] > Literal[value!=/^(?:default|selected|unselected)$/]",
+        "message": "<Icons> state must be one of 'default' | 'selected' | 'unselected'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LiveBadge'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|style|key|ref|className|style|children)$/]",
+        "message": "<LiveBadge> doesn't accept that prop. Declared props: label, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PanelCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|children|width|height|style|key|ref|className|style|children)$/]",
+        "message": "<PanelCard> doesn't accept that prop. Declared props: title, children, width, height, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StepCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:imageSrc|caption|bold|style|key|ref|className|style|children)$/]",
+        "message": "<StepCard> doesn't accept that prop. Declared props: imageSrc, caption, bold, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StreamerHandle'] > JSXAttribute > JSXIdentifier[name!=/^(?:handle|avatarSrc|verified|style|key|ref|className|style|children)$/]",
+        "message": "<StreamerHandle> doesn't accept that prop. Declared props: handle, avatarSrc, verified, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ViewerCount'] > JSXAttribute > JSXIdentifier[name!=/^(?:count|style|key|ref|className|style|children)$/]",
+        "message": "<ViewerCount> doesn't accept that prop. Declared props: count, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WilliamsLogo'] > JSXAttribute > JSXIdentifier[name!=/^(?:src|width|style|key|ref|className|style|children)$/]",
+        "message": "<WilliamsLogo> doesn't accept that prop. Declared props: src, width, style."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "CommentRow": {
+        "replaces": []
+      },
+      "GlassPrompt": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "Icons": {
+        "replaces": []
+      },
+      "LiveBadge": {
+        "replaces": []
+      },
+      "PanelCard": {
+        "replaces": []
+      },
+      "StepCard": {
+        "replaces": []
+      },
+      "StreamerHandle": {
+        "replaces": []
+      },
+      "ViewerCount": {
+        "replaces": []
+      },
+      "WilliamsLogo": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent",
+      "--accent-live",
+      "--colors-icons",
+      "--dur-fast",
+      "--dur-slide",
+      "--ease-out",
+      "--font-body",
+      "--font-display",
+      "--font-ui",
+      "--font-ui-compact",
+      "--glass-blur",
+      "--glass-fill",
+      "--glass-shadow",
+      "--gray-900",
+      "--icon-default-default",
+      "--radius-badge",
+      "--radius-card",
+      "--radius-chip",
+      "--radius-glass",
+      "--radius-photo",
+      "--shadow-card",
+      "--shadow-photo",
+      "--space-caption-gap",
+      "--space-comment-gap",
+      "--space-glass-gap",
+      "--space-slide-x",
+      "--space-title-gap",
+      "--surface-brand",
+      "--surface-card",
+      "--surface-chip",
+      "--surface-page",
+      "--text-muted",
+      "--text-primary",
+      "--type-bullet-lh",
+      "--type-bullet-size",
+      "--type-caption-lh",
+      "--type-caption-size",
+      "--type-card-lh",
+      "--type-card-size",
+      "--type-display-lh",
+      "--type-display-size",
+      "--type-display-weight",
+      "--type-emoji-size",
+      "--type-lead-alt-lh",
+      "--type-lead-alt-size",
+      "--type-lead-lh",
+      "--type-lead-size",
+      "--type-lead-weight",
+      "--type-prompt-lh",
+      "--type-prompt-size",
+      "--type-prompt-weight",
+      "--type-title-lh",
+      "--type-title-size",
+      "--type-title-weight",
+      "--type-ui-badge-size",
+      "--type-ui-badge-weight",
+      "--type-ui-body-size",
+      "--type-ui-body-weight",
+      "--type-ui-count-size",
+      "--type-ui-handle-weight",
+      "--type-ui-name-size",
+      "--type-ui-name-weight",
+      "--white-1000",
+      "--wr-blue",
+      "--wr-chip",
+      "--wr-electric",
+      "--wr-grey-200",
+      "--wr-grey-500",
+      "--wr-line",
+      "--wr-live-gradient",
+      "--wr-live-magenta",
+      "--wr-live-red",
+      "--wr-night",
+      "--wr-night-2",
+      "--wr-panel",
+      "--wr-rule-gradient",
+      "--wr-white"
+    ],
+    "tokenKinds": {
+      "--font-display": "font",
+      "--font-body": "font",
+      "--font-ui": "font",
+      "--font-ui-compact": "font",
+      "--wr-night": "color",
+      "--wr-night-2": "color",
+      "--wr-panel": "color",
+      "--wr-chip": "color",
+      "--wr-white": "color",
+      "--wr-grey-500": "color",
+      "--wr-grey-200": "color",
+      "--wr-blue": "color",
+      "--wr-electric": "color",
+      "--wr-live-magenta": "color",
+      "--wr-live-red": "color",
+      "--wr-live-gradient": "color",
+      "--wr-line": "color",
+      "--wr-rule-gradient": "color",
+      "--surface-page": "color",
+      "--surface-card": "color",
+      "--surface-chip": "color",
+      "--surface-brand": "color",
+      "--text-primary": "font",
+      "--text-muted": "font",
+      "--accent": "color",
+      "--accent-live": "color",
+      "--type-display-size": "font",
+      "--type-display-lh": "font",
+      "--type-display-weight": "font",
+      "--type-title-size": "font",
+      "--type-title-lh": "font",
+      "--type-title-weight": "font",
+      "--type-lead-size": "font",
+      "--type-lead-lh": "font",
+      "--type-lead-weight": "font",
+      "--type-lead-alt-size": "font",
+      "--type-lead-alt-lh": "font",
+      "--type-card-size": "font",
+      "--type-card-lh": "font",
+      "--type-bullet-size": "font",
+      "--type-bullet-lh": "font",
+      "--type-caption-size": "font",
+      "--type-caption-lh": "font",
+      "--type-emoji-size": "font",
+      "--type-prompt-size": "font",
+      "--type-prompt-lh": "font",
+      "--type-prompt-weight": "font",
+      "--type-ui-name-size": "font",
+      "--type-ui-name-weight": "font",
+      "--type-ui-body-size": "font",
+      "--type-ui-body-weight": "font",
+      "--type-ui-handle-weight": "font",
+      "--type-ui-count-size": "font",
+      "--type-ui-badge-size": "font",
+      "--type-ui-badge-weight": "font",
+      "--space-slide-x": "spacing",
+      "--space-title-gap": "spacing",
+      "--space-caption-gap": "spacing",
+      "--space-glass-gap": "spacing",
+      "--space-comment-gap": "spacing",
+      "--radius-glass": "radius",
+      "--radius-card": "radius",
+      "--radius-photo": "radius",
+      "--radius-badge": "radius",
+      "--radius-chip": "radius",
+      "--shadow-card": "shadow",
+      "--shadow-photo": "shadow",
+      "--glass-fill": "color",
+      "--glass-blur": "other",
+      "--glass-shadow": "shadow",
+      "--ease-out": "other",
+      "--dur-fast": "other",
+      "--dur-slide": "other",
+      "--colors-icons": "color",
+      "--gray-900": "color",
+      "--icon-default-default": "color",
+      "--white-1000": "color"
+    },
+    "fontFamilies": [
+      "Space Grotesk"
+    ]
+  }
+}

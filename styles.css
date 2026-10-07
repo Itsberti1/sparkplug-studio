@@ -1,0 +1,6 @@
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/effects.css';
+@import './tokens/figma/fig-tokens.css';
+@import './tokens/figma/fig-typography.css';

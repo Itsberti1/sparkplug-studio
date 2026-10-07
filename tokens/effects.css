@@ -1,0 +1,29 @@
+:root{
+  /* Spacing — as used in frames */
+  --space-slide-x:143px;     /* left text margin (also 128 / 164 on some slides) */
+  --space-title-gap:38px;    /* title → body */
+  --space-caption-gap:27px;  /* photo → caption */
+  --space-glass-gap:7.553073406219482px;
+  --space-comment-gap:19px;
+
+  /* Radii */
+  --radius-glass:30.21229362487793px;
+  --radius-card:19.266836166381836px;
+  --radius-photo:18px;
+  --radius-badge:6.461538791656494px;
+  --radius-chip:6.460000038146973px;
+
+  /* Shadows */
+  --shadow-card:0px 3.853px 3.853px 0px rgba(0,0,0,0.25);
+  --shadow-photo:0px 4.334px 4.334px 0px rgba(0,0,0,0.25);
+
+  /* Liquid glass (prompt bubbles) */
+  --glass-fill:radial-gradient(50% 50% at 50% 50%,rgba(108,108,108,0.1) 0%,rgba(24,24,20,0.1) 100%);
+  --glass-blur:blur(48.555px); /* @kind other */
+  --glass-shadow:inset 0px 0px 12.948px 0px rgb(255,255,255),inset 0px -25.896px 34.528px 0px rgba(255,255,255,0.22),inset 0px 8.632px 25.896px -17.264px rgba(255,255,255,0.25);
+
+  /* Motion (not specified in Figma — conservative defaults) */
+  --ease-out:cubic-bezier(.2,.7,.2,1); /* @kind other */
+  --dur-fast:160ms; /* @kind other */
+  --dur-slide:420ms; /* @kind other */
+}

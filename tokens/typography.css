@@ -1,0 +1,18 @@
+/* Type scale transcribed from the 1920×1080 Figma frames (values verbatim). */
+:root{
+  --type-display-size:73.19149017333984px;  --type-display-lh:73.191px;  --type-display-weight:700; /* "Why us" */
+  --type-title-size:48.26771545410156px;    --type-title-lh:48.268px;    --type-title-weight:700;   /* slide titles */
+  --type-lead-size:37.411983489990234px;    --type-lead-lh:65.064px;     --type-lead-weight:400;    /* slide body */
+  --type-lead-alt-size:35.77854919433594px; --type-lead-alt-lh:62.224px;
+  --type-card-size:23px;                    --type-card-lh:40px;         /* panel card body */
+  --type-bullet-size:22px;                  --type-bullet-lh:40px;       /* bullet list, bold lead-ins */
+  --type-caption-size:22px;                 --type-caption-lh:35px;      /* photo captions */
+  --type-emoji-size:32px;
+  /* In-product UI (SF) */
+  --type-prompt-size:24.817241668701172px;  --type-prompt-lh:37.765px;   --type-prompt-weight:457; /* glass prompt */
+  --type-ui-name-size:20.694318771362305px; --type-ui-name-weight:500;
+  --type-ui-body-size:18px;                 --type-ui-body-weight:500;
+  --type-ui-handle-weight:590;
+  --type-ui-count-size:18.211000442504883px;
+  --type-ui-badge-size:15.794872283935547px; --type-ui-badge-weight:600;
+}

@@ -1,0 +1,137 @@
+<!-- @dsCard group="Pitch Deck" viewport="1280x720" name="Interactive deck" subtitle="Presenter deck: build-ins, journey step-through, answering voice prompts, live stream mock, lap HUD" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Williams — AI Paddock Experience (interactive)</title><template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#041E42"/><text x="50" y="62" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#00A3E0">W</text></svg></template><link rel="stylesheet" href="../../styles.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Unbounded:wght@200..400&display=swap">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><script src="deck-stage.js"></script>
+<style>
+html,body{margin:0;background:#000}a{color:var(--wr-blue)}a:hover{color:#fff}
+deck-stage>section{background:var(--wr-night)}
+deck-stage{--font-display:"Afacad",sans-serif;--font-body:"Afacad",sans-serif;--font-ui:"Afacad",sans-serif;--font-ui-compact:"Afacad",sans-serif;--type-caption-size:24px;--type-caption-lh:34px;--type-card-size:26px;--type-card-lh:40px;--type-prompt-size:27px;--type-prompt-lh:36px;--type-ui-name-size:22px;--type-display-size:84px;--type-display-lh:84px}
+deck-stage *{font-synthesis:none}
+.ix-px{transform:translate3d(calc(var(--mx,0) * var(--depth,0px)),calc(var(--my,0) * var(--depth,0px)),0);transition:transform .9s cubic-bezier(.2,.7,.2,1);will-change:transform}
+.ix-hidden{opacity:0!important;animation:none!important;pointer-events:none}
+@keyframes ix-up{from{opacity:0;transform:translateY(32px)}}
+@keyframes ix-fade{from{opacity:0}}
+@keyframes ix-left{from{opacity:0;transform:translateX(-40px)}}
+@keyframes ix-right{from{opacity:0;transform:translateX(80px)}}
+@keyframes ix-pop{from{opacity:0;transform:translateY(24px) scale(.94)}}
+@keyframes ix-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes ix-reveal{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+@keyframes ix-draw{from{clip-path:inset(-4px 100% -4px -4px);opacity:.3}to{clip-path:inset(-4px -4px -4px -4px);opacity:1}}
+@keyframes ix-draw-br{0%{clip-path:inset(98% -4px -4px 100%)}50%{clip-path:inset(98% -4px -4px -4px)}100%{clip-path:inset(-4px -4px -4px -4px)}}
+@keyframes ix-draw-tl{0%{clip-path:inset(-4px 100% 99% -4px)}40%{clip-path:inset(-4px -4px 99% -4px)}100%{clip-path:inset(-4px -4px -4px -4px)}}
+@keyframes ix-edge{from{transform:translateX(628px);opacity:0}8%{opacity:1}to{transform:none;opacity:1}}
+@keyframes ix-streak{from{opacity:0;transform:translateX(420px)}}
+@keyframes ix-kb{from{transform:scale(1.08)}}
+@keyframes ix-push{from{transform:scale(1.18)}}
+@media (prefers-reduced-motion:no-preference){
+[data-deck-active] .ix-up{animation:ix-up .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-fade{animation:ix-fade .8s ease var(--d,0ms) backwards}
+[data-deck-active] .ix-left{animation:ix-left .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-right{animation:ix-right .9s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-pop{animation:ix-pop .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-wipe{animation:ix-wipe 1s cubic-bezier(.7,0,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-edge{animation:ix-edge 1s cubic-bezier(.7,0,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-reveal{animation:ix-reveal 1s cubic-bezier(.7,0,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-draw{animation:ix-draw 1s cubic-bezier(.5,0,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-draw-br{animation:ix-draw-br 1.9s cubic-bezier(.5,0,.3,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-draw-tl{animation:ix-draw-tl 2.2s cubic-bezier(.5,0,.3,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-streak{animation:ix-streak 1.2s cubic-bezier(.2,.7,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-kb{animation:ix-kb 7s cubic-bezier(.2,.6,.2,1) var(--d,0ms) backwards}
+[data-deck-active] .ix-push{animation:ix-push 2.4s cubic-bezier(.16,.8,.2,1) var(--d,0ms) backwards}
+}
+.ix-photo{transition:transform .6s cubic-bezier(.2,.7,.2,1)}.ix-photo:hover{transform:scale(1.025)}
+.ix-step{transition:transform .55s cubic-bezier(.2,.7,.2,1);will-change:transform}.ix-step:hover{transform:translateY(-12px)}
+.ix-step>div>div:first-child{box-shadow:0 0 0 2px var(--wr-blue),0 0 40px rgba(0,104,223,.55)!important;transition:box-shadow .55s ease}
+.ix-step:hover>div>div:first-child{box-shadow:0 0 0 2px var(--wr-blue),0 18px 60px rgba(0,104,223,.75)!important}
+.ix-prompt{cursor:pointer;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1)}.ix-prompt:hover{transform:translateY(-8px) scale(1.02)}
+.ix-prompt.is-dim{opacity:.5}
+.ix-prompt>div>div{transition:box-shadow .35s ease}
+.ix-prompt.is-on>div>div{box-shadow:var(--glass-shadow),0 0 0 2px rgba(0,104,223,.95),0 0 48px rgba(0,104,223,.7)!important}
+.ix-bar{display:block;width:3px;height:4px;border-radius:2px;background:#fff;transition:height .3s ease}
+.ix-bar.is-on{animation:ix-wave 1s ease-in-out calc(var(--i) * -.18s) infinite}
+@keyframes ix-wave{0%,100%{height:4px}50%{height:20px}}
+.ix-prompt>div>div>div>span{transform-origin:center;transition:transform .3s ease}
+.ix-prompt.is-asking>div>div>div>span{animation:ix-qwave .9s ease-in-out infinite}
+.ix-prompt.is-asking>div>div>div>span:nth-child(2){animation-delay:-.3s}.ix-prompt.is-asking>div>div>div>span:nth-child(3){animation-delay:-.55s}.ix-prompt.is-asking>div>div>div>span:nth-child(4){animation-delay:-.15s}.ix-prompt.is-asking>div>div>div>span:nth-child(5){animation-delay:-.7s}
+@keyframes ix-qwave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.ix-player{transition:transform .3s cubic-bezier(.2,.7,.2,1)}.ix-player:hover{transform:translateY(-2px)}
+@keyframes ix-glass-in{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){[data-deck-active] .ix-glass-in{animation:ix-glass-in 1.4s cubic-bezier(.22,.8,.2,1) .9s backwards}}
+.ix-chev{animation:ix-chev 1.8s cubic-bezier(.4,0,.2,1) calc(var(--i) * .18s) infinite;opacity:.18}
+@keyframes ix-chev{0%,100%{opacity:.18;transform:translateX(0)}35%{opacity:1;transform:translateX(4px)}70%{opacity:.18;transform:translateX(0)}}
+.ix-handle{width:44px;background:linear-gradient(180deg,rgba(44,49,64,.88),rgba(24,27,38,.88));backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);transition:width .5s cubic-bezier(.2,.85,.2,1),background .35s ease}
+.ix-handle.is-r{box-shadow:inset 2px 0 0 #0068DF,inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(255,255,255,.12),-12px 12px 40px rgba(0,0,0,.35)}
+.ix-handle.is-l{box-shadow:inset -2px 0 0 #0068DF,inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(255,255,255,.12),12px 12px 40px rgba(0,0,0,.35)}
+.ix-handle:hover{width:62px;background:linear-gradient(180deg,rgba(0,104,223,.75),rgba(0,66,255,.6))}
+.ix-handle.is-peek{animation:ix-peek 3.4s cubic-bezier(.4,0,.2,1) 2.2s infinite}.ix-handle.is-peek:hover{animation:none}
+@keyframes ix-peek{0%,60%,100%{width:44px}72%{width:56px}84%{width:44px}90%{width:50px}}
+.ix-hstripe{display:block;width:16px;height:3px;border-radius:1px;background:rgb(31,199,255);transform:skewY(-28deg);animation:ix-hstripe 1.8s ease-in-out calc(var(--i) * .2s) infinite}
+@keyframes ix-hstripe{0%,100%{opacity:.25}45%{opacity:1}}
+.ix-ss-pulse{will-change:stroke-dashoffset;stroke-dasharray:70 930;stroke-dashoffset:1000;filter:drop-shadow(0 0 6px rgba(31,199,255,.95)) drop-shadow(0 0 16px rgba(0,104,223,.8))}
+.ix-ss-pulse.is-core{stroke-dasharray:30 970;stroke-dashoffset:960;filter:none;opacity:.9}
+.is-open .ix-ss-pulse{animation:ix-ss-lap 12s linear .6s infinite}.is-open .ix-ss-pulse.is-core{animation-name:ix-ss-lap-core}
+@keyframes ix-ss-lap-core{from{stroke-dashoffset:960}to{stroke-dashoffset:-40}}
+@keyframes ix-ss-lap{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+.ix-ss-glow{opacity:0}.is-open .ix-ss-glow{animation:ix-ss-breathe 6s ease-in-out .6s infinite}
+@keyframes ix-ss-breathe{0%,100%{opacity:0}50%{opacity:.5}}
+.is-open .ix-ss-dot{animation:ix-pulse-blue 1.8s ease-out infinite}
+@keyframes ix-pulse-blue{0%{box-shadow:0 0 0 0 rgba(31,199,255,.6)}100%{box-shadow:0 0 0 12px rgba(31,199,255,0)}}
+.ix-fan-img{transition:opacity .9s cubic-bezier(.4,0,.2,1),transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.ix-fan-cap{animation:ix-fade .8s ease .25s backwards}
+.ix-fan-btn{transition:background .3s ease,transform .3s cubic-bezier(.2,.7,.2,1)}.ix-fan-btn:hover{background:rgba(0,104,223,.7)!important;transform:scale(1.06)}.ix-fan-btn:active{transform:scale(.96)}
+.ix-lift{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s ease}.ix-lift:hover{transform:translateY(-5px);box-shadow:0 20px 44px rgba(0,24,72,0.45)!important}.ix-lift:active{transform:translateY(-2px) scale(.98)}
+.ix-draw-word{stroke-dasharray:900;animation:ix-draw-word 1.8s cubic-bezier(.3,.6,.2,1) var(--d,0ms) both}
+@keyframes ix-draw-word{from{stroke-dashoffset:900;stroke-opacity:0}20%{stroke-opacity:1}to{stroke-dashoffset:0;stroke-opacity:1}}
+[data-deck-active] .ix-logo-rise{animation:ix-logo-rise 1.5s cubic-bezier(.65,0,.2,1) .35s both}
+@keyframes ix-logo-rise{from{transform:none}to{transform:translateY(-515px)}}
+.ix-lapbar.is-final{box-shadow:0 0 26px rgba(31,199,255,.95),0 0 80px rgba(0,104,223,.8),0 0 8px #0068DF!important;transition:box-shadow 1s ease}
+[data-deck-active] .ix-hud-out{animation:ix-hud-out .9s ease .5s both}
+@keyframes ix-hud-out{to{opacity:0}}
+.ix-word{opacity:0}[data-deck-active] .ix-word{animation:ix-word .9s cubic-bezier(.16,.9,.2,1) var(--d,0ms) both}
+@keyframes ix-word{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+.ix-social{transition:transform .4s cubic-bezier(.2,.7,.2,1),background .4s ease}.ix-social:hover{transform:translateY(-4px);background:rgba(0,104,223,.35)!important}
+.ix-talk{animation:ix-talk var(--talk,3s) linear both}
+@keyframes ix-talk{from{width:0%}to{width:100%}}
+.ix-caret{margin-left:2px;color:var(--wr-blue);transition:opacity .2s}
+.ix-rail svg path{fill:none!important;stroke:currentColor;stroke-width:2.6px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.ix-cross{color:#1b2130;transition:color .4s ease}.ix-cross:hover{color:#2a3348}
+.ix-light .ix-cross{color:rgba(255,255,255,.14)}.ix-light .ix-cross:hover{color:rgba(255,255,255,.3)}
+[data-deck-active] .ix-hud,[data-deck-active] .ix-hud *:not(.ix-hud-out):not(.ix-lapwhite){visibility:visible!important;opacity:1!important}
+.ix-light .ix-car{background:#fff!important}.ix-light .ix-lapbar{background:linear-gradient(90deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.85) 60%,#fff 100%)!important;box-shadow:0 0 16px rgba(255,255,255,.6)!important}
+[data-deck-active] .ix-white .ix-lapwhite{animation:ix-white-in 1.4s ease .5s both}@keyframes ix-white-in{from{opacity:0}to{opacity:1}}[data-deck-active] .ix-white .ix-car{animation:ix-car-white 1.4s ease .5s both}@keyframes ix-car-white{to{background:#fff}}[data-deck-active] .ix-white .ix-carglow{animation:ix-carglow-white 1.4s ease .5s both}@keyframes ix-carglow-white{to{filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 12px rgba(255,255,255,.6))}}[data-deck-active] .ix-white .ix-lapbar{animation:ix-bar-white 1.4s ease .5s both}@keyframes ix-bar-white{to{box-shadow:0 0 18px rgba(255,255,255,.75),0 0 6px rgba(255,255,255,.95)}}
+@media (prefers-reduced-motion:no-preference){[data-deck-active] .ix-cross{animation:ix-fade 1.6s ease backwards}}
+.ix-chat{animation:ix-chat .5s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes ix-chat{from{opacity:0;transform:translateY(24px)}}
+.ix-float{animation:ix-float var(--dur,2.6s) ease-out var(--dl,0s) both}
+.ix-love{transform-origin:100% 50%;animation:ix-wiggle 4.2s ease-in-out 1.6s infinite;transform:rotate(-7deg);transition:filter .3s ease}.ix-love:hover{filter:brightness(1.25)}.ix-love:active{transform:rotate(-7deg) scale(.95)}
+@keyframes ix-wiggle{0%,72%,100%{transform:rotate(-7deg)}76%{transform:rotate(-1deg)}80%{transform:rotate(-12deg)}84%{transform:rotate(-3deg)}88%{transform:rotate(-9deg)}92%{transform:rotate(-7deg)}}
+.ix-ss-t{opacity:0;transition:opacity .4s ease}.is-open .ix-ss-t{opacity:1;transition:opacity 1s ease var(--d,.8s)}
+.ix-user{transition:transform .5s cubic-bezier(.2,.7,.2,1)}.ix-user:hover{transform:translateY(-8px)}
+@keyframes ix-float{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1;transform:translate(calc(var(--dx) * .2),-40px) scale(1.1)}100%{opacity:0;transform:translate(var(--dx),-360px) scale(1)}}
+.ix-live{position:relative;border-radius:var(--radius-badge);animation:ix-pulse 1.8s ease-out infinite}
+@keyframes ix-pulse{0%{box-shadow:0 0 0 0 rgba(226,0,55,.55)}100%{box-shadow:0 0 0 12px rgba(226,0,55,0)}}
+.ix-panel{transition:transform .35s cubic-bezier(.2,.7,.2,1)}.ix-panel:hover{transform:translateY(-8px)}
+.ix-panel>div{transition:box-shadow .35s ease}.ix-panel:hover>div{box-shadow:0 0 0 1px rgba(0,104,223,.6),0 24px 60px rgba(0,104,223,.28)!important}
+</style></head><body>
+<deck-stage width="1920" height="1080">
+<section data-label="Portal" data-screen-label="01 Portal"><div data-ix="IXPortalSlide"></div></section>
+<section data-label="Overview" data-screen-label="02 Overview"><div data-ix="IXOverviewSlide"></div></section>
+<section data-label="Cover" data-screen-label="03 Cover"><div data-ix="IXCoverSlide"></div></section>
+<section data-label="Journey" data-screen-label="04 Journey"><div data-ix="IXJourneySlide"></div></section>
+<section data-label="Voice prompts" data-screen-label="05 Voice prompts"><div data-ix="IXPromptsSlide"></div></section>
+<section data-label="Livestream" data-screen-label="06 Livestream"><div data-ix="IXLivestreamSlide"></div></section>
+<section data-label="VIP" data-screen-label="07 VIP"><div data-ix="IXVipSlide"></div></section>
+<section data-label="Guest demo" data-screen-label="08 Guest demo"><div data-ix="IXDemoSlide"></div></section>
+<section data-label="The 3 Users" data-screen-label="09 The 3 Users"><div data-ix="IXUsersSlide"></div></section>
+<section data-label="Vision AI" data-screen-label="10 Vision AI"><div data-ix="IXMetaSlide"></div></section>
+<!-- Hidden for now — uncomment to restore (and set total back to 12 in ix-core.jsx): <section data-label="Why us" data-screen-label="11 Why us"><div data-ix="IXWhyUsSlide"></div></section> -->
+<section data-label="Lights out" data-screen-label="11 Lights out"><div data-ix="IXLightsSlide"></div></section>
+</deck-stage>
+<script type="text/babel" src="ix-core.jsx"></script>
+<script type="text/babel" src="ix-slides-a.jsx"></script>
+<script type="text/babel" src="ix-slides-b.jsx"></script>
+<script type="text/babel" src="ix-slides-c.jsx"></script>
+<script type="text/babel">document.querySelectorAll('[data-ix]').forEach((el,i)=>{const C=window[el.dataset.ix];ReactDOM.createRoot(el).render(<C index={i}/>);});</script>
+</body></html>

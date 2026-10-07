@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../tokens/fonts.css">
+  <link rel="stylesheet" href="../tokens/colors.css">
+  <link rel="stylesheet" href="../tokens/typography.css">
+  <link rel="stylesheet" href="../tokens/effects.css">
+  <link rel="stylesheet" href="../tokens/figma/fig-tokens.css">
+  <link rel="stylesheet" href="../tokens/figma/fig-typography.css">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../_ds_bundle.js"></script>
+  <style>
+    html,body{margin:0;background:rgb(10,12,20);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#fff;text-decoration:none}a:hover{color:#0068DF}
+    button,input{font-family:inherit}
+  </style>
+</helmet>
+
+<div style="position:relative;overflow:clip;color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;background:radial-gradient(900px 600px at 12% -10%,rgba(0,66,255,0.28),rgba(0,66,255,0) 70%),radial-gradient(800px 700px at 88% 30%,rgba(0,104,223,0.22),rgba(0,104,223,0) 70%),rgb(10,12,20)">
+
+  <sc-if value="{{ showMark }}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position:absolute;left:-220px;bottom:-160px;pointer-events:none;opacity:{{ markOpacity }}">
+      <x-import component-from-global-scope="WilliamsRacingAIExperienceDesignSystem_1388e9.WMark" src="assets/w-mark-blue.png" width="1215px" height="683px" hint-size="1215px,683px"></x-import>
+    </div>
+  </sc-if>
+
+
+
+  <sc-if value="{{ chatOpen }}">
+    <div ref="{{ chatRef }}" style="position:fixed;right:24px;bottom:104px;z-index:180;width:min(380px,calc(100vw - 32px));height:min(560px,calc(100vh - 140px));display:flex;flex-direction:column;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));box-shadow:0 24px 60px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.08);transform-origin:100% 100%;font-family:'Space Grotesk',system-ui,sans-serif">
+      <div style="flex:none;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:linear-gradient(180deg,#1a7dee,#0068DF)">
+        <x-import component-from-global-scope="WilliamsRacingAIExperienceDesignSystem_1388e9.WilliamsLogo" src="assets/williams-wordmark-white.png" width="84px" hint-size="84px,19px"></x-import>
+        <span style="flex:none;width:1px;height:26px;background:rgba(255,255,255,0.3)"></span>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:14px;font-weight:700">AskAlbon</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.85)">Your reel assistant</span>
+        </div>
+        <button onClick="{{ toggleChat }}" aria-label="Close chat" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,0.14);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:rgba(255,255,255,0.26)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"></path></svg></button>
+      </div>
+      <div ref="{{ chatListRef }}" style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:18px 16px">
+        <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="1">
+          <div style="display:flex;justify-content:{{ m.justify }}">
+            <div style="max-width:82%;padding:10px 14px;border-radius:{{ m.radius }};background:{{ m.bg }};font-size:14px;line-height:1.45;text-wrap:pretty;white-space:pre-wrap">{{ m.text }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ chatTyping }}">
+          <div style="display:flex"><div style="padding:10px 14px;border-radius:16px 16px 16px 4px;background:rgba(255,255,255,0.08);font-size:14px;color:rgba(255,255,255,0.75)">Thinking…</div></div>
+        </sc-if>
+        <sc-if value="{{ showSuggest }}">
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:4px;flex:none">
+            <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">FAQs</span>
+            <sc-for list="{{ suggests }}" as="sg" hint-placeholder-count="3">
+              <button onClick="{{ sg.onClick }}" style="flex:none;white-space:nowrap;height:34px;padding:0 14px;border-radius:17px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:13px;cursor:pointer" style-hover="background:rgba(255,255,255,0.12)">{{ sg.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex:none;display:flex;flex-direction:column;gap:10px;padding:10px 12px 12px;border-top:1px solid rgba(255,255,255,0.08)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onClick="{{ toggleDoIt }}" aria-pressed="{{ doItOn }}" style="flex:none;display:flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 6px;border-radius:15px;border:1px solid {{ doIt.border }};background:{{ doIt.bg }};box-shadow:{{ doIt.glow }};color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap;transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms" style-hover="border-color:rgba(255,255,255,0.45)">
+            <span style="position:relative;flex:none;width:28px;height:16px;border-radius:8px;background:{{ doIt.track }};transition:background 200ms"><span style="position:absolute;top:2px;left:{{ doIt.knob }};width:12px;height:12px;border-radius:50%;background:#fff;transition:left 220ms cubic-bezier(.22,1,.36,1)"></span></span>
+            Do it for me
+          </button>
+          <span style="flex:1;min-width:0;font-size:11px;line-height:1.35;color:rgba(255,255,255,0.55);text-wrap:pretty">{{ doIt.hint }}</span>
+        </div>
+        <form onSubmit="{{ sendChat }}" style="display:flex;align-items:center;gap:8px;margin:0">
+          <input value="{{ chatIn }}" onChange="{{ setChatIn }}" placeholder="{{ doIt.ph }}" style="flex:1;min-width:0;height:44px;padding:0 16px;border-radius:22px;border:1px solid {{ doIt.inBorder }};background:rgba(255,255,255,0.06);color:#fff;font-size:14px;outline:none;transition:border-color 200ms" style-focus="border-color:#0068DF"></input>
+          <button type="submit" disabled="{{ chatEmpty }}" aria-label="Send" style="flex:none;width:44px;height:44px;border-radius:50%;border:0;background:#0068DF;color:#fff;cursor:{{ chatCursor }};opacity:{{ chatOpacity }};display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15V3M4 8l5-5 5 5"></path></svg></button>
+        </form>
+      </div>
+    </div>
+  </sc-if>
+  <div aria-hidden="true" style="position:fixed;right:98px;bottom:39px;z-index:181;pointer-events:none;padding:7px 12px;border-radius:10px;background:rgb(22,25,35);box-shadow:0 0 0 1px rgba(255,255,255,0.1),0 8px 20px rgba(0,0,0,0.45);font-size:13px;font-weight:700;color:#fff;white-space:nowrap;opacity:{{ fabTipOp }};transform:{{ fabTipTf }};transition:opacity 200ms cubic-bezier(.22,1,.36,1),transform 260ms cubic-bezier(.22,1,.36,1)">AskAlbon</div>
+  <button onClick="{{ toggleChat }}" onMouseEnter="{{ fabIn }}" onMouseLeave="{{ fabOut }}" aria-label="Open AskAlbon" style="position:fixed;right:24px;bottom:24px;z-index:181;width:62px;height:62px;padding:0;border:1px solid transparent;border-radius:50%;cursor:pointer;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,#3a74ff 0%,#0042FF 42%,#0029b8 100%) padding-box,linear-gradient(160deg,rgba(255,255,255,0.55),rgba(255,255,255,0.06) 45%,rgba(0,104,223,0.6)) border-box;box-shadow:0 0 0 5px rgba(0,66,255,0.10),0 14px 34px rgba(0,30,140,0.45),0 2px 6px rgba(0,0,0,0.45);transition:transform 260ms cubic-bezier(.22,1,.36,1),box-shadow 260ms cubic-bezier(.22,1,.36,1)" style-hover="transform:translateY(-2px);box-shadow:0 0 0 7px rgba(0,66,255,0.16),0 18px 40px rgba(0,30,140,0.55),0 2px 6px rgba(0,0,0,0.45)">
+    <span style="position:absolute;left:50%;bottom:-30%;width:120%;height:70%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(0,12,60,0.55),rgba(0,12,60,0));pointer-events:none"></span>
+    <img src="assets/albon-bot.png" alt="" style="position:absolute;width:50px;height:50px;left:5px;top:6px;max-width:none;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,10,50,0.45))"></img>
+    <span style="position:absolute;left:12%;top:3%;width:76%;height:42%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0));pointer-events:none"></span>
+  </button>
+
+  <sc-if value="{{ playerOpen }}">
+    <div ref="{{ overlayRef }}" style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:radial-gradient(ellipse 60% 50% at 50% 45%,rgba(0,66,255,0.16),rgba(0,66,255,0) 70%),rgba(6,8,14,0.8);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2)">
+      <div onClick="{{ closePlayer }}" style="position:absolute;inset:0"></div>
+      <div ref="{{ winRef }}" style="position:relative;width:{{ ww }};max-width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;padding:14px;border-radius:19.27px;border:1px solid transparent;background:linear-gradient(180deg,rgb(20,23,33),rgb(13,15,23)) padding-box,linear-gradient(150deg,rgba(110,170,255,0.55),rgba(255,255,255,0.06) 30%,rgba(255,255,255,0.03) 70%,rgba(0,66,255,0.45)) border-box;box-shadow:0 50px 120px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.06)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:2px 4px 0 6px">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0">
+            <span style="font-size:15px;font-weight:700;white-space:nowrap">{{ gp.name }} GP</span>
+            <span style="width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.4)"></span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ratio.id }} · {{ durLabel }} · {{ q.id }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex:none">
+            <span onMouseEnter="{{ prevTipOn }}" onMouseLeave="{{ prevTipOff }}" style="position:relative;display:flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 8px;border-radius:13px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);white-space:nowrap;cursor:default">
+              <span style="display:flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);font-size:9px;line-height:1">i</span>480p preview
+              <sc-if value="{{ prevTip }}">
+                <span style="position:absolute;right:0;top:calc(100% + 8px);width:200px;z-index:10;padding:10px 12px;box-sizing:border-box;border-radius:12px;background:rgb(22,25,35);border:1px solid rgba(110,170,255,0.3);box-shadow:0 16px 40px rgba(0,0,0,0.5);font-size:12px;font-weight:400;line-height:1.45;color:rgba(255,255,255,0.85);white-space:normal">Playback is a light preview. Download for full {{ q.id }} quality.</span>
+              </sc-if>
+            </span>
+            <button style="height:34px;padding:0 14px;border:0;border-radius:10px;background:#fff;color:rgb(10,12,20);font-size:14px;font-weight:700;cursor:pointer" style-hover="box-shadow:0 8px 24px rgba(0,104,223,0.5)">Download</button>
+            <button onClick="{{ closePlayer }}" aria-label="Close" style="position:relative;width:34px;height:34px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,0.07);cursor:pointer" style-hover="background:rgba(255,255,255,0.16)"><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(45deg)"></span><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(-45deg)"></span></button>
+          </div>
+        </div>
+
+        <div style="position:relative;display:flex;justify-content:center;border-radius:14px;background:rgb(8,10,16);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05)">
+        <div ref="{{ vidRef }}" onPointerDown="{{ onVidDown }}" style="position:relative;width:{{ pw }};height:{{ ph }};flex:none;border-radius:12px;overflow:hidden;background:rgb(10,12,20);cursor:{{ vidCursor }};touch-action:none;user-select:none;box-shadow:{{ vidRing }};transition:box-shadow 240ms cubic-bezier(.2,.7,.2,1)">
+          <video ref="{{ reelRef }}" src="{{ reelUrl }}" poster="assets/shots/final-1.png" playsInline="{{ true }}" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;background:rgb(10,12,20)"></video>
+          <video ref="{{ headRef }}" src="{{ headUrl }}" poster="{{ headPoster }}" playsInline="{{ true }}" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;background:rgb(10,12,20);opacity:{{ headOp }}"></video>
+          <sc-if value="{{ capPlayOn }}">
+            <div style="position:absolute;left:50%;top:{{ capTop }};transform:translate(-50%,-50%);width:86%;display:flex;justify-content:center;pointer-events:none;z-index:2">
+              <span style="display:block;text-align:center;font-size:{{ capPlay.fs }};font-weight:{{ capPlay.fw }};line-height:1.2;color:#fff;padding:{{ capPlay.pad }};border-radius:{{ capPlay.radius }};background:{{ capPlay.bg }};text-shadow:{{ capPlay.ts }};box-shadow:{{ capPlay.bs }};text-wrap:balance">{{ capPlayText }}</span>
+            </div>
+          </sc-if>
+        <sc-if value="{{ fixOn }}">
+          <div style="position:absolute;inset:0;background:rgba(10,12,20,0.18);pointer-events:none"></div>
+          <span style="position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;padding:5px 9px;border-radius:6.46px;background:linear-gradient(125deg,#C5008D,#E20037);pointer-events:none">FIX MODE</span>
+        </sc-if>
+        <sc-if value="{{ hasBox }}">
+          <sc-for list="{{ shades }}" as="sh" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ sh.l }};top:{{ sh.t }};width:{{ sh.w }};height:{{ sh.h }};background:rgba(10,12,20,0.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);pointer-events:none"></div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ hasBox }}">
+          <div style="position:absolute;left:{{ box.l }};top:{{ box.t }};width:{{ box.w }};height:{{ box.h }};border:1.5px dashed #fff;border-radius:4px;background:transparent;box-shadow:0 0 0 1px rgba(226,0,55,0.6),0 0 24px rgba(226,0,55,0.35);pointer-events:none">
+            <span style="position:absolute;left:-4px;top:-4px;width:7px;height:7px;border-radius:2px;background:#fff"></span>
+            <span style="position:absolute;right:-4px;top:-4px;width:7px;height:7px;border-radius:2px;background:#fff"></span>
+            <span style="position:absolute;left:-4px;bottom:-4px;width:7px;height:7px;border-radius:2px;background:#fff"></span>
+            <span style="position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;border-radius:2px;background:#fff"></span>
+            <span style="position:absolute;left:{{ box.ll }};top:{{ box.lt }};font-size:11px;font-weight:700;white-space:nowrap;padding:3px 7px;border-radius:6.46px;background:linear-gradient(125deg,#C5008D,#E20037)">{{ boxLabel }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showBoxActions }}">
+          <div ref="{{ pillRef }}" onPointerDown="{{ stop }}" style="position:absolute;left:{{ act.l }};top:{{ act.t }};transform:{{ act.tf }};transition:left 520ms cubic-bezier(.22,1,.36,1);box-sizing:border-box;width:{{ pillW }};max-width:calc(100% - 16px);display:flex;align-items:center;justify-content:center;gap:6px;padding:5px;border-radius:24px;background:rgba(14,16,24,0.88);border:1px solid rgba(150,195,255,0.3);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 14px 36px rgba(0,0,0,0.5);cursor:default">
+            <sc-if value="{{ notChoice }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ clearBox }}" aria-label="Clear box" style="position:relative;flex:none;width:34px;height:34px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,0.08);cursor:pointer" style-hover="background:rgba(255,255,255,0.18)"><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(45deg)"></span><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(-45deg)"></span></button>
+              <button onClick="{{ confirmBox }}" aria-label="Confirm" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(140deg,#0042FF,#0068DF);box-shadow:0 0 14px rgba(0,104,223,0.5);display:flex;align-items:center;justify-content:center" style-hover="filter:brightness(1.12)"><span style="width:5px;height:10px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button>
+            </sc-if>
+            <sc-if value="{{ showType }}">
+              <div style="flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:6px">
+                <button onClick="{{ backToBox }}" aria-label="Back" style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:rgba(255,255,255,0.18)"><span style="width:7px;height:7px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:translateX(2px) rotate(45deg)"></span></button>
+                <input value="{{ fixNote }}" onChange="{{ onFixNote }}" onKeyDown="{{ onFixKey }}" autoFocus="{{ true }}" placeholder="Describe the change, e.g. make the start lights red" style="flex:1 1 0;min-width:0;width:auto;height:34px;box-sizing:border-box;padding:0 14px;border-radius:17px;border:1px solid rgba(150,195,255,0.35);background:rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:12px;outline:none">
+                <button onClick="{{ sendFrame }}" disabled="{{ noFixNote }}" style="flex:none;height:34px;padding:0 13px;border-radius:17px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;cursor:{{ fixNoteCursor }};opacity:{{ fixNoteOpacity }};font-family:inherit;font-size:12px;font-weight:700;white-space:nowrap" style-hover="background:rgba(255,255,255,0.12)">{{ sendLbl }}</button>
+                <button onClick="{{ regenClip }}" disabled="{{ noFixNote }}" style="flex:none;height:34px;padding:0 14px;border-radius:17px;border:0;background:linear-gradient(100deg,#0042FF,#0068DF);color:#fff;cursor:{{ fixNoteCursor }};opacity:{{ fixNoteOpacity }};font-family:inherit;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 0 14px rgba(0,104,223,0.5)" style-hover="filter:brightness(1.12)">{{ regenLbl }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ showChoice }}">
+              <div ref="{{ choiceRef }}" style="display:flex;align-items:center;gap:6px">
+                <button onClick="{{ backToBox }}" aria-label="Back" style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:rgba(255,255,255,0.18)"><span style="width:7px;height:7px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:translateX(2px) rotate(45deg)"></span></button>
+                <button onClick="{{ startType }}" aria-label="Describe the change" title="Describe the change" style="flex:none;display:flex;align-items:center;gap:7px;height:34px;padding:0 13px 0 12px;border-radius:17px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;white-space:nowrap" style-hover="background:rgba(255,255,255,0.12)"><span style="font-size:12px;font-weight:700;color:#8ab8ff">Aa</span>{{ typeLbl }}</button>
+                <div style="position:relative;flex:none">
+                  <button onClick="{{ sendFrame }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 13px;border-radius:17px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap" style-hover="background:rgba(255,255,255,0.12)">{{ sendLbl }} <span onClick="{{ tipSend }}" role="button" aria-label="What is this?" style="flex:none;display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);font-size:10px;font-weight:700;line-height:1;color:#fff;cursor:pointer" style-hover="background:rgba(255,255,255,0.2)">?</span></button>
+                  <sc-if value="{{ tipSendOpen }}">
+                <div onClick="{{ stop }}" style="position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 10px);width:230px;z-index:5;padding:14px 16px;box-sizing:border-box;border-radius:14px;background:rgb(22,25,35);border:1px solid rgba(110,170,255,0.35);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 24px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:6px;cursor:default;text-align:left">
+                  <span style="font-size:14px;font-weight:700">Send to VFX</span>
+                  <span style="font-size:12px;line-height:1.5;color:rgba(255,255,255,0.8)">Our VFX team fixes the frame by hand and sends you a fresh render as soon as possible.</span>
+                </div>
+              </sc-if>
+                </div>
+                <div style="position:relative;flex:none">
+                  <button onClick="{{ regenClip }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 13px;border-radius:17px;border:0;background:linear-gradient(100deg,#0042FF,#0068DF);color:#fff;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 0 14px rgba(0,104,223,0.5)" style-hover="filter:brightness(1.12)">{{ regenLbl }} <span onClick="{{ tipRegen }}" role="button" aria-label="What is this?" style="flex:none;display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,255,255,0.4);font-size:10px;font-weight:700;line-height:1;color:#fff;cursor:pointer" style-hover="background:rgba(255,255,255,0.2)">?</span></button>
+                  <sc-if value="{{ tipRegenOpen }}">
+                <div onClick="{{ stop }}" style="position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 10px);width:230px;z-index:5;padding:14px 16px;box-sizing:border-box;border-radius:14px;background:rgb(22,25,35);border:1px solid rgba(110,170,255,0.35);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 24px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:6px;cursor:default;text-align:left">
+                  <span style="font-size:14px;font-weight:700">Regenerate clip</span>
+                  <span style="font-size:12px;line-height:1.5;color:rgba(255,255,255,0.8)">AI re-renders just this clip in about a minute. The rest of your reel stays exactly as it is.</span>
+                </div>
+              </sc-if>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+
+          <sc-if value="{{ hasToast }}">
+            <div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;background:rgba(10,12,20,0.85);border:1px solid rgba(110,170,255,0.4);font-size:12px;font-weight:500;white-space:nowrap;pointer-events:none"><span style="width:6px;height:6px;border-radius:50%;background:#0068DF;box-shadow:0 0 8px #0068DF"></span>{{ toast }}</div>
+          </sc-if>
+        </div>
+        </div>
+
+        <div style="position:relative;display:flex;flex-direction:column;gap:10px;padding:4px 4px 2px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <button onClick="{{ pToggle }}" aria-label="Play or pause" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;padding:0" style-hover="box-shadow:0 0 0 4px rgba(255,255,255,0.12)">
+              <sc-if value="{{ pIsPlaying }}"><span style="width:3px;height:11px;border-radius:1px;background:rgb(10,12,20)"></span><span style="width:3px;height:11px;border-radius:1px;background:rgb(10,12,20)"></span></sc-if>
+              <sc-if value="{{ pIsPaused }}" hint-placeholder-val="{{ true }}"><span style="width:0;height:0;margin-left:3px;border-left:10px solid rgb(10,12,20);border-top:6px solid transparent;border-bottom:6px solid transparent"></span></sc-if>
+            </button>
+            <span style="display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums"><span style="font-size:14px;font-weight:700">{{ pTime }}</span><span style="font-size:12px;color:rgba(255,255,255,0.5)">/ {{ pDurLabel }}</span></span>
+            <span style="flex:1;min-width:0;display:flex;justify-content:center">
+              <sc-if value="{{ fixOn }}"><span style="font-size:12px;line-height:1.35;color:rgba(255,255,255,0.85);text-align:center;text-wrap:balance">{{ fixHint }}</span></sc-if>
+            </span>
+            <sc-if value="{{ notFix }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative;flex:none">
+              <button onClick="{{ toggleCapMenu }}" style="display:flex;align-items:center;gap:8px;height:36px;margin-bottom:4px;padding:0 14px 0 10px;border-radius:10px;border:1px solid {{ capBtn.border }};background:{{ capBtn.bg }};color:#fff;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap" style-hover="border-color:rgba(255,255,255,0.4)">
+                <span style="flex:none;display:flex;align-items:center;justify-content:center;height:16px;padding:0 4px;border-radius:4px;border:1.5px solid currentColor;font-size:9px;font-weight:700;line-height:1;letter-spacing:0.02em">CC</span>
+              </button>
+              <sc-if value="{{ capMenuOpen }}">
+                <div ref="{{ capMenuRef }}" onClick="{{ stop }}" onPointerDown="{{ stop }}" style="position:absolute;right:0;bottom:calc(100% + 10px);width:264px;z-index:20;display:flex;flex-direction:column;gap:14px;padding:14px 14px 12px;box-sizing:border-box;border-radius:16px;background:rgba(16,19,28,0.72);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08),inset 0 1px 0 rgba(255,255,255,0.06),0 20px 50px rgba(0,0,0,0.5);transform-origin:100% 100%">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <span style="font-size:12px;font-weight:700;letter-spacing:0.02em">Captions</span>
+                    <span style="min-width:0;font-size:11px;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ capLang }}</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+                    <sc-for list="{{ capStyles }}" as="cs" hint-placeholder-count="4">
+                      <button onClick="{{ cs.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0 7px;border-radius:10px;border:0;cursor:pointer;background:{{ cs.tile }};box-shadow:{{ cs.ring }};color:{{ cs.ink }};font-size:11px;font-weight:500;transition:background 180ms cubic-bezier(.2,.7,.2,1),box-shadow 180ms,color 180ms" style-hover="background:rgba(255,255,255,0.08)">
+                        <span style="display:flex;align-items:center;justify-content:center;height:18px;padding:{{ cs.sw.pad }};border-radius:4px;background:{{ cs.sw.bg }};font-size:12px;font-weight:700;color:{{ cs.sw.color }};text-shadow:{{ cs.sw.ts }}">Aa</span>
+                        {{ cs.label }}
+                      </button>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px;opacity:{{ capPosOp }};transition:opacity 160ms">
+                    <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:11px;color:rgba(255,255,255,0.5)">Size</span><span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);font-variant-numeric:tabular-nums">{{ capScaleLbl }}</span></div>
+                    <div style="position:relative;height:16px">
+                      <div style="position:absolute;left:0;right:0;top:7px;height:2px;border-radius:1px;background:rgba(255,255,255,0.12)"></div>
+                      <div style="position:absolute;left:0;top:7px;height:2px;border-radius:1px;width:{{ capScalePct }};background:linear-gradient(90deg,#0042FF,#0068DF)"></div>
+                      <div style="position:absolute;top:2px;left:{{ capScalePct }};width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(0,104,223,0.25),0 2px 6px rgba(0,0,0,0.4);pointer-events:none"></div>
+                      <input type="range" min="50" max="130" step="5" value="{{ capScaleVal }}" onChange="{{ setCapScale }}" disabled="{{ capOff }}" aria-label="Caption size" style="position:absolute;inset:-4px 0;width:100%;height:24px;margin:0;opacity:0;cursor:{{ capScaleCursor }}"></input>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;margin-top:-2px">
+                    <button onClick="{{ closeCapMenu }}" aria-label="Done" style="flex:none;width:28px;height:28px;border-radius:50%;border:0;cursor:pointer;background:#0068DF;box-shadow:0 4px 12px rgba(0,104,223,0.4);display:flex;align-items:center;justify-content:center;transition:background 180ms" style-hover="background:#1a7dee"><span style="width:4px;height:8px;border-right:1.75px solid #fff;border-bottom:1.75px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+            </sc-if>
+            <button onClick="{{ toggleFix }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;height:36px;margin-bottom:4px;padding:0 14px 0 12px;border-radius:10px;border:1px solid {{ fixBtn.border }};background:{{ fixBtn.bg }};box-shadow:{{ fixBtn.glow }};color:#fff;cursor:pointer;font-size:12px;font-weight:700;transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1)" style-hover="filter:brightness(1.12)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" style="flex:none;width:13px;height:13px;overflow:visible"><path d="M10 5C11.44 11.56 11.44 11.56 18 13C11.44 14.44 11.44 14.44 10 21C8.56 14.44 8.56 14.44 2 13C8.56 11.56 8.56 11.56 10 5Z" fill="#fff"></path><path d="M19 1C19.72 4.28 19.72 4.28 23 5C19.72 5.72 19.72 5.72 19 9C18.28 5.72 18.28 5.72 15 5C18.28 4.28 18.28 4.28 19 1Z" fill="#fff"></path><path d="M19.5 16.9C19.968 19.032 19.968 19.032 22.1 19.5C19.968 19.968 19.968 19.968 19.5 22.1C19.032 19.968 19.032 19.968 16.9 19.5C19.032 19.032 19.032 19.032 19.5 16.9Z" fill="#fff"></path></svg>{{ fixBtn.label }}
+            </button>
+          </div>
+          <div ref="{{ trackRef }}" onPointerDown="{{ onTrackDown }}" style="position:relative;padding-top:28px;cursor:pointer;touch-action:none;user-select:none">
+            <div style="position:absolute;left:0;right:0;top:0;height:16px;pointer-events:none">
+              <sc-for list="{{ ticks }}" as="tk" hint-placeholder-count="10">
+                <span style="position:absolute;left:{{ tk.l }};bottom:0;width:1px;height:{{ tk.h }};background:{{ tk.c }}"></span>
+                <sc-if value="{{ tk.lab }}"><span style="position:absolute;left:{{ tk.l }};top:-2px;transform:translateX({{ tk.tx }});font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);font-variant-numeric:tabular-nums">{{ tk.t }}</span></sc-if>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:50px;display:flex;gap:2px;border-radius:10px;overflow:hidden">
+              <sc-for list="{{ clips }}" as="cl" hint-placeholder-count="8">
+                <div style="position:relative;flex:{{ cl.w }} 1 0;min-width:0;overflow:hidden">
+                  <span style="position:absolute;inset:0;background-color:rgb(26,28,36);background-image:{{ cl.bgImg }};background-size:cover;background-position:center;opacity:{{ cl.opacity }};transition:opacity 200ms linear"></span>
+                  <span style="position:absolute;inset:0;box-shadow:{{ cl.ring }};pointer-events:none"></span>
+                  <span style="position:absolute;left:6px;top:6px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.8);white-space:nowrap">{{ cl.label }}</span>
+                  <sc-if value="{{ cl.vfx }}">
+                    <span title="VFX team working" style="position:absolute;left:0;right:0;bottom:0;height:16px;display:flex;align-items:center;justify-content:center;background:rgba(0,66,255,0.9);font-size:10px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden">VFX</span>
+                  </sc-if>
+                  <sc-if value="{{ cl.regen }}">
+                    <div style="position:absolute;inset:0;background:rgba(10,12,20,0.6)"></div>
+                    <div style="position:absolute;left:0;bottom:0;height:3px;width:{{ cl.pct }};background:linear-gradient(90deg,#0042FF,#8ab8ff)"></div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <div style="position:absolute;left:0;top:0;bottom:0;width:{{ pPct }};background:linear-gradient(90deg,rgba(0,66,255,0),rgba(0,104,223,0.18));border-right:0;pointer-events:none"></div>
+            </div>
+            <div style="position:absolute;top:22px;bottom:-4px;left:{{ pPct }};width:2px;z-index:2;margin-left:-1px;background:{{ headColor }};box-shadow:0 0 12px {{ headGlow }};pointer-events:none">
+              <span style="position:absolute;left:50%;top:-5px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:{{ headColor }};box-shadow:0 0 0 2px rgba(10,12,20,0.9),0 2px 8px rgba(0,0,0,0.5)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ anyOpen }}">
+    <div onClick="{{ closeMenus }}" style="position:fixed;inset:0;z-index:20"></div>
+  </sc-if>
+
+  <header style="position:sticky;top:0;z-index:60;background:rgba(10,12,20,0.72);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;height:68px;padding:0 48px;max-width:1320px;margin:0 auto;box-sizing:border-box">
+      <div style="display:flex;align-items:center;gap:16px;min-width:0">
+        <a href="../ui_kits/pitch-deck/Interactive%20Deck.html#1" aria-label="Back to The Concepts" title="Back to The Concepts" style="display:flex;align-items:center;flex:none;cursor:pointer;transition:opacity .25s ease" style-hover="opacity:0.75"><x-import component-from-global-scope="WilliamsRacingAIExperienceDesignSystem_1388e9.WilliamsLogo" src="assets/williams-wordmark-white.png" width="116px" hint-size="116px,26px"></x-import></a>
+        <span style="width:1px;height:20px;background:rgba(255,255,255,0.18)"></span>
+        <span style="display:flex;align-items:center;gap:8px;white-space:nowrap"><img src="assets/sparkplug-logo.png" alt="SparkPlug" style="display:block;height:20px;width:auto"><span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6);transform:translateY(-1px)">Studio</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:14px;white-space:nowrap;min-width:0">
+        <span style="color:rgba(255,255,255,0.5)">Projects</span>
+        <span style="width:5px;height:5px;border-right:1.5px solid rgba(255,255,255,0.4);border-top:1.5px solid rgba(255,255,255,0.4);transform:rotate(45deg)"></span>
+        <span style="font-weight:500;overflow:hidden;text-overflow:ellipsis">{{ crumb }}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px">
+        <button onClick="{{ doSave }}" aria-label="Save project" style="flex:none;height:36px;min-width:64px;padding:0 14px;box-sizing:border-box;border-radius:10px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);color:#fff;cursor:pointer;font-size:14px;font-weight:500;white-space:nowrap;transition:background 200ms cubic-bezier(.2,.7,.2,1),border-color 200ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.08)">{{ saveLabel }}</button>
+        <div style="position:relative;z-index:35">
+          <button onClick="{{ toggleProj }}" style="display:flex;align-items:center;gap:10px;height:36px;padding:0 14px 0 16px;border:0;border-radius:10px;background:radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%);color:#fff;cursor:pointer;font-size:14px;font-weight:500;white-space:nowrap;box-shadow:0 3px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 20px rgba(0,82,255,0.4),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 5px rgba(255,255,255,0.25)" style-hover="filter:brightness(1.1)">
+            View Projects
+            <span style="width:6px;height:6px;border-right:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:translateY(-2px) rotate(45deg)"></span>
+          </button>
+          <sc-if value="{{ projOpen }}">
+            <div style="position:absolute;right:0;top:calc(100% + 10px);width:396px;z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:2px">
+              <span style="padding:10px 12px 6px;font-size:12px;color:rgba(255,255,255,0.6)">Recent projects</span>
+              <div style="position:relative">
+              <div ref="{{ projListRef }}" onScroll="{{ onProjScroll }}" style="display:flex;flex-direction:column;gap:2px;max-height:362px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-right:8px">
+              <sc-for list="{{ projects }}" as="pr" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;padding:6px;border-radius:12px;background:{{ pr.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                  <button onClick="{{ pr.onExpand }}" aria-label="Expand thumbnail" title="Expand" style="position:relative;flex:none;width:136px;height:77px;padding:0;border:0;border-radius:8px;overflow:hidden;cursor:pointer;background:rgb(26,28,36);box-shadow:0 3.85px 3.85px rgba(0,0,0,0.25)" style-hover="box-shadow:0 0 0 1px rgba(255,255,255,0.35),0 6px 16px rgba(0,0,0,0.4)">
+                    <img src="{{ pr.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ pr.pos }}">
+                    <span style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,12,20,0.92) 0%,rgba(10,12,20,0.55) 45%,rgba(10,12,20,0) 75%),linear-gradient(180deg,rgba(10,12,20,0) 50%,rgba(10,12,20,0.6))"></span>
+                    <span style="position:absolute;inset:0;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1)"></span>
+                    <span style="position:absolute;left:9px;bottom:9px;width:64px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left">
+                      <span style="width:14px;height:2px;border-radius:1px;background:#0068DF;box-shadow:0 0 8px rgba(0,104,223,0.9)"></span>
+                      <span style="font-size:12.5px;font-weight:700;line-height:0.98;letter-spacing:-0.01em;color:#fff;text-wrap:balance;text-shadow:0 1px 8px rgba(0,0,0,0.6)">{{ pr.title }}</span>
+                    </span>
+                    <span style="position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:6.46px;background:rgba(10,12,20,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center">
+                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"><path d="M7.5 1.5h3v3M4.5 10.5h-3v-3M10.5 1.5 7 5M1.5 10.5 5 7"></path></svg>
+                    </span>
+                  </button>
+                  <button onClick="{{ pr.onClick }}" style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;border:0;cursor:pointer;padding:6px 4px;background:transparent;color:#fff">
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ pr.name }}</span><span style="font-size:12px;color:rgba(255,255,255,0.6)">{{ pr.meta }}</span></span>
+                    <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.6);border-top:1.5px solid rgba(255,255,255,0.6);transform:rotate(45deg);margin-right:6px"></span>
+                  </button>
+                </div>
+              </sc-for>
+              </div>
+              <sc-if value="{{ sbShow }}">
+                <div aria-hidden="true" style="position:absolute;top:6px;bottom:6px;right:1px;width:3px;border-radius:2px;background:rgba(255,255,255,0.06)">
+                  <div onPointerDown="{{ onSbDown }}" style="position:absolute;left:-3px;right:-3px;top:{{ sbTop }};height:{{ sbH }};cursor:pointer;touch-action:none;display:flex;justify-content:center" style-hover="--sb:0.55">
+                    <div style="width:3px;height:100%;border-radius:2px;background:rgba(255,255,255,var(--sb,0.28));transition:background .15s"></div>
+                  </div>
+                </div>
+              </sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <span style="width:1px;height:20px;margin:0 4px;background:rgba(255,255,255,0.12)"></span>
+        <button aria-label="Account" style="position:relative;flex:none;width:34px;height:34px;padding:0;border-radius:50%;border:1px solid transparent;background:linear-gradient(160deg,rgb(30,34,48),rgb(16,18,27)) padding-box,linear-gradient(140deg,rgba(150,195,255,0.7),rgba(0,66,255,0.3)) border-box;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(0,104,223,0.25)" style-hover="box-shadow:0 0 20px rgba(0,104,223,0.5)">
+          <span style="position:absolute;left:50%;top:7px;width:10px;height:10px;margin-left:-5px;border-radius:50%;border:1.5px solid #fff;box-sizing:border-box"></span>
+          <span style="position:absolute;left:50%;top:20px;width:18px;height:12px;margin-left:-9px;border-radius:9px 9px 0 0;border:1.5px solid #fff;border-bottom:0;box-sizing:border-box"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="position:relative;display:flex;flex-wrap:wrap;gap:56px;align-items:stretch;justify-content:flex-start;padding:44px 48px 72px;max-width:1320px;margin:0 auto;box-sizing:border-box">
+
+    <h1 style="flex:1 1 100%;margin:0 0 -30px;font-size:clamp(30px,3.6vw,46px);line-height:0.95;font-weight:700;text-transform:uppercase;letter-spacing:-0.01em;background:linear-gradient(180deg,#ffffff 0%,#f2f4f8 38%,#a9b0bd 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:6px;text-wrap:balance;filter:drop-shadow(0 2px 10px rgba(0,0,0,0.35))">Create a Masterpiece</h1>
+    <div style="flex:1 1 460px;max-width:560px;min-width:0;display:flex;flex-direction:column;gap:22px">
+
+
+      <div ref="{{ leftRef }}" style="position:relative;z-index:30;display:flex;flex-direction:column;gap:14px;padding:32px 32px 30px;border-radius:19.27px;border:1px solid transparent;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26)) padding-box,linear-gradient(140deg,rgba(0,104,223,0.7),rgba(255,255,255,0.08) 35%,rgba(255,255,255,0.04) 65%,rgba(0,66,255,0.55)) border-box;box-shadow:0 30px 80px rgba(0,0,0,0.45)">
+        <button onClick="{{ restartAll }}" aria-label="Restart setup" title="Restart" style="position:absolute;top:14px;right:14px;z-index:2;width:24px;height:24px;padding:0;border:0;background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color 200ms cubic-bezier(.2,.7,.2,1)" style-hover="color:rgba(255,255,255,0.85)"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9"></path><path d="M2.5 2.5v3h3"></path></svg></button>
+        <sc-if value="{{ circuitOpen }}">
+          <div ref="{{ hlOverlayRef }}" onClick="{{ closeCircuit }}" style="position:absolute;inset:0;z-index:45;border-radius:19.27px;background:rgba(10,12,20,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)"></div>
+        </sc-if>
+        <sc-if value="{{ circuitOpen }}">
+        <div ref="{{ hlCardRef }}" onClick="{{ stop }}" style="position:absolute;left:30px;right:30px;top:30px;z-index:46;display:flex;flex-direction:column;border-radius:19.27px;overflow:hidden;border:1px solid transparent;background:linear-gradient(180deg,rgb(20,23,33),rgb(13,15,23)) padding-box,linear-gradient(150deg,rgba(130,185,255,0.7),rgba(255,255,255,0.06) 35%,rgba(255,255,255,0.03) 70%,rgba(0,66,255,0.5)) border-box;box-shadow:0 50px 120px rgba(0,0,0,0.65),0 0 60px rgba(0,66,255,0.18)">
+        <div style="position:relative;height:108px;flex:none;overflow:hidden;background:radial-gradient(80% 120% at 85% 20%,rgba(0,104,223,0.55),rgba(0,66,255,0.12) 55%,rgba(0,0,0,0) 80%),linear-gradient(180deg,rgb(14,22,48),rgb(16,19,30))">
+          <img src="assets/monaco-albon.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;opacity:0.28;filter:saturate(0.9);mix-blend-mode:luminosity">
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,20,40,0.85) 0%,rgba(14,20,40,0.35) 60%,rgba(14,20,40,0.15) 100%)"></div>
+          <svg viewBox="-4 -4 398 266" aria-hidden="true" style="position:absolute;right:60px;top:20px;width:120px;height:78px;overflow:visible;filter:drop-shadow(0 0 5px rgba(110,170,255,0.85)) drop-shadow(0 0 14px rgba(0,104,223,0.55))"><path d="M0 202C1.2 194.5 4.2 170.7 7 158C9.8 145.3 13.3 135.8 17 126C20.7 116.2 25.5 105.8 29 99C32.5 92.2 32.2 92.2 38 85C43.8 77.8 51.5 58.5 64 56C76.5 53.5 99.3 66.7 113 70C126.7 73.3 137.0 73.7 146 76C155.0 78.3 157.0 82.3 167 84C177.0 85.7 195.0 84.2 206 86C217.0 87.8 226.0 93.2 233 95C240.0 96.8 243.2 97.3 248 97C252.8 96.7 258.3 95.2 262 93C265.7 90.8 268.3 88.8 270 84C271.7 79.2 272.7 70.5 272 64C271.3 57.5 266.3 49.3 266 45C265.7 40.7 267.5 40.7 270 38C272.5 35.3 269.5 35.3 281 29C292.5 22.7 327.8 4.8 339 0C350.2 -4.8 345.8 -0.5 348 0C350.2 0.5 351.0 0.3 352 3C353.0 5.7 349.3 13.7 354 16C358.7 18.3 374.0 15.7 380 17C386.0 18.3 388.3 22.0 390 24C391.7 26.0 391.7 24.8 390 29C388.3 33.2 385.3 40.0 380 49C374.7 58.0 366.0 73.5 358 83C350.0 92.5 340.5 100.0 332 106C323.5 112.0 322.2 116.5 307 119C291.8 121.5 257.2 121.5 241 121C224.8 120.5 219.8 118.3 210 116C200.2 113.7 187.5 107.7 182 107C176.5 106.3 178.8 111.0 177 112C175.2 113.0 173.3 113.5 171 113C168.7 112.5 165.2 110.7 163 109C160.8 107.3 171.8 108.3 158 103C144.2 97.7 96.0 78.8 80 77C64.0 75.2 67.7 85.3 62 92C56.3 98.7 48.7 111.7 46 117C43.3 122.3 45.3 121.5 46 124C46.7 126.5 50.0 127.0 50 132C50.0 137.0 48.2 146.0 46 154C43.8 162.0 39.2 175.0 37 180C34.8 185.0 34.7 183.2 33 184C31.3 184.8 28.5 184.0 27 185C25.5 186.0 24.8 187.5 24 190C23.2 192.5 22.2 194.3 22 200C21.8 205.7 22.2 218.2 23 224C23.8 229.8 24.8 231.0 27 235C29.2 239.0 34.7 244.7 36 248C37.3 251.3 36.2 253.3 35 255C33.8 256.7 31.7 257.7 29 258C26.3 258.3 22.0 257.5 19 257C16.0 256.5 14.0 256.5 11 255C8.0 253.5 2.8 256.7 1 248C-0.8 239.3 0.2 210.7 0 203C-0.2 195.3 -1.2 209.5 0 202Z" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></path></svg>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(180deg,rgba(16,19,30,0),rgb(20,23,33))"></div>
+          <div style="position:absolute;left:24px;bottom:16px;display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:14px;font-weight:700;color:#6fa8ff;text-shadow:0 0 12px rgba(0,104,223,0.6)">Smart Highlights</span>
+        <span style="font-size:28px;line-height:1;font-weight:700;text-transform:uppercase;background:linear-gradient(180deg,#fff 0%,#f2f4f8 40%,#a9b0bd 100%);-webkit-background-clip:text;background-clip:text;color:transparent">Monaco GP</span>
+        <span style="font-size:14px;color:rgba(255,255,255,0.75)">{{ hl.sub }}</span>
+          </div>
+          <button onClick="{{ closeCircuit }}" aria-label="Close" style="position:absolute;right:14px;top:14px;width:28px;height:28px;padding:0;border-radius:50%;border:0;background:rgba(10,12,20,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer" style-hover="background:rgba(255,255,255,0.16)"><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(45deg)"></span><span style="position:absolute;left:50%;top:50%;width:1.5px;height:12px;margin:-6px 0 0 -0.75px;border-radius:1px;background:#fff;transform:rotate(-45deg)"></span></button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;padding:10px 24px 24px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+        <sc-for list="{{ hl.rows }}" as="hr" hint-placeholder-count="1">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;background:linear-gradient(120deg,rgba(0,104,223,0.12),rgba(255,255,255,0.02) 60%);border:1px solid rgba(110,170,255,0.18)">
+            <span style="position:relative;flex:none;width:42px;height:42px;box-sizing:border-box;border-radius:50%;overflow:hidden;border:1.5px solid transparent;background:linear-gradient(140deg,#0042FF,rgb(10,12,20)) padding-box,linear-gradient(140deg,#8ab8ff,#0042FF 55%,rgba(0,104,223,0.35)) border-box;box-shadow:0 0 16px rgba(0,66,255,0.35)"><img src="{{ hr.img }}" alt="" style="position:absolute;left:{{ hr.fl }};top:{{ hr.ft }};width:{{ hr.fw }};height:{{ hr.fh }};max-width:none"></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ hr.name }}</span><span style="font-size:11px;color:rgba(255,255,255,0.6);white-space:nowrap">Started {{ hr.start }}</span></span>
+            <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <span style="font-size:28px;line-height:0.9;font-weight:700;background:linear-gradient(180deg,#fff 20%,#8ab8ff);-webkit-background-clip:text;background-clip:text;color:transparent">{{ hr.finish }}</span>
+              <span style="font-size:11px;font-weight:700;color:{{ hr.deltaColor }}">{{ hr.delta }}</span>
+            </span>
+          </div>
+        </sc-for>
+          </div>
+          <p style="margin:0;font-size:14px;line-height:1.6;text-wrap:pretty;color:rgba(255,255,255,0.88)">{{ hl.desc }}</p>
+          <button style="position:relative;overflow:hidden;height:48px;flex:none;border:0;border-radius:12px;margin-bottom:6px;background:radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%);color:#fff;font-size:15px;font-weight:500;cursor:pointer;text-shadow:0 1px 2px rgba(0,20,90,0.45);box-shadow:0 5px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 12px 30px rgba(0,82,255,0.5),0 0 40px rgba(0,104,223,0.3),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.25),inset 0 -8px 18px rgba(0,30,140,0.35);transition:transform 120ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="filter:brightness(1.08) saturate(1.1)" style-active="transform:translateY(3px);box-shadow:0 2px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 22px rgba(0,82,255,0.45),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.22)"><span style="position:absolute;inset:0;border-radius:inherit;background:radial-gradient(90% 70% at 50% -10%,rgba(255,255,255,0.28),rgba(255,255,255,0) 70%);pointer-events:none"></span><span style="position:relative">Key moments</span></button>
+        </div>
+      </div>
+        </sc-if>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-top:0px;margin-bottom:-2px">
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.4);font-variant-numeric:tabular-nums">01</span>
+          <span style="font-size:15px;font-weight:700">Race</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px">
+        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <button onClick="{{ toggleGp }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.gp }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
+            <sc-if value="{{ phd.gp }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select Grand Prix</span></sc-if>
+            <sc-if value="{{ val.gp }}"><span style="width:30px;font-size:11px;font-weight:700;color:#0068DF">{{ gp.round }}</span><span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gp.name }} GP</span></sc-if>
+            <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+          </button>
+          <sc-if value="{{ err.gp }}"><span style="position:absolute;left:0;right:0;top:calc(100% + 5px);display:flex;align-items:center;gap:6px;font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ff6b8a;padding-left:2px;pointer-events:none"><span style="width:4px;height:4px;border-radius:50%;background:#E20037"></span>Pick one, then tick</span></sc-if>
+          <sc-if value="{{ gpOpen }}">
+            <div style="position:absolute;top:calc(100% + 8px);z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);left:0;right:0;display:flex;flex-direction:column;gap:2px;max-height:360px;overflow:auto">
+              <sc-for list="{{ gps }}" as="g" hint-placeholder-count="5">
+                <button onClick="{{ g.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:{{ g.cursor }};opacity:{{ g.opacity }};padding:11px 12px;border-radius:10px;color:#fff;background:{{ g.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                  <span style="width:30px;font-size:11px;font-weight:700;color:#0068DF">{{ g.round }}</span>
+                  <span style="flex:1;font-size:14px;font-weight:700">{{ g.name }} GP</span>
+                  <span style="font-size:12px;color:rgba(255,255,255,0.6);white-space:nowrap">{{ g.dateLabel }}</span>
+                </button>
+              </sc-for>
+              <div style="position:sticky;bottom:-6px;margin:4px -6px -6px;padding:8px 10px 8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgb(18,21,31);border-top:1px solid rgba(255,255,255,0.08)"><button style="text-align:left;border:0;cursor:pointer;padding:9px 12px;margin-left:-12px;border-radius:10px;background:transparent;color:#0068DF;font-size:14px;font-weight:700;white-space:nowrap" style-hover="background:rgba(255,255,255,0.06)">+ Create GP</button><button onClick="{{ confirmGp }}" aria-label="Confirm" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;cursor:{{ tk.gp.cursor }};background:{{ tk.gp.bg }};box-shadow:{{ tk.gp.shadow }};opacity:{{ tk.gp.op }};transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1),opacity 200ms linear;display:flex;align-items:center;justify-content:center" style-hover="filter:brightness(1.12)"><span style="width:5px;height:10px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button></div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <button onClick="{{ toggleDrv }}" style="width:100%;display:flex;align-items:center;gap:10px;height:48px;padding:0 14px 0 {{ drvPadL }};box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.drv }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
+            <sc-if value="{{ phd.drv }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select driver</span></sc-if>
+            <sc-if value="{{ val.drv }}"><span style="display:flex;flex:none">
+              <sc-for list="{{ drvPicked }}" as="dp" hint-placeholder-count="2">
+                <span style="margin-left:{{ dp.ml }};display:flex"><span style="position:relative;flex:none;width:32px;height:32px;box-sizing:border-box;border-radius:50%;overflow:hidden;border:1.5px solid transparent;background:linear-gradient(140deg,#0042FF,rgb(10,12,20)) padding-box,linear-gradient(140deg,#8ab8ff,#0042FF 55%,rgba(0,104,223,0.35)) border-box;box-shadow:0 0 0 1.5px rgb(18,21,31),0 0 10px rgba(0,66,255,0.35)"><img src="{{ dp.img }}" alt="" style="position:absolute;left:{{ dp.fl }};top:{{ dp.ft }};width:{{ dp.fw }};height:{{ dp.fh }};max-width:none;filter:{{ dp.gray }}"></span></span>
+              </sc-for>
+            </span>
+            <span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ drvLabel }}</span></sc-if>
+            <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+          </button>
+          <sc-if value="{{ err.drv }}"><span style="position:absolute;left:0;right:0;top:calc(100% + 5px);display:flex;align-items:center;gap:6px;font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ff6b8a;padding-left:2px;pointer-events:none"><span style="width:4px;height:4px;border-radius:50%;background:#E20037"></span>Pick one, then tick</span></sc-if>
+          <sc-if value="{{ drvOpen }}">
+            <div style="position:absolute;top:calc(100% + 8px);right:0;width:260px;z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ drivers }}" as="d" hint-placeholder-count="3">
+                <button onClick="{{ d.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:{{ d.cursor }};padding:9px 10px;border-radius:10px;color:#fff;background:{{ d.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                  <span style="position:relative;flex:none;width:32px;height:32px;box-sizing:border-box;border-radius:50%;overflow:hidden;opacity:{{ d.opacity }};border:1.5px solid transparent;background:linear-gradient(140deg,#0042FF,rgb(10,12,20)) padding-box,linear-gradient(140deg,#8ab8ff,#0042FF 55%,rgba(0,104,223,0.35)) border-box;box-shadow:0 0 0 1.5px rgb(18,21,31),0 0 10px rgba(0,66,255,0.35)"><img src="{{ d.img }}" alt="" style="position:absolute;left:{{ d.fl }};top:{{ d.ft }};width:{{ d.fw }};height:{{ d.fh }};max-width:none;filter:{{ d.gray }}"></span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;opacity:{{ d.opacity }}"><span style="font-size:14px;font-weight:700">{{ d.name }}</span><span style="font-size:11px;color:rgba(255,255,255,0.6)">{{ d.meta }}</span></span>
+                  <sc-if value="{{ d.locked }}">
+                    <span style="flex:none;font-size:12px;font-weight:600;line-height:1;color:#0068DF;cursor:pointer;transition:color 160ms,text-shadow 160ms" style-hover="color:#4d9bff;text-shadow:0 0 10px rgba(0,104,223,0.7)">Activate</span>
+                  </sc-if>
+                  <sc-if value="{{ d.selectable }}">
+                    <span style="flex:none;width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:1.5px solid {{ d.ring }};background:{{ d.fill }};display:flex;align-items:center;justify-content:center;transition:background 160ms cubic-bezier(.2,.7,.2,1)"><span style="width:4px;height:8px;border-right:1.8px solid #fff;border-bottom:1.8px solid #fff;transform:translateY(-1px) rotate(45deg);opacity:{{ d.tick }}"></span></span>
+                  </sc-if>
+                </button>
+              </sc-for>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 4px 2px 8px;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px">
+                <button onClick="{{ toggleTeam }}" style="display:flex;align-items:center;gap:10px;border:0;padding:4px 0;background:transparent;color:#fff;cursor:{{ teamCursor }};opacity:{{ teamOpacity }};text-align:left">
+                  <span style="position:relative;flex:none;width:32px;height:18px;border-radius:10px;background:{{ teamTrack }};transition:background 160ms cubic-bezier(.2,.7,.2,1)"><span style="position:absolute;top:2px;left:{{ teamKnob }};width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.4);transition:left 160ms cubic-bezier(.2,.7,.2,1)"></span></span>
+                  <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:700">Team Edit</span><span style="font-size:11px;color:rgba(255,255,255,0.6)">One reel, both drivers</span></span>
+                </button>
+                <button onClick="{{ confirmDrv }}" aria-label="Confirm" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;cursor:{{ tk.drv.cursor }};background:{{ tk.drv.bg }};box-shadow:{{ tk.drv.shadow }};opacity:{{ tk.drv.op }};transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1),opacity 200ms linear;display:flex;align-items:center;justify-content:center" style-hover="box-shadow:0 8px 22px rgba(0,66,255,0.7),inset 0 1px 0 rgba(255,255,255,0.4)"><span style="width:5px;height:10px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button></div>
+            </div>
+          </sc-if>
+        </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-top:22px;margin-bottom:-2px">
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.4);font-variant-numeric:tabular-nums">02</span>
+          <span style="font-size:15px;font-weight:700">Audience & style</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px">
+          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+            <button onClick="{{ toggleAud }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.aud }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
+              <sc-if value="{{ phd.aud }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select audience</span></sc-if><sc-if value="{{ val.aud }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ selLabel }}</span></sc-if>
+              <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+            </button>
+            <sc-if value="{{ err.aud }}"><span style="position:absolute;left:0;right:0;top:calc(100% + 5px);display:flex;align-items:center;gap:6px;font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ff6b8a;padding-left:2px;pointer-events:none"><span style="width:4px;height:4px;border-radius:50%;background:#E20037"></span>Pick one, then tick</span></sc-if>
+            <sc-if value="{{ audOpen }}">
+              <div style="position:absolute;top:calc(100% + 8px);z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);left:0;width:300px;display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;flex-direction:column;gap:2px;max-height:336px;overflow:auto">
+                <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="6">
+                  <button onClick="{{ a.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:pointer;padding:11px 12px;border-radius:10px;color:#fff;background:{{ a.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                    <span style="flex:1;min-width:0;font-size:14px;font-weight:700">{{ a.name }}</span>
+                    <span style="flex:none;width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:1.5px solid {{ a.ring }};background:{{ a.fill }};display:flex;align-items:center;justify-content:center;transition:background 160ms cubic-bezier(.2,.7,.2,1),border-color 160ms cubic-bezier(.2,.7,.2,1)"><span style="width:4px;height:8px;border-right:1.8px solid #fff;border-bottom:1.8px solid #fff;transform:translateY(-1px) rotate(45deg);opacity:{{ a.tick }}"></span></span>
+                  </button>
+                </sc-for>
+                </div>
+                <div style="height:1px;margin:4px 6px;background:rgba(255,255,255,0.08)"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 4px 2px 0">
+                  <button style="text-align:left;border:0;cursor:pointer;padding:9px 12px;border-radius:10px;background:transparent;color:#0068DF;font-size:14px;font-weight:700" style-hover="background:rgba(255,255,255,0.06)">+ Create audience</button>
+                  <button onClick="{{ confirmAud }}" aria-label="Confirm" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;cursor:{{ tk.aud.cursor }};background:{{ tk.aud.bg }};box-shadow:{{ tk.aud.shadow }};opacity:{{ tk.aud.op }};transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1),opacity 200ms linear;display:flex;align-items:center;justify-content:center" style-hover="box-shadow:0 8px 22px rgba(0,66,255,0.7),inset 0 1px 0 rgba(255,255,255,0.4)"><span style="width:5px;height:10px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+            <button onClick="{{ toggleStyle }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.sty }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1);padding-left:8px" style-hover="border-color:rgba(255,255,255,0.3)">
+              <sc-if value="{{ phd.sty }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select style</span></sc-if>
+              <sc-if value="{{ val.sty }}"><span style="position:relative;flex:none;width:32px;height:32px;border-radius:6.46px;overflow:hidden;background:rgb(18,21,31)">
+                <img src="{{ style.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ style.pos }};filter:{{ style.filter }};transform:scale({{ style.scale }})">
+                <span style="position:absolute;inset:0;background:{{ style.tint }}"></span>
+              </span>
+              <span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ styleLabel }}</span></sc-if>
+              <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+            </button>
+            <sc-if value="{{ err.sty }}"><span style="position:absolute;left:0;right:0;top:calc(100% + 5px);display:flex;align-items:center;gap:6px;font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ff6b8a;padding-left:2px;pointer-events:none"><span style="width:4px;height:4px;border-radius:50%;background:#E20037"></span>Pick one, then tick</span></sc-if>
+            <sc-if value="{{ styleOpen }}">
+              <div style="position:absolute;top:calc(100% + 8px);right:0;width:min(420px,calc(100vw - 32px));z-index:40;padding:14px;box-sizing:border-box;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:14px">
+                <span style="font-size:12px;color:rgba(255,255,255,0.6)">{{ styleHint }}</span>
+                <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start">
+                  <sc-for list="{{ styles }}" as="st" hint-placeholder-count="3">
+                    <div onDragOver="{{ st.onDragOver }}" onDragLeave="{{ st.onDragLeave }}" onDrop="{{ st.onDrop }}" style="display:flex;flex-direction:column;gap:8px;padding:6px;margin:-6px;border-radius:14px;background:{{ st.dropBg }};transition:background 160ms cubic-bezier(.2,.7,.2,1)">
+                      <button onClick="{{ st.onClick }}" style="display:flex;flex-direction:column;gap:8px;border:0;padding:0;background:transparent;color:#fff;cursor:pointer;text-align:left">
+                        <span style="position:relative;display:block;width:100%;aspect-ratio:1 / 1;border-radius:10px;overflow:hidden;background:rgb(26,28,36);box-shadow:{{ st.ring }};transition:box-shadow 160ms cubic-bezier(.2,.7,.2,1)">
+                          <img src="{{ st.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ st.pos }};transform:scale({{ st.scale }})">
+                          <span style="position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg,rgba(10,12,20,0),rgba(10,12,20,0.85))"></span>
+                          <span style="position:absolute;left:9px;right:9px;bottom:8px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ st.name }}</span>
+                        </span>
+                      </button>
+                      <div style="display:flex;flex-direction:column;gap:5px;min-height:26px;border-radius:10px;border:1px dashed {{ st.slotBorder }};padding:{{ st.slotPad }};transition:border-color 160ms cubic-bezier(.2,.7,.2,1)">
+                        <sc-for list="{{ st.chips }}" as="c" hint-placeholder-count="0">
+                          <span draggable="true" onDragStart="{{ c.onDragStart }}" onDragEnd="{{ c.onDragEnd }}" style="display:flex;align-items:center;gap:6px;height:26px;padding:0 4px 0 9px;box-sizing:border-box;border-radius:6.46px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);font-size:12px;font-weight:500;cursor:grab;user-select:none;opacity:{{ c.opacity }}" style-hover="border-color:rgba(110,170,255,0.6)">
+                            <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</span>
+                            <sc-if value="{{ c.canRemove }}">
+                              <button onClick="{{ c.onRemove }}" aria-label="Remove" style="flex:none;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer;position:relative" style-hover="background:rgba(255,255,255,0.12)">
+                                <span style="position:absolute;left:8px;top:4px;width:1.5px;height:10px;border-radius:1px;background:rgba(255,255,255,0.8);transform:rotate(45deg)"></span>
+                                <span style="position:absolute;left:8px;top:4px;width:1.5px;height:10px;border-radius:1px;background:rgba(255,255,255,0.8);transform:rotate(-45deg)"></span>
+                              </button>
+                            </sc-if>
+                          </span>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:2px">
+                  <button style="border:0;background:transparent;padding:2px;cursor:pointer;color:#0068DF;font-size:14px;font-weight:700" style-hover="color:#fff">+ Add style</button>
+                  <button onClick="{{ confirmSty }}" aria-label="Confirm" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;cursor:{{ tk.sty.cursor }};background:{{ tk.sty.bg }};box-shadow:{{ tk.sty.shadow }};opacity:{{ tk.sty.op }};transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1),opacity 200ms linear;display:flex;align-items:center;justify-content:center" style-hover="box-shadow:0 8px 22px rgba(0,66,255,0.7),inset 0 1px 0 rgba(255,255,255,0.4)"><span style="width:5px;height:10px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:translateY(-1px) rotate(45deg)"></span></button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div ref="{{ promptRef }}" style="display:flex;flex-direction:column;gap:12px">
+        <div style="position:relative;display:flex;align-items:center;gap:10px;margin-top:22px">
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.4);font-variant-numeric:tabular-nums">03</span>
+          <span style="font-size:15px;font-weight:700">Scene focus</span>
+          <span onClick="{{ toggleSceneHelp }}" role="button" aria-label="About scene focus" style="margin-left:auto;flex:none;display:flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.3);font-size:11px;font-weight:700;line-height:1;color:rgba(255,255,255,0.8);cursor:pointer" style-hover="border-color:#0068DF;background:rgba(0,104,223,0.25);color:#fff">?</span>
+          <sc-if value="{{ sceneHelpOpen }}">
+            <div style="position:absolute;right:-6px;top:calc(100% + 12px);width:310px;z-index:45;padding:16px 18px;box-sizing:border-box;border-radius:14px;background:rgb(22,25,35);border:1px solid rgba(110,170,255,0.35);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 24px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:8px">
+              <span style="position:absolute;right:9px;top:-7px;width:12px;height:12px;background:rgb(22,25,35);border-left:1px solid rgba(110,170,255,0.35);border-top:1px solid rgba(110,170,255,0.35);transform:rotate(45deg)"></span>
+              <span style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">Scene focus</span><span style="font-size:10px;font-weight:700;padding:3px 7px;border-radius:6.46px;background:rgba(255,255,255,0.08)">Optional</span></span>
+              <span style="font-size:14px;line-height:1.5">Leave it blank and we'll cut a high energy reel of the whole Grand Prix.</span>
+              <span style="font-size:14px;line-height:1.5;color:rgba(255,255,255,0.75)">Want one moment? Pick a preset or describe it. We'll match it to Williams' own footage and race data, and rebuild it as a thrilling scene.</span>
+            </div>
+          </sc-if>
+        </div>
+
+          <div ref="{{ hlRowRef }}" style="position:relative;z-index:{{ hlRowZ }};display:flex;flex-direction:column;border-radius:14px;border:1px solid {{ promptBorder }};background:rgba(255,255,255,0.03);box-shadow:{{ promptGlow }};transition:border-color 160ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1)">
+            <textarea value="{{ prompt }}" onChange="{{ onPrompt }}" onFocus="{{ onPromptFocus }}" onBlur="{{ onPromptBlur }}" rows="3" placeholder="Leave blank for full Grand Prix highlights, or describe a scene" style="width:100%;box-sizing:border-box;resize:none;border:0;outline:none;background:transparent;color:#fff;font-family:inherit;font-size:14px;line-height:1.55;padding:14px 16px 6px"></textarea>
+            <div style="display:flex;align-items:flex-end;gap:12px;padding:8px 8px 8px 12px">
+              <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ presets }}" as="pz" hint-placeholder-count="7">
+              <button onClick="{{ pz.onClick }}" style="height:26px;padding:0 10px;border-radius:6.46px;border:1px solid {{ pz.border }};background:{{ pz.bg }};box-shadow:{{ pz.glow }};color:#fff;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background 160ms cubic-bezier(.2,.7,.2,1),border-color 160ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(150,195,255,0.8);background:rgba(0,104,223,0.12)">{{ pz.label }}</button>
+            </sc-for>
+              </div>
+              <button onClick="{{ toggleCircuit }}" aria-label="Circuit map" title="{{ circ.title }}" style="flex:none;width:34px;height:34px;padding:0;box-sizing:border-box;border-radius:10px;border:1px solid {{ circ.border }};background:{{ circ.bg }};box-shadow:{{ circ.shadow }};cursor:{{ circ.cursor }};display:flex;align-items:center;justify-content:center;transition:border-color 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1),opacity 200ms linear" style-hover="{{ circ.hover }}">
+              <svg viewBox="-4 -4 398 266" aria-hidden="true" style="width:24px;height:16px;overflow:visible;filter:{{ circ.filter }};opacity:{{ circ.imgOp }}"><path d="M0 202C1.2 194.5 4.2 170.7 7 158C9.8 145.3 13.3 135.8 17 126C20.7 116.2 25.5 105.8 29 99C32.5 92.2 32.2 92.2 38 85C43.8 77.8 51.5 58.5 64 56C76.5 53.5 99.3 66.7 113 70C126.7 73.3 137.0 73.7 146 76C155.0 78.3 157.0 82.3 167 84C177.0 85.7 195.0 84.2 206 86C217.0 87.8 226.0 93.2 233 95C240.0 96.8 243.2 97.3 248 97C252.8 96.7 258.3 95.2 262 93C265.7 90.8 268.3 88.8 270 84C271.7 79.2 272.7 70.5 272 64C271.3 57.5 266.3 49.3 266 45C265.7 40.7 267.5 40.7 270 38C272.5 35.3 269.5 35.3 281 29C292.5 22.7 327.8 4.8 339 0C350.2 -4.8 345.8 -0.5 348 0C350.2 0.5 351.0 0.3 352 3C353.0 5.7 349.3 13.7 354 16C358.7 18.3 374.0 15.7 380 17C386.0 18.3 388.3 22.0 390 24C391.7 26.0 391.7 24.8 390 29C388.3 33.2 385.3 40.0 380 49C374.7 58.0 366.0 73.5 358 83C350.0 92.5 340.5 100.0 332 106C323.5 112.0 322.2 116.5 307 119C291.8 121.5 257.2 121.5 241 121C224.8 120.5 219.8 118.3 210 116C200.2 113.7 187.5 107.7 182 107C176.5 106.3 178.8 111.0 177 112C175.2 113.0 173.3 113.5 171 113C168.7 112.5 165.2 110.7 163 109C160.8 107.3 171.8 108.3 158 103C144.2 97.7 96.0 78.8 80 77C64.0 75.2 67.7 85.3 62 92C56.3 98.7 48.7 111.7 46 117C43.3 122.3 45.3 121.5 46 124C46.7 126.5 50.0 127.0 50 132C50.0 137.0 48.2 146.0 46 154C43.8 162.0 39.2 175.0 37 180C34.8 185.0 34.7 183.2 33 184C31.3 184.8 28.5 184.0 27 185C25.5 186.0 24.8 187.5 24 190C23.2 192.5 22.2 194.3 22 200C21.8 205.7 22.2 218.2 23 224C23.8 229.8 24.8 231.0 27 235C29.2 239.0 34.7 244.7 36 248C37.3 251.3 36.2 253.3 35 255C33.8 256.7 31.7 257.7 29 258C26.3 258.3 22.0 257.5 19 257C16.0 256.5 14.0 256.5 11 255C8.0 253.5 2.8 256.7 1 248C-0.8 239.3 0.2 210.7 0 203C-0.2 195.3 -1.2 209.5 0 202Z" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></path></svg>
+            </button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:22px;margin-bottom:-2px">
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.4);font-variant-numeric:tabular-nums">04</span>
+          <span style="font-size:15px;font-weight:700">Output</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr) minmax(0,0.75fr);gap:14px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Length</span>
+            <div style="display:flex;gap:2px;padding:3px;height:48px;box-sizing:border-box;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09)">
+              <sc-for list="{{ durations }}" as="u" hint-placeholder-count="3">
+                <button onClick="{{ u.onClick }}" style="flex:1 1 auto;min-width:0;padding:0 6px;border:0;cursor:pointer;border-radius:10px;background:{{ u.bg }};color:#fff;font-size:14px;font-weight:700;white-space:nowrap;transition:background 160ms cubic-bezier(.2,.7,.2,1)">{{ u.label }}</button>
+              </sc-for>
+              <sc-if value="{{ notCustom }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ pickCustom }}" style="flex:1 1 auto;min-width:0;padding:0 8px;border:0;cursor:pointer;border-radius:10px;background:transparent;color:rgba(255,255,255,0.75);font-size:12px;font-weight:500;white-space:nowrap" style-hover="color:#fff">Custom</button>
+              </sc-if>
+              <sc-if value="{{ isCustom }}">
+                <label style="flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;gap:1px;padding:0 6px;border-radius:10px;background:linear-gradient(100deg,#0042FF,#0068DF);cursor:text">
+                  <input ref="{{ customRef }}" type="text" inputmode="numeric" maxlength="3" value="{{ customDur }}" onChange="{{ onCustom }}" style="width:{{ customW }};min-width:1ch;padding:0;border:0;outline:none;background:transparent;color:#fff;font-size:14px;font-weight:700;text-align:center;font-family:inherit;font-variant-numeric:tabular-nums">
+                  <span style="font-size:14px;font-weight:700">s</span>
+                </label>
+              </sc-if>
+            </div>
+          </div>
+          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Ratio</span>
+            <button onClick="{{ toggleRatio }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1);padding:0 12px;gap:10px" style-hover="border-color:rgba(255,255,255,0.3)">
+              <span style="width:18px;display:flex;justify-content:center"><span style="width:{{ ratio.gw }};height:{{ ratio.gh }};border:1.5px solid #fff;border-radius:2px;box-sizing:border-box"></span></span>
+              <span style="flex:1;font-size:14px;font-weight:700">{{ ratio.id }}</span>
+              <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+            </button>
+            <sc-if value="{{ ratioOpen }}">
+              <div style="position:absolute;top:calc(100% + 8px);z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);left:0;width:260px;display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ ratios }}" as="r" hint-placeholder-count="6">
+                  <button onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:pointer;padding:11px 12px;border-radius:10px;color:#fff;background:{{ r.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                    <span style="width:22px;display:flex;justify-content:center"><span style="width:{{ r.gw }};height:{{ r.gh }};border:1.5px solid #fff;border-radius:2px;box-sizing:border-box"></span></span>
+                    <span style="width:44px;font-size:14px;font-weight:700">{{ r.id }}</span>
+                    <span style="flex:1;font-size:12px;color:rgba(255,255,255,0.6)">{{ r.use }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Quality</span>
+            <div style="position:relative">
+              <button onClick="{{ toggleQuality }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 12px;box-sizing:border-box;border-radius:12px;border:1px solid {{ q.border }};background:{{ q.bg }};box-shadow:{{ q.glow }};color:#fff;cursor:pointer;transition:border-color 160ms cubic-bezier(.2,.7,.2,1),background 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(150,195,255,0.7)">
+                <span style="font-size:18px;line-height:1;font-weight:700;background-image:{{ q.text }};-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap">{{ q.id }}</span>
+                <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.7);border-bottom:1.5px solid rgba(255,255,255,0.7);transform:translateY(-2px) rotate(45deg)"></span>
+              </button>
+              <sc-if value="{{ qualityOpen }}">
+                <div style="position:absolute;top:calc(100% + 8px);right:0;width:200px;z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:2px">
+                  <sc-for list="{{ qualities }}" as="qo" hint-placeholder-count="4">
+                    <button onClick="{{ qo.onClick }}" style="display:flex;align-items:center;gap:10px;text-align:left;border:0;cursor:pointer;padding:10px 12px;border-radius:10px;background:{{ qo.bg }};color:#fff" style-hover="background:rgba(255,255,255,0.06)">
+                      <span style="width:52px;font-size:14px;font-weight:700">{{ qo.id }}</span>
+                      <span style="flex:1;font-size:12px;color:rgba(255,255,255,0.6)">{{ qo.use }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Audio</span>
+          <input type="file" ref="{{ audioRef }}" onChange="{{ onSong }}" accept="audio/*" style="display:none">
+          <button onClick="{{ toggleAudio }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px 0 8px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
+            <span style="flex:none;width:22px;height:30px;display:flex;align-items:center;justify-content:center;gap:2px"><span style="width:2px;height:6px;border-radius:1px;background:{{ audio.bar }}"></span><span style="width:2px;height:12px;border-radius:1px;background:{{ audio.bar }}"></span><span style="width:2px;height:8px;border-radius:1px;background:{{ audio.bar }}"></span><span style="width:2px;height:14px;border-radius:1px;background:{{ audio.bar }}"></span><span style="width:2px;height:7px;border-radius:1px;background:{{ audio.bar }}"></span></span>
+            <span style="flex:none;font-size:15px;font-weight:700;white-space:nowrap">{{ audio.name }}</span>
+            <span style="flex:1;min-width:0;font-size:14px;color:rgba(255,255,255,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ audio.desc }}</span>
+            <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
+          </button>
+          <sc-if value="{{ audioOpen }}">
+            <div style="position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;padding:6px;border-radius:14px;background:rgb(18,21,31);border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:6px">
+              <button onClick="{{ engine.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:pointer;padding:9px 10px;border-radius:10px;color:#fff;background:{{ engine.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                <span style="flex:none;width:22px;height:30px;display:flex;align-items:center;justify-content:center;gap:2px"><span style="width:2px;height:6px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:12px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:8px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:14px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:7px;border-radius:1px;background:#6fa8ff"></span></span>
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:700">Engine &amp; Commentary</span><span style="font-size:12px;color:rgba(255,255,255,0.6)">Real race commentary with genuine Williams engine sound</span></span>
+                <span style="flex:none;width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:1.5px solid {{ engine.ring }};background:{{ engine.fill }};display:flex;align-items:center;justify-content:center;transition:background 160ms cubic-bezier(.2,.7,.2,1)"><span style="width:4px;height:8px;border-right:1.8px solid #fff;border-bottom:1.8px solid #fff;transform:translateY(-1px) rotate(45deg);opacity:{{ engine.tick }}"></span></span>
+              </button>
+              <sc-if value="{{ hasSong }}">
+                <button onClick="{{ songItem.onClick }}" style="display:flex;align-items:center;gap:12px;text-align:left;border:0;cursor:pointer;padding:9px 10px;border-radius:10px;color:#fff;background:{{ songItem.bg }}" style-hover="background:rgba(255,255,255,0.06)">
+                  <span style="flex:none;width:22px;height:30px;display:flex;align-items:center;justify-content:center;gap:2px"><span style="width:2px;height:6px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:12px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:8px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:14px;border-radius:1px;background:#6fa8ff"></span><span style="width:2px;height:7px;border-radius:1px;background:#6fa8ff"></span></span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ songName }}</span><span style="font-size:12px;color:rgba(255,255,255,0.6)">Beat matched to every cut</span></span>
+                  <span style="flex:none;width:20px;height:20px;box-sizing:border-box;border-radius:50%;border:1.5px solid {{ songItem.ring }};background:{{ songItem.fill }};display:flex;align-items:center;justify-content:center;transition:background 160ms cubic-bezier(.2,.7,.2,1)"><span style="width:4px;height:8px;border-right:1.8px solid #fff;border-bottom:1.8px solid #fff;transform:translateY(-1px) rotate(45deg);opacity:{{ songItem.tick }}"></span></span>
+                </button>
+              </sc-if>
+              <button onClick="{{ uploadSong }}" style="display:flex;align-items:center;justify-content:center;gap:10px;height:48px;margin:0 4px 4px;border-radius:10px;border:1px dashed rgba(255,255,255,0.22);background:rgba(255,255,255,0.02);color:#fff;cursor:pointer;font-size:14px;font-weight:700" style-hover="border-color:#0068DF;background:rgba(0,104,223,0.1)">
+                <span style="font-size:18px;font-weight:400;line-height:1;color:#0068DF">+</span>{{ uploadLabel }}
+                <span style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6)">· we sync every cut to the beat</span>
+              </button>
+              <button onClick="{{ pickNoAudio }}" style="align-self:center;border:0;background:transparent;padding:6px 12px 8px;cursor:pointer;color:{{ noAudioColor }};font-size:14px;font-weight:700" style-hover="color:#fff">No audio</button>
+            </div>
+          </sc-if>
+        </div>
+        <div style="height:1px;margin:10px 0 2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.1) 12%,rgba(255,255,255,0.1) 88%,rgba(255,255,255,0))"></div>
+        <input type="file" ref="{{ fileRef }}" onChange="{{ onPick }}" accept=".csv,.json,.xml,.fit,.txt" style="display:none">
+        <div style="position:relative;display:flex;align-items:center;gap:10px">
+        <sc-if value="{{ noFile }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ browse }}" onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" onDrop="{{ onDrop }}" style="flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:12px;border:1px dashed {{ dropBorder }};background:{{ dropBg }};color:#fff;cursor:pointer;font-size:15px;font-weight:700;transition:background 160ms cubic-bezier(.2,.7,.2,1),border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.5)">
+            <span style="font-size:18px;font-weight:400;line-height:1;color:#0068DF">+</span>Connect Race Data<span style="position:relative;display:flex;margin-left:2px"><sc-if value="{{ helpOpen }}">
+          <div onClick="{{ stop }}" style="position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%);width:320px;text-align:left;font-weight:400;cursor:default;z-index:45;padding:16px 18px;box-sizing:border-box;border-radius:14px;background:rgb(22,25,35);border:1px solid rgba(110,170,255,0.35);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 24px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:8px">
+            <span style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700"><img src="assets/claude-spark.png" alt="" style="width:13px;height:13px;display:block">How race data works</span>
+            <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;font-weight:700;color:#8ab8ff">With race data</span><span style="font-size:14px;line-height:1.5">Claude rebuilds the race lap by lap, with every overtake, pit stop and driver's performance captured exactly as it happened.</span></span>
+            <span style="height:1px;background:rgba(255,255,255,0.08)"></span>
+            <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)">Without data</span><span style="font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75)">You still get a reel, built from public F1 footage and race info found online.</span></span>
+            <span style="position:absolute;left:50%;bottom:-7px;width:12px;height:12px;margin-left:-6px;background:rgb(22,25,35);border-right:1px solid rgba(110,170,255,0.35);border-bottom:1px solid rgba(110,170,255,0.35);transform:rotate(45deg)"></span>
+          </div>
+        </sc-if><span onClick="{{ openHelp }}" role="button" aria-label="How race data works, powered by Claude" title="How race data works" style="display:flex;align-items:center;gap:5px;height:22px;padding:0 4px 0 7px;box-sizing:border-box;border-radius:11px;background:rgba(217,119,87,0.08);border:1px solid rgba(217,119,87,0.22);font-size:11px;font-weight:500;line-height:1;color:rgba(255,255,255,0.75);cursor:pointer;transition:background 160ms,border-color 160ms" style-hover="background:rgba(217,119,87,0.16);border-color:rgba(217,119,87,0.45);color:#fff"><img src="assets/claude-spark.png" alt="" style="width:11px;height:11px;display:block"><span>Claude</span><span style="display:flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.1);font-size:9px;font-weight:700">?</span></span></span>
+          </button>
+        </sc-if>
+        <sc-if value="{{ hasFile }}">
+          <div style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:52px;padding:0 8px 0 10px;box-sizing:border-box;border-radius:12px;background:linear-gradient(100deg,rgba(0,66,255,0.22),rgba(0,104,223,0.06));border:1px solid rgba(0,104,223,0.45)">
+            <span style="width:34px;height:34px;flex:none;border-radius:10px;background:linear-gradient(140deg,#0042FF,#0068DF);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">{{ fileExt }}</span>
+            <span style="flex:1;min-width:0;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ fileName }}</span>
+            <span style="font-size:12px;color:rgba(255,255,255,0.7)">{{ fileSize }}</span>
+            <button onClick="{{ clearFile }}" style="border:0;background:transparent;color:#fff;cursor:pointer;font-size:14px;font-weight:500;padding:8px" style-hover="color:#0068DF">Remove</button>
+          </div>
+        </sc-if>
+        </div>
+
+        <sc-if value="{{ notReady }}" hint-placeholder-val="{{ true }}">
+          <button ref="{{ genRef }}" onClick="{{ generate }}" style="position:relative;overflow:hidden;margin-top:4px;margin-bottom:6px;border:0;cursor:{{ gen.cursor }};height:60px;border-radius:14px;background:{{ gen.bg }};color:{{ gen.color }};font-size:18px;font-weight:500;text-shadow:{{ gen.ts }};box-shadow:{{ gen.shadow }};transition:background 240ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),color 240ms cubic-bezier(.2,.7,.2,1),transform 120ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="{{ gen.hover }}" style-active="{{ gen.active }}">
+            <span style="position:absolute;inset:0;border-radius:inherit;background:radial-gradient(90% 70% at 50% -10%,rgba(255,255,255,{{ gen.sheen }}),rgba(255,255,255,0) 70%);pointer-events:none"></span>
+            <span style="position:relative">{{ ctaLabel }}</span>
+          </button>
+        </sc-if>
+        <sc-if value="{{ isReady }}">
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <button style="position:relative;overflow:hidden;flex:1;border:0;cursor:pointer;height:58px;margin-bottom:6px;border-radius:12px;background:radial-gradient(120% 140% at 50% 0%,#ffffff 0%,#f2f6ff 45%,#d6e2f5 100%);color:rgb(10,12,20);font-size:18px;font-weight:500;box-shadow:0 5px 0 #8fa3c4,0 0 0 1px rgba(255,255,255,0.6),0 12px 30px rgba(110,170,255,0.35),inset 0 2px 4px rgba(255,255,255,0.9),inset 0 -8px 16px rgba(120,145,190,0.25);transition:transform 120ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="filter:brightness(1.04)" style-active="transform:translateY(3px);box-shadow:0 2px 0 #8fa3c4,0 0 0 1px rgba(255,255,255,0.6),0 8px 20px rgba(110,170,255,0.3),inset 0 2px 4px rgba(255,255,255,0.9)">{{ downloadLabel }}</button>
+            <button onClick="{{ generate }}" style="cursor:pointer;height:58px;padding:0 22px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);color:#fff;font-size:15px;font-weight:700" style-hover="border-color:rgba(255,255,255,0.5)">Regenerate</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+    <div style="position:relative;flex:1 1 480px;min-width:300px;min-height:360px;height:{{ rightH }};align-self:center;display:flex">
+      <div aria-hidden="true" style="position:absolute;inset:-8%;background:radial-gradient(closest-side,rgba(0,66,255,0.32),rgba(0,66,255,0));pointer-events:none"></div>
+      <div ref="{{ stageRef }}" style="position:relative;flex:1;border-radius:19.27px;border:1px solid rgba(110,170,255,0.38);background:linear-gradient(155deg,rgba(44,54,84,0.5) 0%,rgba(20,24,36,0.55) 45%,rgba(10,12,20,0.72) 100%);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),inset 0 0 80px rgba(0,104,223,0.08),0 40px 90px rgba(0,0,0,0.5);overflow:hidden">
+        <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 18% 0%,rgba(130,180,255,0.16),rgba(130,180,255,0) 70%);pointer-events:none"></div>
+        <div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,rgba(150,195,255,0),rgba(150,195,255,0.7) 30%,rgba(150,195,255,0) 80%)"></div>
+        <div style="position:absolute;left:50%;top:{{ frameTop }};width:{{ fw }};height:{{ fh }};transform:translateX(-50%);border:1px solid rgba(190,220,255,0.75);border-radius:10px;box-shadow:0 0 0 1px rgba(110,170,255,0.25),0 0 22px rgba(110,170,255,0.4),inset 0 0 18px rgba(110,170,255,0.12);background:linear-gradient(160deg,rgba(0,104,223,0.1),rgba(0,104,223,0) 65%);transition:width 420ms cubic-bezier(.2,.7,.2,1),height 420ms cubic-bezier(.2,.7,.2,1),top 420ms cubic-bezier(.2,.7,.2,1)">
+          <sc-if value="{{ notReady }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center">
+            <span style="font-size:28px;font-weight:700;color:rgba(255,255,255,0.92)">{{ ratio.id }}</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.6)">{{ dims }} · {{ q.id }}</span>
+          </div>
+          </sc-if>
+          <sc-if value="{{ isReady }}">
+            <button onClick="{{ openPlayer }}" aria-label="Open reel" style="position:absolute;inset:0;padding:0;border:0;border-radius:10px;overflow:hidden;cursor:pointer;background:rgb(26,28,36)" style-hover="filter:brightness(1.08)">
+              <img src="assets/thumb-placeholder.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%">
+              <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,20,0) 45%,rgba(10,12,20,0.85))"></span>
+              <span style="position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(255,255,255,0.16);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 10px 30px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center"><span style="width:0;height:0;margin-left:4px;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent"></span></span>
+              <span style="position:absolute;left:14px;right:14px;bottom:12px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;text-align:left">
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gp.name }} GP reel</span><span style="font-size:11px;color:rgba(255,255,255,0.7)">Placeholder thumbnail</span></span>
+                <span style="flex:none;font-size:11px;font-weight:700;color:#fff;padding:4px 7px;border-radius:6.46px;background:rgba(10,12,20,0.7)">{{ durLabel }}</span>
+              </span>
+            </button>
+          </sc-if>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:0;height:58px;display:flex;align-items:center;gap:12px;padding:0 20px 0 24px;box-sizing:border-box;border-bottom:1px solid rgba(255,255,255,0.07);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0));border-radius:19.27px 19.27px 0 0">
+          <span style="font-size:14px;font-weight:700">Preview</span>
+          <span style="width:1px;height:14px;background:rgba(255,255,255,0.15)"></span>
+          <span style="flex:1;min-width:0;font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ratio.id }} · {{ dims }} · {{ durLabel }}</span>
+          <span style="display:flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:12px;font-weight:500;white-space:nowrap">{{ statusChip }}</span>
+        </div>
+        <div style="position:absolute;left:26px;right:26px;bottom:24px;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.7)">{{ summary }}</span>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:2px"><div style="height:100%;width:{{ pctW }};background:linear-gradient(90deg,#0042FF,#8ab8ff)"></div></div>
+      </div>
+    </div>
+  </main>
+  <sc-if value="{{ lbOpen }}">
+    <div onClick="{{ closeLb }}" style="position:fixed;inset:0;z-index:300;background:rgba(5,6,10,0.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:40px 64px;box-sizing:border-box">
+      <div onClick="{{ stopProp }}" style="position:relative;width:min(1280px,100%,calc((100vh - 80px) * 16 / 9));aspect-ratio:16/9;border-radius:18px;background:rgb(26,28,36);box-shadow:0 30px 80px rgba(0,0,0,0.6)">
+        <img src="{{ lb.img }}" alt="{{ lb.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px">
+        <div style="position:absolute;inset:0;opacity:{{ lbChromeOp }};pointer-events:{{ lbChromePe }};transition:opacity .3s cubic-bezier(.2,.7,.2,1)">
+        <span style="position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg,rgba(10,12,20,0) 45%,rgba(10,12,20,0.92))"></span>
+        <div style="position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:clamp(18px,3.5vw,44px);display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <span style="font-size:15px;color:#fff">{{ lb.name }} · {{ lb.meta }}</span>
+            <span style="font-size:clamp(36px,6.2vw,92px);font-weight:700;line-height:0.95;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,0.6);text-wrap:balance">{{ lb.title }}</span>
+          </div>
+          <button onClick="{{ lbOpenProject }}" style="outline:none;-webkit-tap-highlight-color:transparent;flex:none;height:44px;padding:0 20px;border:0;border-radius:12px;background:linear-gradient(180deg,#3d8bff 0%,#0068DF 48%,#0042FF 100%);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer;text-shadow:0 1px 1px rgba(0,20,80,0.5);box-shadow:inset 0 1px 0 rgba(255,255,255,0.45),inset 0 -2px 0 rgba(0,20,90,0.45),0 4px 0 #0030b8,0 8px 18px rgba(0,66,255,0.45);transition:transform .12s,box-shadow .12s" style-hover="filter:brightness(1.1)" style-active="transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35),inset 0 -1px 0 rgba(0,20,90,0.45),0 1px 0 #0030b8,0 3px 8px rgba(0,66,255,0.4)">Open project</button>
+        </div>
+        
+        </div>
+        <button onClick="{{ closeLb }}" aria-label="Close" style="outline:none;-webkit-tap-highlight-color:transparent;position:absolute;top:16px;right:16px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:rgba(10,12,20,0.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:rgba(10,12,20,0.85)">
+          <svg width="14" height="14" viewBox="0 0 14 14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M2 2l10 10M12 2 2 12"></path></svg>
+        </button>
+        <sc-if value="{{ lbHasPrev }}">
+          <button onClick="{{ lbPrev }}" aria-label="Previous project" style="outline:none;-webkit-tap-highlight-color:transparent;position:absolute;left:-46px;top:50%;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(10,12,20,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.7" style-hover="opacity:1;background:rgba(10,12,20,0.7)">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5 3 5l3.5 3.5"></path></svg>
+          </button>
+        </sc-if>
+        <sc-if value="{{ lbHasNext }}">
+          <button onClick="{{ lbNext }}" aria-label="Next project" style="outline:none;-webkit-tap-highlight-color:transparent;position:absolute;right:-46px;top:50%;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(10,12,20,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.7" style-hover="opacity:1;background:rgba(10,12,20,0.7)">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5 7 5 3.5 8.5"></path></svg>
+          </button>
+        </sc-if>
+        <button onClick="{{ toggleLbClean }}" aria-label="{{ lbHandleLabel }}" title="{{ lbHandleLabel }}" style="outline:none;-webkit-tap-highlight-color:transparent;position:absolute;left:50%;bottom:8px;width:36px;height:16px;margin-left:-18px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.45" style-hover="opacity:0.9">
+          <svg width="18" height="8" viewBox="0 0 18 8" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ lbHandleRot }};transition:transform .3s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))"><path d="M2 2l7 4 7-4"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;bgMark&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Off&quot;,&quot;Subtle&quot;,&quot;Full&quot;],&quot;default&quot;:&quot;Subtle&quot;,&quot;tsType&quot;:&quot;'Off'|'Subtle'|'Full'&quot;},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const GPS=[
+  ['R1','Australian','Albert Park','8 Mar'],['R2','Chinese','Shanghai','15 Mar'],['R3','Japanese','Suzuka','29 Mar'],
+  ['R4','Miami','Miami International Autodrome','3 May'],['R5','Canadian','Circuit Gilles Villeneuve','24 May'],['R6','Monaco','Circuit de Monaco','7 Jun'],
+  ['R7','Barcelona-Catalunya','Circuit de Barcelona-Catalunya','14 Jun'],['R8','Austrian','Red Bull Ring','28 Jun'],['R9','British','Silverstone','5 Jul'],
+  ['R10','Belgian','Spa-Francorchamps','19 Jul'],['R11','Hungarian','Hungaroring','26 Jul'],['R12','Dutch','Zandvoort','23 Aug'],
+  ['R13','Italian','Monza','6 Sep'],['R14','Spanish','Madring','13 Sep'],['R15','Azerbaijan','Baku City Circuit','26 Sep'],
+  ['R16','Bahrain','Sepang, Malaysia','4 Oct',1],['R17','Singapore','Marina Bay','11 Oct',1],['R18','United States','Circuit of the Americas','25 Oct',1],
+  ['R19','Mexico City','Autódromo Hermanos Rodríguez','1 Nov',1],['R20','São Paulo','Interlagos','8 Nov',1],['R21','Las Vegas','Las Vegas Strip','21 Nov',1],
+  ['R22','Qatar','Lusail','29 Nov',1],['R23','Abu Dhabi','Yas Marina','6 Dec',1]
+].map(([round,name,circuit,date,up])=>({id:round,round,name,circuit,date,up:!!up}));
+const STYLE_NAMES={jp:'DanDan Anime',teen:'Anime',latam:'La Rojigualda',uk:'Lightning Blue',th:'Albono',us:'Primetime Chrome'};
+const AUD=[
+  {id:'jp',short:'Japan',name:'Japan',langLabel:'日本語',style:'telemetry',
+   cap:['ブラックアウト。','最高速 338 km/h。','2.4秒のピットストップ。','0.1秒が勝負。']},
+  {id:'teen',short:'Smart 15',name:'The "Smart 15-Year-Old"',langLabel:'English',style:'pov',
+   cap:['Lights out. Game on.','338 km/h. Casual.','2.4s. Blink and you miss it.','Every tenth counts.']},
+  {id:'latam',short:'Spanish',name:'Spanish & Latin',langLabel:'Español',style:'broadcast',
+   cap:['¡Se apagan las luces!','A fondo.','Parada de 2,4 s.','Cada décima cuenta.']},
+  {id:'uk',short:'UK',name:'UK',langLabel:'English (UK)',style:'glass',
+   cap:['Lights out.','Flat out through sector 3.','Box, box. Softs on.','Every tenth counts.']},
+  {id:'th',short:'Thailand',name:'Thailand',langLabel:'ไทย',style:'glass',
+   cap:['ไฟดับแล้ว ออกตัว!','เต็มสปีด','เข้าพิท!','ทุกเสี้ยววินาทีมีความหมาย']},
+  {id:'us',short:'USA',name:'USA',langLabel:'English (US)',style:'broadcast',
+   cap:["It's lights out!",'338 km/h. Full send.','2.4 second stop.','Every tenth counts.']}
+];
+const SCENES=[
+  {img:'assets/car.jpg',pos:'30% 50%',tag:'Lap 1',data:'P12 → P9',prompt:'Hey Williams, how did we gain three places?'},
+  {img:'assets/car.jpg',pos:'78% 50%',tag:'Sector 3',data:'338 km/h',prompt:'Hey Williams, how fast down the main straight?'},
+  {img:'assets/pitlane.png',pos:'50% 40%',tag:'Lap 31',data:'2.4s stop',prompt:'Hey Williams, why box on lap 31?'},
+  {img:'assets/grandstand.png',pos:'50% 35%',tag:'Team radio',data:'Lap 48',prompt:'Hey Williams, what did the engineer say?'}
+];
+const FAQS=[
+  ['What does Connect Race Data do?','It lets you upload the race data file. Claude reads it to find the big Williams moments, like overtakes, crashes and pit stops, and builds your reel around them. No data? You still get a reel, just less tailored to that Grand Prix.'],
+  ['How do I add an audience?','In step 02, open Audience and pick who the reel is for. Choose All to get 6 reels in 4 languages, each styled for its audience. Press the tick to confirm.'],
+  ['How do I add a style?','In step 02, open Style and pick a look, or use + Add style to drop in your own reference image. Press the tick to confirm.'],
+  ['How do I fix a clip?','Open the player and press VFX Fix. Draw a box around the problem, press the tick, then choose Type, Send to VFX or Regenerate.'],
+  ['What does Send to VFX do?','It sends the marked frame, plus any note you typed, to our VFX team. They touch it up by hand and the final cut lands back in your player.'],
+  ['How does Regenerate work?','AI re-renders just the marked clip in about a minute, using your typed note as direction. The rest of your reel stays exactly as it is.'],
+  ['What is Team Edit?','Select both drivers and turn on Team Edit to get one reel covering Albon and Sainz together, rather than a separate reel for each.'],
+  ['Can I set a custom length?','Yes. In Output, choose Custom under Length and type the number of seconds you want.'],
+  ['Which ratio should I pick?','9:16 for TikTok, Reels and Shorts, 16:9 for YouTube and presentations. Open Ratio in Output to see where each one works best.'],
+  ['How do I download my reel?','Once it has generated, press Download MP4 under the preview. With multiple audiences, Download all grabs every reel at once.']
+];
+const CAPS=[{id:'off',label:'Off'},{id:'clean',label:'Clean'},{id:'glow',label:'Glow'},{id:'brand',label:'Williams'}];
+const CAP_POS=[{id:'top',label:'Top'},{id:'middle',label:'Middle'},{id:'bottom',label:'Bottom'}];
+const capLook=(id,fs)=>({fs:fs+'px',fw:id==='clean'?600:700,bg:id==='brand'?'linear-gradient(100deg,#0042FF,#0068DF)':'transparent',pad:id==='brand'?'0.3em 0.65em':'0',radius:'6.46px',ts:id==='clean'?'0 1px 2px rgba(0,0,0,0.85),0 0 14px rgba(0,0,0,0.55)':id==='glow'?'0 0 8px rgba(0,104,223,0.9),0 0 20px rgba(0,66,255,0.6),0 1px 2px rgba(0,0,0,0.6)':'none',bs:id==='brand'?'0 4px 14px rgba(0,66,255,0.45)':'none'});
+const STAGES=['Reading race data','Finding the moments','Writing the edit','Grading and captions','Rendering'];
+const RATIOS=[
+  {id:'16:9',r:16/9,use:'YouTube, presentations'},
+  {id:'9:16',r:9/16,use:'TikTok, Reels, Shorts'},
+  {id:'4:3',r:4/3,use:'Classic video'},
+  {id:'1:1',r:1,use:'Instagram feed'},
+  {id:'3:4',r:3/4,use:'Portrait, Pinterest'},
+  {id:'21:9',r:21/9,use:'Cinematic widescreen'}
+].map(x=>({...x,gw:(x.r>=1?18:Math.round(18*x.r))+'px',gh:(x.r>=1?Math.round(18/x.r):18)+'px'}));
+const PROJECTS=[{id:'monaco',code:'MC',name:'Monaco Race Weekend',meta:'R8 · Japan Activation',title:'No Room for Error',img:'assets/proj-monaco.png',pos:'42% 62%'},{id:'miami',code:'MI',name:'Miami Fan Zone',meta:'R6 · Japan Activation',title:'Neon Heat',img:'assets/proj-miami.png',pos:'55% 60%'},{id:'drivers',code:'AC',name:'Alex & Carlos Fan Zone',meta:'Drivers · Japan Activation',title:'Double Trouble',img:'assets/proj-drivers.png',pos:'50% 22%'},{id:'silver',code:'SV',name:'Silverstone Fan Week',meta:'R11 · Japan Activation',title:'Home Soil Thunder',img:'assets/proj-silverstone.png',pos:'55% 72%'},{id:'monza',code:'MZ',name:'Monza Race Weekend',meta:'R15 · Japan Activation',title:'Temple of Speed',img:'assets/proj-monza.png',pos:'60% 60%'},{id:'japan',code:'JP',name:'Suzuka Sponsor Pack',meta:'R3 · Japan Activation',title:'Rising Sun Fury',img:'assets/proj-japan.png',pos:'40% 55%'}];
+const TIPS=['Pick All audiences and get 6 reels in one go, each in its own language and style.','Drop in your race data and I will find the big moments for you.','Need an exact cut? Tap Custom and set the length to the second.'];
+const STYLES=[
+  {id:'anime',name:'Anime',img:'assets/style-anime.png',pos:'52% 42%'},
+  {id:'marvel',name:'Marvel',img:'assets/style-marvel-v2.png',pos:'50% 45%'},
+  {id:'pixar',name:'Pixar',img:'assets/style-pixar-v2.png',pos:'48% 40%'}
+].map(x=>({scale:1,...x,filter:'none',tint:'transparent'}));
+const DRIVERS=[
+  {id:'albon',name:'Alex Albon',meta:'#23',img:'assets/driver-albon.png',f:[78,52,-20,0]},
+  {id:'sainz',name:'Carlos Sainz',meta:'#55',img:'assets/driver-sainz.png',f:[74,42,-19,0]},
+  {id:'browning',name:'Luke Browning',meta:'Reserve driver',img:'assets/driver-browning.png',f:[172,98,-68,0],off:true},
+  {id:'chadwick',name:'Jamie Chadwick',meta:'Test driver',img:'assets/driver-chadwick.png',f:[56,38,-12,-2],off:true}
+].map(d=>({...d,fw:d.f[0]+'px',fh:d.f[1]+'px',fl:d.f[2]+'px',ft:d.f[3]+'px',gray:d.off?'grayscale(1)':'none'}));
+const AUDIO=[
+  {id:'engine',name:'Engine & Commentary',desc:'Real race commentary with genuine Williams engine sound'},
+  {id:'song',name:'Your Own Song',desc:'Beat matched to every cut'},
+  {id:'none',name:'No Audio',desc:'Silent reel'}
+];
+const PRESETS=[
+  {label:'Lights Out',text:'A tense, high impact race start, from the formation lap to lights out and the run into Turn 1'},
+  {label:'Pit Stops',text:'A rapid pit stop sequence, the crew in perfect sync and a sub 2.5 second stop'},
+  {label:'Overtakes',text:'Our best overtakes of the race, wheel to wheel moves and DRS battles'},
+  {label:'Incidents',text:'The biggest incidents of the race, crashes, safety car and red flag drama'},
+  {label:'Final Laps',text:'The final laps and chequered flag, every tenth counting to the line'},
+  {label:'Pole Lap',text:'The qualifying push lap, on the limit through every sector to set the time'},
+  {label:'Safety Car Restart',text:'The safety car restart, the field bunched up and our drivers attacking into Turn 1'},
+  {label:'Podium',text:'The podium ceremony, champagne and the team celebrating in parc fermé'}
+];
+const HIGHLIGHTS={
+  albon:{start:'P11',finish:'P8',desc:'Alex Albon fought from P11 to finish P8 at Monaco 2026, overcoming battery deployment issues and a chaotic race to secure four points.'},
+  sainz:{start:'P9',finish:'P10',desc:'Carlos Sainz held his nerve through the barriers to bring it home P10, adding a vital point.'}
+};
+const SHOTS=[3.76,1.34,2,2.04,0.8,0.59,1.47,2.35];
+const VDUR=14.35;
+const SHOT_GREYS=['rgb(58,61,70)','rgb(44,47,56)','rgb(66,69,78)','rgb(50,53,62)','rgb(72,75,84)','rgb(46,49,58)','rgb(62,65,74)','rgb(54,57,66)'];
+const SHOT_SUM=SHOTS.reduce((a,b)=>a+b,0);
+const SHOTS_F=[3.76,1.34,2,2.04,0.8,0.59,1.47,2.35,2.15,3.6,3.2,1.2,3.2,5.2,3.8,3.87], VDUR_F=40.57, SHOT_SUM_F=SHOTS_F.reduce((a,b)=>a+b,0);
+const vmeta=()=>({S:SHOTS_F,D:VDUR_F,SUM:SHOT_SUM_F});
+const QUALITIES=[{id:'4K',use:'Ultra HD · default'},{id:'1080p',use:'Full HD'},{id:'720p',use:'HD'},{id:'480p',use:'Fast preview'}];
+const HOLD=2400, GEN=5200, SEL='rgba(0,104,223,0.18)';
+const fmt=b=>b>1e6?(b/1e6).toFixed(1)+' MB':Math.max(1,Math.round(b/1e3))+' KB';
+
+class Component extends DCLogic {
+  state={chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
+  fileRef=React.createRef();
+  chatRef=React.createRef();
+  capMenuRef=React.createRef();
+  chatListRef=React.createRef();
+  stageRef=React.createRef();
+  customRef=React.createRef();
+  audioRef=React.createRef();
+  vidRef=React.createRef();
+  reelRef=React.createRef();
+  headRef=React.createRef();
+  overlayRef=React.createRef();
+  pillRef=React.createRef();
+  hlOverlayRef=React.createRef();
+  hlCardRef=React.createRef();
+  hlRowRef=React.createRef();
+  genRef=React.createRef();
+  promptRef=React.createRef();
+  leftRef=React.createRef();
+  choiceRef=React.createRef();
+  winRef=React.createRef();
+  componentDidUpdate(){
+    const cm=this.capMenuRef.current; if(cm&&cm!==this._cmEl&&cm.animate) cm.animate([{opacity:0,transform:'translateY(6px) scale(0.97)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'}); this._cmEl=cm;
+    if(this.state.chat&&!this._chatWas&&this.chatRef.current&&this.chatRef.current.animate) this.chatRef.current.animate([{opacity:0,transform:'translateY(12px) scale(0.92)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,1,.36,1)'});
+    const justOpened=this.state.chat&&!this._chatWas; this._chatWas=this.state.chat;
+    const cl=this.chatListRef.current; if(cl&&justOpened){cl.scrollTop=0; this._mLen=this.state.msgs.length; this._cTy=this.state.chatTyping;}
+    else if(cl&&(this._mLen!==this.state.msgs.length||this._cTy!==this.state.chatTyping)){cl.scrollTop=cl.scrollHeight; this._mLen=this.state.msgs.length; this._cTy=this.state.chatTyping;}
+    const s=this.state, ps=this._ps||s, ch={}; this._ps=s;
+    if(ps.open!=='circuit'&&s.open==='circuit'){const r=this.hlRowRef.current; if(r&&r.offsetTop!==s.hlRowTop){this.setState({hlRowTop:r.offsetTop});}const o=this.hlOverlayRef.current,c=this.hlCardRef.current,E='cubic-bezier(.2,.7,.2,1)'; o&&o.animate&&o.animate([{opacity:0},{opacity:1}],{duration:260,easing:E}); c&&c.animate&&c.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:320,easing:E});} if(ps.gp!==s.gp) ch.gp=1; if(ps.drv!==s.drv||ps.teamEdit!==s.teamEdit) ch.drv=1; if(ps.auds!==s.auds) ch.aud=1; if(ps.sty!==s.sty||ps.langStyle!==s.langStyle) ch.sty=1;
+    if(this._skipUnconfirm){this._skipUnconfirm=false; for(const k in ch) delete ch[k];}
+    const ks=Object.keys(ch); if(ks.length){const picked={...s.picked},conf={...s.conf}; ks.forEach(k=>{picked[k]=true;conf[k]=false;}); this.setState({picked,conf});}
+    if(ps.choice!==this.state.choice&&this.state.box){const p=this.pillRef.current,E='cubic-bezier(.2,.7,.2,1)';
+      if(p&&p.animate){const E2='cubic-bezier(.22,1,.36,1)', w0=this.pillW||p.offsetWidth, w1=p.offsetWidth;
+        (this._pillAnims||[]).forEach(a=>a.cancel());
+        const A=[p.animate([{width:w0+'px',overflow:'hidden'},{width:w1+'px',overflow:'hidden'}],{duration:520,easing:E2})];
+        Array.from(p.querySelectorAll('button,input')).forEach((b,i)=>A.push(b.animate([{opacity:0,transform:'translateX(-6px)',filter:'blur(3px)'},{opacity:1,transform:'none',filter:'blur(0)'}],{duration:420,delay:120+i*45,easing:E2,fill:'backwards'})));
+        this._pillAnims=A;}}
+    if(!ps.player&&this.state.player){const o=this.overlayRef.current,w=this.winRef.current,E='cubic-bezier(.2,.7,.2,1)';
+      o&&o.animate&&o.animate([{opacity:0},{opacity:1}],{duration:320,easing:E});
+      w&&w.animate&&w.animate([{opacity:0,transform:'translateY(24px) scale(0.96)'},{opacity:1,transform:'none'}],{duration:440,easing:E});}
+  }
+  closeAnim(){const o=this.overlayRef.current,w=this.winRef.current,E='cubic-bezier(.2,.7,.2,1)',done=()=>this.setState({player:false,pPlay:false,fix:false,box:null,choice:false});
+    if(!o||!o.animate){done();return;} if(this.closing) return; this.closing=true;
+    w&&w.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(16px) scale(0.97)'}],{duration:240,easing:E,fill:'forwards'});
+    o.animate([{opacity:1},{opacity:0}],{duration:260,easing:E,fill:'forwards'}).onfinish=()=>{this.closing=false;done();};}
+  trackRef=React.createRef();
+  albonRef=React.createRef();
+  bubbleRef=React.createRef();
+  projListRef=el=>{this._pl=el; if(el) requestAnimationFrame(()=>this.updSb());};
+  updSb(){const el=this._pl; if(!el) return; const r=el.clientHeight/el.scrollHeight, max=el.scrollHeight-el.clientHeight; const sb={show:r<0.999,h:Math.max(r,0.12),t:max>0?el.scrollTop/max:0}; const o=this.state.sb||{}; if(o.show!==sb.show||Math.abs((o.h||0)-sb.h)>0.001||Math.abs((o.t||0)-sb.t)>0.001) this.setState({sb});}
+  onSbDown=e=>{const el=this._pl; if(!el) return; e.preventDefault(); const y0=e.clientY, s0=el.scrollTop, track=el.clientHeight-12, ratio=el.scrollHeight/track; const mv=ev=>{el.scrollTop=s0+(ev.clientY-y0)*ratio;}; const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up);};
+  lbStep(d){const i=PROJECTS.findIndex(p=>p.id===this.state.lb), n=PROJECTS[i+d]; if(n) this.setState({lb:n.id});}
+  componentDidMount(){
+    this._init=this.state;
+    this._ps=this.state;
+    this._urls=[];
+    [['url1','assets/reel.mp4'],['url2','assets/reel-v2.mp4'],['url3','assets/reel-final.mp4']].forEach(([k,f])=>fetch(f).then(r=>r.blob()).then(b=>{const u=URL.createObjectURL(b); this._urls.push(u); this.setState({[k]:u});}).catch(()=>this.setState({[k]:f})));
+    this.iv=setInterval(()=>this.tick(),50);
+    this.onResize=()=>this.setState({vw:window.innerWidth,vh:window.innerHeight}); window.addEventListener('resize',this.onResize);
+    this.onKey=e=>{if(this.state.lb){ if(e.key==='Escape'){this.setState({lb:null,lbClean:false,open:null});return;} if(e.key==='ArrowRight'){this.lbStep(1);return;} if(e.key==='ArrowLeft'){this.lbStep(-1);return;} } if(e.key==='Escape'&&this.state.player){ if(this.state.fix) this.setState({fix:false,box:null,choice:false}); else this.closeAnim(); }}; window.addEventListener('keydown',this.onKey);
+    this.tipIv=setInterval(()=>{
+      const st=this.state, front=st.tipFront||'A', cur=front==='A'?(st.tipA ?? 0):(st.tipB ?? 1), next=(cur+1)%TIPS.length, back=front==='A'?'B':'A';
+      this.setState({['tip'+back]:next});
+      this.tipTo=setTimeout(()=>this.setState({tipFront:back}),60);
+    },7000);
+    const fl=(el,d,delay)=>el&&el.animate&&el.animate([{transform:'translateY(0)'},{transform:'translateY(-'+d+'px)'}],{duration:3600,delay,direction:'alternate',iterations:Infinity,easing:'ease-in-out',fill:'both'});
+    fl(this.albonRef.current,8,0); fl(this.bubbleRef.current,6,700);
+    const el=this.stageRef.current;
+    if(window.ResizeObserver){this.ro2=new ResizeObserver(()=>{const l=this.leftRef.current,p=this.promptRef.current; if(l&&p){const lh=l.offsetHeight, ph=p.offsetHeight; if(lh!==this.state.leftH||ph!==this.state.promptH) this.setState({leftH:lh,promptH:ph});}}); this.leftRef.current&&this.ro2.observe(this.leftRef.current); this.promptRef.current&&this.ro2.observe(this.promptRef.current);}
+    if(el&&window.ResizeObserver){this.ro=new ResizeObserver(()=>{const b=el.getBoundingClientRect();this.setState({sw:b.width,sh:b.height});});this.ro.observe(el);}
+  }
+  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
+  tick(){
+    const s=this.state;
+    if(s.phase==='gen'){const p=s.p+50/GEN; if(p>=1) this.setState({phase:'ready',p:1,t:0,reelVer:1,playing:this.props.autoplay??true}); else this.setState({p});}
+    else if(s.phase==='ready'&&s.playing&&!s.player) this.setState({t:s.t+50});
+    const m=this.reelRef.current, hd=this.headRef.current, VD=VDUR_F, C=SHOTS_F[0], head=s.reelVer!==3&&hd;
+    const go=el=>el.play().catch(()=>{el.muted=true;el.play().catch(()=>{});});
+    if(s.player&&m){
+      if(s.pt!==this._myPt){const t=s.pt*VD; m.currentTime=head&&t<C?C:t; if(head) hd.currentTime=Math.min(t,C-0.02); this._myPt=s.pt;}
+      const inHead=head&&s.pt*VD<C;
+      if(s.pPlay&&!s.fix){ let pt;
+        if(inHead){ if(!m.paused) m.pause(); if(hd.paused) go(hd); if(hd.currentTime>=C-0.04){hd.pause(); m.currentTime=C; go(m); pt=C/VD;} else pt=hd.currentTime/VD; }
+        else { if(head&&!hd.paused) hd.pause(); if(m.paused&&!m.ended) go(m); if(m.ended||m.currentTime>=VD-0.06){ if(head){m.pause(); m.currentTime=C; hd.currentTime=0;} else {m.currentTime=0; go(m);} pt=0; } else pt=m.currentTime/VD; }
+        pt=Math.min(0.999,pt); this._myPt=pt; if(pt!==s.pt) this.setState({pt}); }
+      else { if(!m.paused) m.pause(); if(hd&&!hd.paused) hd.pause(); } }
+    if(s.regen){const p=s.regen.p+50/4000; if(p>=1){const swap=s.regen.clip===0&&s.url2; this._myPt=-1; this.setState(swap?{regen:null,reelVer:2,pt:0,pPlay:true}:{regen:null,pPlay:true}); this.showToast('Clip '+(s.regen.clip+1)+' regenerated');} else this.setState({regen:{...s.regen,p}});}
+  }
+  async askBot(q){
+    const t=(q||'').trim(); if(!t||this.state.chatTyping) return;
+    const faq=FAQS.find(f=>f[0]===t); if(faq){this.setState(s=>({msgs:[...s.msgs,{from:'me',text:t}],chatIn:'',chatTyping:true})); clearTimeout(this.faqTo); this.faqTo=setTimeout(()=>this.setState(s=>({msgs:[...s.msgs,{from:'bot',text:faq[1]}],chatTyping:false})),650); return;}
+    const msgs=[...this.state.msgs,{from:'me',text:t}]; this.setState({msgs,chatIn:'',chatTyping:true});
+    const s=this.state, gpNow=GPS.find(g=>g.id===s.gp), doIt=!!s.doIt;
+    const sys='You are AskAlbon inside SparkPlug Studio, a Williams Racing tool that generates race highlight reels. You answer questions AND can change the user\'s setup for them. Reply ONLY with JSON: {"reply":"1-2 short sentences, British spelling, no emoji","set":{...}}. Put in "set" only the fields the user asked to change; omit "set" for pure questions. Fields: gp (round id, one of: '+GPS.filter(g=>!g.up).map(g=>g.id+' '+g.name+' ('+g.circuit+')').join(', ')+'), drivers (array of "albon","sainz"), teamEdit (bool, one combined reel for both drivers), auds (array of '+AUD.map(x=>'"'+x.id+'" '+x.name).join(', ')+', or ["all"]), style ("anime","marvel","pixar"), dur (seconds), ratio ("16:9","9:16","4:3","1:1","3:4","21:9"), quality ("480p","720p","1080p","4K"), captions ("off","clean","glow" = subtle blue glow,"brand" = Williams blue), capPos ("top","middle","bottom"), audio ("engine","none"), prompt (scene focus text), generate (true only if they ask you to generate or make it now). TikTok/Reels/Shorts = 9:16, YouTube = 16:9, Instagram feed = 1:1. Other app help: VFX Fix in the player lets you box an artifact then Type a note, Send to VFX or Regenerate the clip.';
+    const mode=doIt?'Do it for me mode is ON: apply what the user describes via "set".':'Do it for me mode is OFF: never include "set". If the user asks you to change their setup, answer briefly and tell them to switch on Do it for me below.';
+    const ctx=mode+'\nCurrent setup: '+(gpNow?gpNow.name+' GP':'')+', drivers '+s.drv.join('+')+', audiences '+s.auds.join('+')+', style '+s.sty+', '+this.durSec()+'s, '+s.ratio+', '+s.quality+', captions '+s.caps+' '+s.capPos+'.';
+    let out=null;
+    try{ const raw=await window.claude.complete(sys+'\n'+ctx+'\n\nConversation:\n'+msgs.map(m=>(m.from==='me'?'User: ':'AskAlbon: ')+m.text).join('\n')+'\n\nJSON:'); const m=String(raw).match(/\{[\s\S]*\}/); out=m?JSON.parse(m[0]):{reply:String(raw)}; }
+    catch(e){ out=doIt?this.localParse(t):{reply:'Pick a Grand Prix, driver, audience and style, then hit Generate. Switch on Do it for me and I can set it up for you.'}; }
+    if(!doIt){ this.setState(st=>({msgs:[...st.msgs,{from:'bot',text:((out&&out.reply)||'').trim()||'Switch on Do it for me and describe your reel, and I\'ll set it up.'}],chatTyping:false})); return; }
+    const loc=this.localParse(t).set, ms=(out&&out.set)||{}, merged={...loc,...ms};
+    Object.keys(loc).forEach(k=>{ if(ms[k]==null) merged[k]=loc[k]; });
+    if(merged.gp&&!this.findGp(merged.gp)&&loc.gp) merged.gp=loc.gp;
+    if(out) out.set=merged;
+    const done=this.applySet(merged);
+    let reply=done.length?'':((out&&out.reply)||'').trim();
+    if(!reply) reply=done.length?'Done. I\'ve set '+done.join(', ')+'.':'Tell me the race, driver, audience, style or length you want and I\'ll set it up.';
+    this.setState(st=>({msgs:[...st.msgs,{from:'bot',text:reply}],chatTyping:false}));
+    if(done.length) this.showToast('AskAlbon updated '+done.join(', '));
+    if(out&&out.set&&out.set.generate) setTimeout(()=>{const st=this.state; if(st.conf.gp&&st.conf.drv&&st.conf.aud&&st.conf.sty){const v=this.renderVals(); v.generate&&v.generate();} else this.setState(x=>({msgs:[...x.msgs,{from:'bot',text:'I need a race, driver, audience and style before I can generate. Tell me what you want.'}]}));},400);
+  }
+  localParse(t){
+    const l=t.toLowerCase(), set={};
+    const g=this.findGp(l); if(g) set.gp=g.id;
+    const d=['albon','sainz'].filter(x=>l.includes(x)); if(l.includes('both drivers')) set.drivers=['albon','sainz']; else if(d.length) set.drivers=d;
+    if(/all audiences/.test(l)) set.auds=['all']; else {const au=AUD.filter(x=>new RegExp('\\b('+[x.id,x.short.toLowerCase()].join('|')+')\\b').test(l)||(x.id==='th'&&l.includes('thai'))||(x.id==='us'&&l.includes('american'))); if(au.length) set.auds=au.map(x=>x.id);}
+    const st=STYLES.find(x=>l.includes(x.id)); if(st) set.style=st.id;
+    const du=l.match(/(\d+)\s*(s\b|sec|second)/); if(du) set.dur=+du[1];
+    const ra=l.match(/\b(16:9|9:16|4:3|1:1|3:4|21:9)\b/); if(ra) set.ratio=ra[1]; else if(/tiktok|reels|shorts|vertical/.test(l)) set.ratio='9:16'; else if(/youtube|landscape/.test(l)) set.ratio='16:9'; else if(/instagram|square/.test(l)) set.ratio='1:1';
+    const q=l.match(/\b(480p|720p|1080p|4k)\b/); if(q) set.quality=q[1]==='4k'?'4K':q[1];
+    if(/no captions?|captions? off/.test(l)) set.captions='off'; else if(/caption|subtitle/.test(l)) set.captions=l.includes('glow')?'glow':/williams|blue/.test(l)?'brand':'clean';
+    const cp=l.match(/\b(top|middle|bottom)\b/); if(cp&&set.captions!=='off') set.capPos=cp[1];
+    if(/generate|make it now|render/.test(l)) set.generate=true;
+    return {set};
+  }
+  findGp(v){
+    const q=' '+String(v||'').toLowerCase().replace(/\bgrand prix\b|\bgp\b/g,' ').replace(/[^a-z0-9à-ÿ:\- ]/g,' ').replace(/\s+/g,' ')+' ';
+    if(!q.trim()) return null;
+    const GEN=new Set(['circuit','de','of','the','city','international','autodrome','autódromo','hermanos','strip','marina','ring']);
+    let best=null,bs=0;
+    GPS.filter(g=>!g.up).forEach(g=>{let sc=0;
+      if(q.includes(' '+g.id.toLowerCase()+' ')) sc+=100;
+      if(q.includes(' '+g.name.toLowerCase()+' ')||q.includes(' '+g.name.toLowerCase())) sc+=50;
+      g.circuit.toLowerCase().split(/[ ,]+/).filter(w=>w.length>2&&!GEN.has(w)).forEach(w=>{if(q.includes(w)) sc+=20;});
+      if(sc>bs){bs=sc;best=g;}});
+    return best;
+  }
+  applySet(x){
+    const s=this.state, p={}, pk={...s.picked}, cf={...s.conf}, out=[];
+    if(x.gp){const g=this.findGp(x.gp); if(g){p.gp=g.id; pk.gp=cf.gp=true; out.push('the '+g.name+' GP');}}
+    if(Array.isArray(x.drivers)){const d=x.drivers.map(v=>String(v).toLowerCase()).filter(v=>v==='albon'||v==='sainz'); if(d.length){p.drv=d; pk.drv=cf.drv=true; out.push(d.map(v=>v==='albon'?'Albon':'Sainz').join(' & '));}}
+    if(typeof x.teamEdit==='boolean'){p.teamEdit=x.teamEdit; out.push('Team Edit '+(x.teamEdit?'on':'off'));}
+    if(Array.isArray(x.auds)){const ids=x.auds.includes('all')?AUD.map(v=>v.id):x.auds.filter(v=>AUD.some(z=>z.id===v)); if(ids.length){p.auds=ids; p.langStyle={}; pk.aud=cf.aud=true; out.push(ids.length===AUD.length?'all audiences':ids.map(v=>AUD.find(z=>z.id===v).short).join(', ')+' audience');}}
+    if(x.style){const st=STYLES.find(v=>v.id===String(x.style).toLowerCase()); if(st){p.sty=st.id; p.langStyle={}; pk.sty=cf.sty=true; out.push(st.name+' style');}}
+    if(x.dur){const n=Math.round(+x.dur); if(n>0){if([15,30,60].includes(n)) p.dur=n; else {p.dur='custom'; p.customDur=String(n);} out.push(n+'s');}}
+    if(x.ratio&&RATIOS.some(r=>r.id===x.ratio)){p.ratio=x.ratio; out.push(x.ratio);}
+    if(x.quality&&['480p','720p','1080p','4K'].includes(x.quality)){p.quality=x.quality; out.push(x.quality);}
+    if(x.captions&&CAPS.some(c=>c.id===x.captions)){p.caps=x.captions; out.push(x.captions==='off'?'captions off':(CAPS.find(c=>c.id===x.captions).label)+' captions');}
+    if(x.capPos&&CAP_POS.some(c=>c.id===x.capPos)){p.capPos=x.capPos; out.push('captions at the '+x.capPos);}
+    if(x.audio==='engine'||x.audio==='none'){p.audio=x.audio; out.push(x.audio==='none'?'no audio':'engine & commentary');}
+    if(typeof x.prompt==='string'&&x.prompt.trim()){p.prompt=x.prompt.trim(); out.push('your scene focus');}
+    if(out.length){this._skipUnconfirm=true;} if(out.length) this.setState({...p,picked:pk,conf:cf,touched:{},open:null,...this.reset()});
+    return out;
+  }
+  closeOpen(extra){const st=this.state,o=st.open,REQ=['gp','drv','aud','style']; const k=o==='style'?'sty':o; const t={...(st.touched||{})}; if(REQ.includes(o)&&!(st.conf||{})[k]) t[k]=true; this.setState({open:null,touched:t,...(extra||{})});}
+  confirm(k){this.setState(st=>({open:null,conf:{...st.conf,[k]:true},picked:{...st.picked,[k]:true},touched:{...st.touched,[k]:false}}));}
+  regenNow(i){const n=(this.state.fixNote||'').trim(); this.setState({tip:null,fix:false,box:null,choice:false,fixNote:'',pPlay:false,regen:{clip:i,p:0,note:n}}); this.showToast('Regenerating clip '+(i+1)+(n?' · “'+n+'”':''));}
+  durSec(){const s=this.state; return Math.max(5,Number(s.dur==='custom'?s.customDur:s.dur)||30);}
+  showToast(m){clearTimeout(this.toastTo); clearTimeout(this.vfxTo); this.setState({toast:m}); this.toastTo=setTimeout(()=>this.setState({toast:null}),3200);}
+  drag(e,el,fn){const upd=ev=>{const r=el.getBoundingClientRect(); fn(Math.min(1,Math.max(0,(ev.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(ev.clientY-r.top)/r.height)));}; upd(e); const mv=ev=>upd(ev); const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up); fn(null,null,true);}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up);}
+  reset(){return {phase:'idle',p:0,t:0};}
+  setFile(f){if(f) this.setState({file:{name:f.name,size:f.size},drag:false,...this.reset()});}
+  renderVals(){
+    const s0=this.state, s={...s0,conf:s0.conf||{},picked:s0.picked||{},touched:s0.touched||{},auds:s0.auds||['uk'],drv:s0.drv||['albon','sainz'],langStyle:s0.langStyle||{}};
+    const n=SCENES.length, ready=s.phase==='ready', gen=s.phase==='gen';
+    const idx=ready?Math.floor(s.t/HOLD)%n:0, frac=ready?(s.t%HOLD)/HOLD:0;
+    const picked=AUD.filter(x=>s.auds.includes(x.id)), nA=picked.length, isAll=nA>1;
+    const gp=GPS.find(g=>g.id===s.gp), a=picked[0]||AUD[3];
+    const audName=nA===AUD.length?'All audiences':nA>2?picked[0].name+', '+picked[1].name+' +'+(nA-2):picked.map(x=>x.name).join(', ');
+    const aud={...a,name:audName,styleName:STYLE_NAMES[a.id]};
+    const nReels=nA*(s.drv.length>1&&!s.teamEdit?2:1);
+    const styleOf=id=>s.langStyle[id]||s.sty;
+    const usedStyles=STYLES.map(x=>x.id).filter(id=>picked.some(l=>styleOf(l.id)===id));
+    const cur={...SCENES[idx],cap:a.cap[idx]};
+    const mark=this.props.bgMark??'Subtle';
+    const ext=s.file?(s.file.name.split('.').pop()||'DATA').slice(0,4).toUpperCase():'';
+    const ratio=RATIOS.find(r=>r.id===s.ratio);
+    const W=s.sw||560, H=s.sh||620, PAD=56, TOP=86, availW=Math.max(60,W-PAD*2), availH=Math.max(60,H-TOP-92);
+    const fwN=Math.min(availW,availH*ratio.r), fhN=fwN/ratio.r;
+    const short={'480p':480,'720p':720,'1080p':1080,'4K':2160}[s.quality]||2160, long=Math.round(short*(ratio.r>=1?ratio.r:1/ratio.r));
+    const dims=ratio.r===1?short+' × '+short:ratio.r>1?long+' × '+short:short+' × '+long;
+    const multiDrv=!!(s.picked.drv&&s.drv.length>1);
+    const circOn=!!(s.picked.gp&&s.picked.drv);
+    const allConf=s.conf.gp&&s.conf.drv&&s.conf.aud&&s.conf.sty;
+    const errs={}; ['gp','drv','aud','sty'].forEach(k=>{const o=k==='sty'?'style':k; errs[k]=!!(s.touched[k]&&!s.conf[k]&&s.open!==o);});
+    const VM=vmeta(s.reelVer), SH=VM.S, pd=VM.D, pn=SH.length; let pIdx=0,acc=0; for(let i=0;i<pn;i++){acc+=SH[i]/VM.SUM; if(s.pt<acc){pIdx=i;break;} pIdx=i;}
+    const mmss=sec=>{sec=Math.floor(sec); return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');};
+    const VW=s.vw||window.innerWidth||1440, VH=s.vh||window.innerHeight||900;
+    const ctrlH=130, headH=50, aW=Math.max(280,Math.min(VW-160,1080)), aH=Math.max(200,VH-140-28-headH-ctrlH-28);
+    const pwN0=Math.min(aW,aH*ratio.r), pwN=Number.isFinite(pwN0)&&pwN0>0?pwN0:640, phN=pwN/ratio.r, cwN=Math.min(aW,Math.max(pwN,620));
+    const bx=s.box, boxOk=!!(bx&&bx.w>0.015&&bx.h>0.015);
+    const below=bx&&(bx.y+bx.h)<0.82;
+    return {
+      playerOpen:s.player, pw:pwN+'px', ph:phN+'px', cw:cwN+'px', vidRef:this.vidRef, trackRef:this.trackRef,
+      durLabel:mmss(this.durSec()), pDurLabel:mmss(pd), reelRef:this.reelRef, reelUrl:s.url3||undefined, headRef:this.headRef, headUrl:(s.reelVer===2?s.url2:s.url1)||undefined, headPoster:s.reelVer===2?'assets/shots/shot-1-v2.png':'assets/shots/shot-1.png', headOp:(s.reelVer!==3&&s.pt*pd<SHOTS_F[0])?1:0, pTime:mmss(s.pt*pd), pPct:(s.pt*100)+'%',
+      openPlayer:()=>this.setState({vw:window.innerWidth,vh:window.innerHeight,player:true,pt:0,pPlay:true,fix:false,box:null,choice:false}),
+      closePlayer:()=>this.closeAnim(), overlayRef:this.overlayRef, winRef:this.winRef, ww:(cwN+30)+'px',
+      ticks:(()=>{const st=pd<=20?1:pd<=45?1:pd<=90?2:5, lb=pd<=20?5:pd<=45?5:pd<=90?10:30, out=[]; for(let t=0;t<=pd;t+=st){const L=t%lb===0; out.push({l:(t/pd*100)+'%',h:L?'7px':'4px',c:L?'rgba(255,255,255,0.4)':'rgba(255,255,255,0.15)',lab:L,t:mmss(t),tx:t===0?'0':t>=pd?'-100%':'-50%'});} return out;})(),
+      pScenes:SH.map((w,i)=>({bg:SHOT_GREYS[i%8],opacity:i===pIdx?1:0})), pScene:{bg:SHOT_GREYS[pIdx%8],tag:'Shot '+(pIdx+1),data:'',cap:''},
+      pIsPlaying:s.pPlay&&!s.fix, pIsPaused:!(s.pPlay&&!s.fix), showBigPlay:!s.pPlay&&!s.fix,
+      pToggle:()=>this.setState(st=>st.fix?{fix:false,box:null,choice:false,pPlay:true}:{pPlay:!st.pPlay}),
+      fixOn:s.fix, vidCursor:s.fix?(s.choice?'default':'crosshair'):'pointer',
+      vidRing:s.fix?'0 0 0 1px #E20037,0 0 36px rgba(226,0,55,0.28),0 30px 80px rgba(0,0,0,0.5)':'0 0 0 1px rgba(110,170,255,0.3),0 30px 80px rgba(0,0,0,0.5)',
+      fixHint:boxOk?'Adjust by drawing again, or confirm':'Scrub to the frame, then drag a box around the issue',
+      fixBtn:s.fix?{label:'Exit fix mode',bg:'radial-gradient(120% 140% at 50% 0%,#ff6aa8 0%,#E20037 55%,#a8002a 100%)',border:'transparent',glow:'0 4px 0 #7a001e,0 0 0 1px rgba(255,140,170,0.35),0 8px 22px rgba(226,0,55,0.45),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 5px rgba(255,255,255,0.25)'}:{label:'VFX Fix',bg:'radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%)',border:'transparent',glow:'0 4px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 22px rgba(0,82,255,0.5),0 0 30px rgba(0,104,223,0.3),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 5px rgba(255,255,255,0.25)'},
+      toggleFix:()=>this.setState(st=>({fix:!st.fix,pPlay:false,box:null,choice:false})),
+      headColor:s.fix?'#E20037':'#fff', headGlow:s.fix?'rgba(226,0,55,0.8)':'rgba(255,255,255,0.6)',
+      onTrackDown:e=>{const el=this.trackRef.current; if(!el) return; this.drag(e,el,(x,y,end)=>{if(!end) this.setState({pt:Math.min(0.999,x),box:null,choice:false});});},
+      onVidDown:e=>{const st=this.state; if(!st.fix){this.setState({pPlay:!st.pPlay}); return;} if(st.choice) return; const el=this.vidRef.current; let x0=null,y0=null;
+        this.drag(e,el,(x,y,end)=>{ if(end){const b=this.state.box; if(b&&(b.w<0.015||b.h<0.015)) this.setState({box:null,drawing:false}); else this.setState({drawing:false}); return;}
+          if(x0===null){x0=x;y0=y;} this.setState({drawing:true,box:{x:Math.min(x0,x),y:Math.min(y0,y),w:Math.abs(x-x0),h:Math.abs(y-y0)}});});},
+      hasBox:s.fix&&boxOk, box:bx?{il:'calc('+(-bx.x*pwN)+'px - 1.5px)',it:'calc('+(-bx.y*phN)+'px - 1.5px)',clip:(()=>{const x1=bx.x*100+'%',y1=bx.y*100+'%',x2=(bx.x+bx.w)*100+'%',y2=(bx.y+bx.h)*100+'%'; return 'polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,'+x1+' '+y1+','+x1+' '+y2+','+x2+' '+y2+','+x2+' '+y1+','+x1+' '+y1+')';})(),r:(bx.x+bx.w)*100+'%',b:(bx.y+bx.h)*100+'%',l:bx.x*100+'%',t:bx.y*100+'%',w:bx.w*100+'%',h:bx.h*100+'%',lt:bx.y<0.1&&(bx.y+bx.h)<0.82?'6px':(bx.y<0.1||(bx.y+bx.h)>=0.82)?'calc(100% + 6px)':'-28px',ll:bx.y<0.1&&(bx.y+bx.h)<0.82?'6px':'-1px'}:{l:0,t:0,w:0,h:0,r:0,b:0,il:0,it:0,clip:'none',lt:'-28px',ll:'-1px'},
+      prevTip:!!s.prevTip, prevTipOn:()=>this.setState({prevTip:true}), prevTipOff:()=>this.setState({prevTip:false}),
+      pillW:s.choice==='type'?'500px':'auto', typeLbl:pwN<440?'':'Type', sendLbl:pwN<440?'VFX':'Send to VFX', regenLbl:pwN<440?'Regen':'Regenerate',
+      shades:bx?(()=>{const P=v=>(v*100)+'%',x1=bx.x,y1=bx.y,x2=bx.x+bx.w,y2=bx.y+bx.h; return [{l:'0',t:'0',w:'100%',h:P(y1)},{l:'0',t:P(y2),w:'100%',h:P(1-y2)},{l:'0',t:P(y1),w:P(x1),h:P(bx.h)},{l:P(x2),t:P(y1),w:P(1-x2),h:P(bx.h)}];})():[],
+      pillRef:this.pillRef, choiceRef:this.choiceRef, notChoice:!s.choice,
+      capOpacity:s.fix?0:1,
+      boxLabel:'Clip '+(pIdx+1)+' · '+mmss(s.pt*pd),
+      showBoxActions:s.fix&&boxOk&&!s.drawing,
+      act:bx?(()=>{const half=(s.choice==='type'?Math.min(250,pwN/2-8):s.choice?(pwN<440?130:195):42), lim=Math.min(half+8,pwN/2), cx=Math.min(Math.max((bx.x+bx.w/2)*pwN,lim),pwN-lim); return {l:cx+'px',t:(below?bx.y+bx.h:bx.y)*100+'%',tf:below?'translate(-50%,12px)':'translate(-50%,calc(-100% - 12px))'};})():{l:0,t:0,tf:'none'},
+      clearBox:()=>this.setState({box:null}), confirmBox:()=>{this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0; this.setState({choice:true});}, backToBox:()=>{this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0; this.setState({choice:false,tip:null});},
+      showChoice:s.fix&&s.choice===true, showType:s.fix&&s.choice==='type', fixNote:s.fixNote||'', noFixNote:!(s.fixNote||'').trim(), fixNoteCursor:(s.fixNote||'').trim()?'pointer':'default', fixNoteOpacity:(s.fixNote||'').trim()?1:0.45,
+      startType:()=>{this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0; this.setState({choice:'type',tip:null});}, onFixNote:e=>this.setState({fixNote:e.target.value}),
+      onFixKey:e=>{e.stopPropagation(); if(e.key==='Enter'&&(this.state.fixNote||'').trim()) this.regenNow(pIdx); if(e.key==='Escape') this.setState({choice:false});}, tipSendOpen:s.tip==='send', tipRegenOpen:s.tip==='regen',
+      tipSend:e=>{e.stopPropagation(); this.setState(st=>({tip:st.tip==='send'?null:'send'}));},
+      tipRegen:e=>{e.stopPropagation(); this.setState(st=>({tip:st.tip==='regen'?null:'regen'}));}, clipName:'clip '+(pIdx+1),
+      sendFrame:()=>{this.setState(st=>({fix:false,box:null,choice:false,tip:null,vfxClips:st.vfxClips.includes(pIdx)?st.vfxClips:[...st.vfxClips,pIdx]})); const nt=(this.state.fixNote||'').trim(); this.setState({fixNote:''}); this.showToast('Frame sent to our VFX team'+(nt?' · “'+nt+'”':', we\'ll be in touch shortly')); clearTimeout(this.vfxTo); this.vfxTo=setTimeout(()=>{this._myPt=-1; this.setState({reelVer:3,vfxClips:[],pt:0,pPlay:true}); this.showToast('VFX touchup delivered · final cut ready');},8000);},
+      regenClip:()=>this.regenNow(pIdx),
+      hasToast:!!s.toast, toast:s.toast||'',
+      clips:SH.map((w,i)=>{const r=s.regen&&s.regen.clip===i; const v=s.vfxClips.includes(i); return {w,bg:SHOT_GREYS[i%8],bgImg:(i===0&&s.reelVer!==3)?'url(assets/shots/shot-1'+(s.reelVer===2?'-v2':'')+'.png)':'url(assets/shots/final-'+(i+1)+'.png)',label:String(i+1),vfx:v&&!r,opacity:i<=pIdx?1:0.4,ring:s.fix&&i===pIdx?'inset 0 0 0 2px #E20037':v?'inset 0 0 0 2px #6fa8ff,inset 0 0 14px rgba(0,104,223,0.5)':'none',regen:r,pct:r?Math.round(s.regen.p*100)+'%':'0%'};}),
+      ratio, dims, fw:fwN+'px', fh:fhN+'px', frameTop:(TOP+(availH-fhN)/2)+'px', stageRef:this.stageRef,
+      ratios:RATIOS.map(r=>({...r,bg:r.id===s.ratio?SEL:'transparent',onClick:()=>this.setState({ratio:r.id,open:null,...this.reset()})})),
+      ratioOpen:s.open==='ratio',
+      style:STYLES.find(x=>x.id===usedStyles[0])||STYLES[0], styleOpen:s.open==='style',
+      styleLabel:usedStyles.length>1?usedStyles.length+' styles':(STYLES.find(x=>x.id===usedStyles[0])||STYLES[0]).name,
+      styleHint:nA>1?'Tap a style for all, or drag a language onto a style':'Tap a style to apply it',
+      toggleStyle:()=>{ if(s.open==='style') this.closeOpen(); else this.setState({open:'style'}); },
+      styles:STYLES.map(x=>{const chips=s.picked.sty?picked.filter(l=>styleOf(l.id)===x.id):[]; const drop=s.dropTarget===x.id; return {...x,
+        ring:drop?'0 0 0 2px #fff, 0 0 22px rgba(0,104,223,0.7)':chips.length?'0 0 0 2px #0068DF, 0 0 18px rgba(0,104,223,0.5)':'0 0 0 1px rgba(255,255,255,0.08)',
+        dropBg:drop?'rgba(0,104,223,0.14)':'transparent',
+        slotBorder:drop?'rgba(110,170,255,0.8)':chips.length?'transparent':'rgba(255,255,255,0.12)', slotPad:chips.length?'0':'0',
+        chips:chips.map(l=>({name:l.short,canRemove:nA>1,opacity:s.dragLang===l.id?0.4:1,
+          onDragStart:e=>{e.dataTransfer.setData('text/plain',l.id); e.dataTransfer.effectAllowed='move'; this.setState({dragLang:l.id});},
+          onDragEnd:()=>this.setState({dragLang:null,dropTarget:null}),
+          onRemove:e=>{e.stopPropagation(); this.setState(st=>st.auds.length>1?{auds:st.auds.filter(i=>i!==l.id),...this.reset()}:null);}})),
+        onDragOver:e=>{e.preventDefault(); if(this.state.dropTarget!==x.id) this.setState({dropTarget:x.id});},
+        onDragLeave:e=>{if(!e.currentTarget.contains(e.relatedTarget)) this.setState({dropTarget:null});},
+        onDrop:e=>{e.preventDefault(); const id=e.dataTransfer.getData('text/plain')||this.state.dragLang; if(id) this.setState(st=>({langStyle:{...st.langStyle,[id]:x.id},dragLang:null,dropTarget:null,...this.reset()}));},
+        onClick:()=>this.setState(st=>{const ls={}; st.auds.forEach(i=>ls[i]=x.id); return {picked:{...(st.picked||{}),sty:true},conf:{...(st.conf||{}),sty:false},sty:x.id,langStyle:ls,...this.reset()};})};}),
+      tipAOp:(s.tipFront||'A')==='A'?1:0, tipBOp:(s.tipFront||'A')==='B'?1:0,
+      tipABlur:(s.tipFront||'A')==='A'?'0px':'3px', tipBBlur:(s.tipFront||'A')==='B'?'0px':'3px',
+      tipAY:(s.tipFront||'A')==='A'?'0px':'-5px', tipBY:(s.tipFront||'A')==='B'?'0px':'-5px',
+      tipDisplay:s.tipHidden?'none':'block', closeTip:()=>this.setState({tipHidden:true}), albonRef:this.albonRef, bubbleRef:this.bubbleRef,
+      isCustom:s.dur==='custom', notCustom:s.dur!=='custom', customDur:String(s.customDur), customRef:this.customRef, customW:(Math.max(1,String(s.customDur).length)+0.3)+'ch',
+      pickCustom:()=>{this.setState({dur:'custom',customDur:'',...this.reset()},()=>{const el=this.customRef.current; if(el){el.focus(); el.select();}});},
+      onCustom:e=>{const v=e.target.value.replace(/[^0-9]/g,'').slice(0,3); this.setState({customDur:v,...this.reset()});},
+      project:PROJECTS.find(p=>p.id===s.project), projOpen:s.open==='proj',
+      saveLabel:s.saved?'Saved':'Save', crumb:s.picked.gp?gp.name+' GP reel':'Untitled reel', gpCircuit:gp?gp.circuit:'Circuit',
+      circuitOpen:s.open==='circuit'&&circOn, hlRowZ:'auto',
+      q:{id:s.quality, ...(s.quality==='4K'?{border:'rgba(110,170,255,0.5)',bg:'linear-gradient(120deg,rgba(0,66,255,0.3),rgba(0,104,223,0.06) 70%)',glow:'inset 0 1px 0 rgba(255,255,255,0.12),0 0 18px rgba(0,66,255,0.25)',text:'linear-gradient(100deg,#fff 30%,#8ab8ff)'}:{border:'rgba(255,255,255,0.09)',bg:'rgba(255,255,255,0.03)',glow:'none',text:'linear-gradient(#fff,#fff)'})},
+      qualityOpen:s.open==='quality', toggleQuality:()=>this.setState(st=>({open:st.open==='quality'?null:'quality'})),
+      qualities:QUALITIES.map(x=>({...x,bg:x.id===s.quality?SEL:'transparent',onClick:()=>this.setState({quality:x.id,open:null,...this.reset()})})), drvPadL:s.picked.drv?'8px':'14px', hlRowRef:this.hlRowRef, hlCardB:(s.leftH&&s.hlRowTop)?(s.leftH-s.hlRowTop+10)+'px':'auto', closeCircuit:()=>this.setState({open:null}), hlOverlayRef:this.hlOverlayRef, hlCardRef:this.hlCardRef, toggleCircuit:e=>{e&&e.stopPropagation(); if(!circOn) return; this.setState(st=>({open:st.open==='circuit'?null:'circuit'}));},
+      circ:circOn?{title:'Smart Highlights',border:'rgba(110,170,255,0.6)',bg:'rgba(0,104,223,0.08)',shadow:'0 0 14px rgba(0,104,223,0.3),inset 0 0 10px rgba(0,104,223,0.12)',cursor:'pointer',imgOp:0.95,filter:'drop-shadow(0 0 3px rgba(110,170,255,0.8))',hover:'border-color:rgba(170,210,255,0.95);box-shadow:0 0 20px rgba(0,104,223,0.5),inset 0 0 10px rgba(0,104,223,0.18)'}:{title:'Select a Grand Prix and driver first',border:'rgba(255,255,255,0.1)',bg:'rgba(255,255,255,0.02)',shadow:'none',cursor:'not-allowed',imgOp:0.35,filter:'none',hover:''},
+      hl:(()=>{const ids=(s.picked.drv?s.drv:['albon']).filter(id=>HIGHLIGHTS[id]); const ds=DRIVERS.filter(d=>ids.includes(d.id)); const gpn='Monaco';
+        const both=ds.length>1;
+        return {sub:(both?'Albon & Sainz':ds[0].name)+' · '+gpn+' · 2026',
+          rows:ds.map(d=>({...d,fw:Math.round(d.f[0]*39/32)+'px',fh:Math.round(d.f[1]*39/32)+'px',fl:Math.round(d.f[2]*39/32)+'px',ft:Math.round(d.f[3]*39/32)+'px',start:HIGHLIGHTS[d.id].start,finish:HIGHLIGHTS[d.id].finish,...(()=>{const g=parseInt(HIGHLIGHTS[d.id].start.slice(1))-parseInt(HIGHLIGHTS[d.id].finish.slice(1)); return {delta:g>0?'▲ '+g+' places':g<0?'▼ '+(-g)+' places':'Held position',deltaColor:g>0?'#6fa8ff':g<0?'#ff6b8a':'rgba(255,255,255,0.6)'};})()})),
+          desc:both?'Albon fought from P11 to P8 through battery deployment issues, while Sainz brought it home P10. A double points finish in a chaotic Monaco 2026.':HIGHLIGHTS[ds[0].id].desc};})(),
+      prompt:s.prompt, onPrompt:e=>this.setState({prompt:e.target.value,...this.reset()}),
+      onPromptFocus:()=>this.setState({promptFocus:true}), onPromptBlur:()=>this.setState({promptFocus:false}),
+      promptBorder:s.promptFocus?'rgba(110,170,255,0.6)':'rgba(255,255,255,0.09)',
+      promptGlow:s.promptFocus?'0 0 0 3px rgba(0,104,223,0.15)':'none', promptRef:this.promptRef, leftRef:this.leftRef, rightH:s.leftH?Math.max(360,s.leftH-(s.promptH||0)-32)+'px':'auto',
+      presets:PRESETS.map(p=>{const on=s.prompt===p.text; return {label:p.label,border:on?'rgba(150,195,255,0.9)':'rgba(0,104,223,0.3)',bg:on?'rgba(0,104,223,0.25)':'transparent',glow:on?'0 0 14px rgba(0,104,223,0.45)':'none',onClick:()=>this.setState(st=>({prompt:st.prompt===p.text?'':p.text,...this.reset()}))};}),
+      doSave:()=>{clearTimeout(this.saveTo); this.setState({saved:true}); this.saveTo=setTimeout(()=>this.setState({saved:false}),1600);},
+      toggleProj:()=>this.setState(st=>({open:st.open==='proj'?null:'proj'})),
+      projects:PROJECTS.map(p=>({...p,bg:p.id===s.project?SEL:'transparent',onClick:()=>this.setState({project:p.id,open:null}),onExpand:()=>this.setState({lb:p.id})})),
+      projListRef:this.projListRef, onProjScroll:()=>this.updSb(), onSbDown:this.onSbDown, sbShow:!!(s.sb&&s.sb.show), sbH:((s.sb&&s.sb.h)||1)*100+'%', sbTop:((s.sb&&s.sb.t)||0)*(1-((s.sb&&s.sb.h)||1))*100+'%', lbOpen:!!s.lb, lbChromeOp:s.lbClean?0:1, lbChromePe:s.lbClean?'none':'auto', lbHandleRot:s.lbClean?'rotate(180deg)':'none', lbHandleLabel:s.lbClean?'Show details':'Hide details', toggleLbClean:()=>this.setState(st=>({lbClean:!st.lbClean})), lb:PROJECTS.find(p=>p.id===s.lb)||PROJECTS[0], closeLb:()=>this.setState({lb:null,lbClean:false}), lbHasPrev:PROJECTS.findIndex(p=>p.id===s.lb)>0, lbHasNext:s.lb&&PROJECTS.findIndex(p=>p.id===s.lb)<PROJECTS.length-1, lbPrev:()=>this.lbStep(-1), lbNext:()=>this.lbStep(1), stopProp:e=>e.stopPropagation(), lbOpenProject:()=>this.setState(st=>({project:st.lb,lb:null,open:null})),
+      summary:[gp.name+' GP',s.drv.length>1?(s.teamEdit?'Team Edit':'Albon & Sainz'):(DRIVERS.find(d=>d.id===s.drv[0])||DRIVERS[0]).name,aud.name,usedStyles.length>1?'Mixed styles':(STYLES.find(x=>x.id===usedStyles[0])||STYLES[0]).name,(s.dur==='custom'?s.customDur:s.dur)+'s',AUDIO.find(x=>x.id===s.audio).name,s.ratio,'4K'].join('  ·  '),
+      hasStatus:gen||ready, statusChip:gen?STAGES[Math.min(STAGES.length-1,Math.floor(s.p*STAGES.length))]+' · '+Math.round(s.p*100)+'%':ready?'Ready to download':allConf?'Ready to generate':'Awaiting setup', statusDot:ready?'#fff':'#0068DF',
+      statusLine:gen?STAGES[Math.min(STAGES.length-1,Math.floor(s.p*STAGES.length))]+' · '+Math.round(s.p*100)+'%':'Ready to download',
+      toggleRatio:()=>this.setState(st=>({open:st.open==='ratio'?null:'ratio'})),
+      playW:(ready?((idx+frac)/n)*100:0)+'%',
+      showMark:mark!=='Off', markOpacity:mark==='Full'?0.9:0.22,
+      gp, aud, selLabel:nA+(nA>1?' audiences':' audience'),
+      drvPicked:DRIVERS.filter(d=>s.drv.includes(d.id)).map((d,i)=>({...d,ml:i?'-10px':'0'})),
+      drvLabel:s.drv.length>1?(s.teamEdit?'Team Edit':'Both'):(DRIVERS.find(d=>d.id===s.drv[0])||DRIVERS[0]).name.split(' ')[1],
+      drvOpen:s.open==='drv', toggleDrv:()=>{ if(s.open==='drv') this.closeOpen(); else this.setState({open:'drv'}); },
+      drivers:DRIVERS.map(d0=>{const d=d0; const on=s.picked.drv&&s.drv.includes(d.id);return {...d,selectable:!d.off,locked:d.off,cursor:d.off?'default':'pointer',opacity:d.off?0.45:1,bg:on?SEL:'transparent',ring:on?'#0068DF':'rgba(255,255,255,0.3)',fill:on?'linear-gradient(140deg,#0042FF,#0068DF)':'transparent',tick:on?1:0,
+        onClick:()=>{if(d.off)return; this.setState(st=>{if(!(st.picked||{}).drv) return {picked:{...(st.picked||{}),drv:true},conf:{...(st.conf||{}),drv:false},drv:[d.id],...this.reset()}; const has=st.drv.includes(d.id); if(has&&st.drv.length===1) return null; return {drv:has?st.drv.filter(i=>i!==d.id):[...st.drv,d.id],...this.reset()};});}};}),
+      teamTrack:multiDrv&&s.teamEdit?'linear-gradient(100deg,#0042FF,#0068DF)':'rgba(255,255,255,0.18)',
+      teamKnob:multiDrv&&s.teamEdit?'16px':'2px', teamOpacity:multiDrv?1:0.4, teamCursor:multiDrv?'pointer':'default',
+      toggleTeam:()=>{if(multiDrv) this.setState(st=>({teamEdit:!st.teamEdit,...this.reset()}));},
+      audio:{...AUDIO.find(x=>x.id===s.audio),...(s.audio==='song'&&s.song?{desc:s.song+' · beat matched'}:{}),bar:s.audio==='none'?'rgba(255,255,255,0.35)':'#6fa8ff'}, 
+      audioOpen:s.open==='audio', toggleAudio:()=>this.setState(st=>({open:st.open==='audio'?null:'audio'})),
+      audios:AUDIO.map(x=>{const on=x.id===s.audio;return {...x,bar:x.id==='none'?'rgba(255,255,255,0.35)':'#6fa8ff',bg:on?SEL:'transparent',ring:on?'#0068DF':'rgba(255,255,255,0.3)',fill:on?'linear-gradient(140deg,#0042FF,#0068DF)':'transparent',tick:on?1:0,...(x.id==='song'&&s.song?{desc:s.song+' · beat matched'}:{}),onClick:()=>{if(x.id==='song'&&!s.song){this.audioRef.current&&this.audioRef.current.click();return;} this.setState({audio:x.id,open:null,...this.reset()});}};}),
+      engine:{ring:s.audio==='engine'?'#0068DF':'rgba(255,255,255,0.3)',fill:s.audio==='engine'?'linear-gradient(140deg,#0042FF,#0068DF)':'transparent',tick:s.audio==='engine'?1:0,bg:s.audio==='engine'?SEL:'transparent',onClick:()=>this.setState(st=>({audio:st.audio==='engine'?'none':'engine',...this.reset()}))},
+      hasSong:!!s.song, songName:s.song||'',
+      songItem:{ring:s.audio==='song'?'#0068DF':'rgba(255,255,255,0.3)',fill:s.audio==='song'?'linear-gradient(140deg,#0042FF,#0068DF)':'transparent',tick:s.audio==='song'?1:0,bg:s.audio==='song'?SEL:'transparent',onClick:()=>this.setState(st=>({audio:st.audio==='song'?'none':'song',...this.reset()}))},
+      uploadLabel:s.song?'Replace song':'Upload your own song',
+      noAudioColor:'#0068DF',
+      pickNoAudio:()=>this.setState({audio:'none',open:null,...this.reset()}),
+      uploadSong:()=>this.audioRef.current&&this.audioRef.current.click(),
+      audioRef:this.audioRef, onSong:e=>{const f=e.target.files&&e.target.files[0]; if(f) this.setState({song:f.name,audio:'song',...this.reset()}); e.target.value='';},
+      helpOpen:s.open==='help', openHelp:e=>{if(e){e.stopPropagation();e.preventDefault();} this.setState(st=>({open:st.open==='help'?null:'help'}));}, stop:e=>e.stopPropagation(),
+      gps:GPS.map(g=>({...g,bg:s.picked.gp&&g.id===s.gp?SEL:'transparent',opacity:g.up?0.45:1,cursor:g.up?'default':'pointer',dateLabel:g.up?g.date+' · Upcoming':g.date,onClick:()=>{if(!g.up) this.setState(st=>({picked:{...(st.picked||{}),gp:true},conf:{...(st.conf||{}),gp:false},gp:g.id,...this.reset()}));}})),
+      audiences:AUD.map(x=>{const on=s.picked.aud&&s.auds.includes(x.id);return {...x,bg:on?SEL:'transparent',ring:on?'#0068DF':'rgba(255,255,255,0.3)',fill:on?'linear-gradient(140deg,#0042FF,#0068DF)':'transparent',tick:on?1:0,onClick:()=>this.setState(st=>{if(!(st.picked||{}).aud) return {picked:{...(st.picked||{}),aud:true},conf:{...(st.conf||{}),aud:false},auds:[x.id],...this.reset()}; const has=st.auds.includes(x.id); if(has&&st.auds.length===1) return null; return {auds:has?st.auds.filter(i=>i!==x.id):[...st.auds,x.id],...this.reset()};})};}),
+      gpOpen:s.open==='gp', audOpen:s.open==='aud', anyOpen:!!s.open,
+      toggleGp:()=>{ if(s.open==='gp') this.closeOpen(); else this.setState({open:'gp'}); },
+      toggleAud:()=>{ if(s.open==='aud') this.closeOpen(); else this.setState({open:'aud'}); },
+      closeMenus:()=>this.closeOpen(),
+      confirmGp:()=>{if(s.picked.gp) this.confirm('gp');}, confirmDrv:()=>{if(s.picked.drv) this.confirm('drv');}, confirmAud:()=>{if(s.picked.aud) this.confirm('aud');}, confirmSty:()=>{if(s.picked.sty) this.confirm('sty');},
+      tk:(()=>{const on={bg:'linear-gradient(140deg,#0042FF,#0068DF)',shadow:'0 6px 16px rgba(0,66,255,0.45),0 0 14px rgba(0,104,223,0.4),inset 0 1px 0 rgba(255,255,255,0.3)',op:1,cursor:'pointer'}, off={bg:'rgba(255,255,255,0.12)',shadow:'none',op:0.55,cursor:'not-allowed'}; return {gp:s.picked.gp?on:off,drv:s.picked.drv?on:off,aud:s.picked.aud?on:off,sty:s.picked.sty?on:off};})(),
+      phd:{gp:!s.picked.gp,drv:!s.picked.drv,aud:!s.picked.aud,sty:!s.picked.sty}, val:{gp:s.picked.gp,drv:s.picked.drv,aud:s.picked.aud,sty:s.picked.sty},
+      err:errs, ring:{gp:errs.gp?'inset 0 0 0 1px rgba(226,0,55,0.75)':'none',drv:errs.drv?'inset 0 0 0 1px rgba(226,0,55,0.75)':'none',aud:errs.aud?'inset 0 0 0 1px rgba(226,0,55,0.75)':'none',sty:errs.sty?'inset 0 0 0 1px rgba(226,0,55,0.75)':'none'},
+      gen:allConf||gen?{bg:'radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%)',color:'#fff',shadow:'0 5px 0 #0026a8,0 7px 0 rgba(0,20,90,0.6),0 0 0 1px rgba(120,175,255,0.35),0 14px 38px rgba(0,82,255,0.55),0 0 60px rgba(0,104,223,0.35),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.25),inset 0 -8px 18px rgba(0,30,140,0.35)',cursor:'pointer',sheen:'0.28',ts:'0 1px 2px rgba(0,20,90,0.45)',hover:'filter:brightness(1.08) saturate(1.1)',active:'transform:translateY(3px);box-shadow:0 2px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 24px rgba(0,82,255,0.5),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.22)'}:{bg:'rgba(255,255,255,0.06)',color:'rgba(255,255,255,0.4)',shadow:'inset 0 0 0 1px rgba(255,255,255,0.08)',cursor:'not-allowed',sheen:'0',ts:'none',hover:'',active:''},
+      sceneHelpOpen:s.open==='sceneHelp', toggleSceneHelp:e=>{e&&e.stopPropagation(); this.setState(st=>({open:st.open==='sceneHelp'?null:'sceneHelp'}));},
+      durations:[15,30,60].map(d=>({label:d+'s',bg:d===s.dur?'linear-gradient(100deg,#0042FF,#0068DF)':'transparent',onClick:()=>this.setState({dur:d,...this.reset()})})),
+      fileRef:this.fileRef,
+      browse:()=>this.fileRef.current&&this.fileRef.current.click(),
+      onPick:e=>this.setFile(e.target.files&&e.target.files[0]),
+      onDragOver:e=>{e.preventDefault(); if(!s.drag) this.setState({drag:true});},
+      onDragLeave:()=>this.setState({drag:false}),
+      onDrop:e=>{e.preventDefault(); this.setFile(e.dataTransfer.files&&e.dataTransfer.files[0]);},
+      clearFile:()=>{if(this.fileRef.current) this.fileRef.current.value=''; this.setState({file:null,...this.reset()});},
+      noFile:!s.file, hasFile:!!s.file,
+      fileName:s.file?s.file.name:'', fileSize:s.file?fmt(s.file.size):'', fileExt:ext,
+      dropBorder:s.drag?'#0068DF':'rgba(255,255,255,0.22)', dropBg:s.drag?'rgba(0,104,223,0.14)':'rgba(255,255,255,0.02)',
+      scenes:SCENES.map((x,i)=>({...x,opacity:i===idx?1:0,scale:ready&&i===idx?1.08:1})),
+      segs:SCENES.map((x,i)=>({w:(!ready?0:i<idx?1:i===idx?frac:0)*100+'%'})),
+      scene:cur, badge:cur.tag.toUpperCase(),
+      isBroadcast:a.style==='broadcast',isTelemetry:a.style==='telemetry',isGlass:a.style==='glass',isPov:a.style==='pov',
+      noBadge:a.style!=='broadcast',
+      isGen:gen, pct:Math.round(s.p*100)+'%', pctW:(gen?s.p*100:0)+'%',
+      stage:STAGES[Math.min(STAGES.length-1,Math.floor(s.p*STAGES.length))],
+      showPaused:ready&&!s.playing, previewCursor:ready?'pointer':'default',
+      togglePlay:()=>ready&&this.setState(st=>({playing:!st.playing})),
+      notReady:!ready, isReady:ready, genRef:this.genRef,
+      restartAll:()=>{ const keep={chat:s.chat,msgs:s.msgs,chatIn:s.chatIn,chatTyping:s.chatTyping,doIt:s.doIt}; this._skipUnconfirm=true; this.setState({...this._init,...keep}); this.showToast('Setup restarted'); },
+      capOn:s.caps!=='off', capPlayOn:s.caps!=='off'&&!s.fix, capTop:'86%', labelShift:s.caps!=='off'&&s.capPos==='middle'?'-26%':'0',
+      capPrev:capLook(s.caps,Math.round(Math.max(11,Math.min(fwN,fhN)*0.065))), capPrevText:cur.cap,
+      capPlay:capLook(s.caps,Math.round(Math.max(8,Math.min(pwN,phN)*0.06*s.capScale/100))), capPlayText:a.cap[pIdx%a.cap.length],
+      capLang:isAll?nA+' languages, one per audience':a.langLabel,
+      capStyles:CAPS.map(c=>{const on=c.id===s.caps; return {...c,tile:on?'rgba(0,104,223,0.16)':'rgba(255,255,255,0.03)',ring:on?'inset 0 0 0 1px rgba(0,104,223,0.85)':'inset 0 0 0 1px rgba(255,255,255,0.06)',ink:on?'#fff':'rgba(255,255,255,0.6)',
+        sw:c.id==='off'?{pad:'0 3px',bg:'transparent',color:'rgba(255,255,255,0.35)',ts:'none'}:c.id==='brand'?{pad:'0 5px',bg:'linear-gradient(100deg,#0042FF,#0068DF)',color:'#fff',ts:'none'}:c.id==='glow'?{pad:'0 3px',bg:'transparent',color:'#fff',ts:'0 0 6px rgba(0,104,223,1),0 0 12px rgba(0,66,255,0.7)'}:{pad:'0 3px',bg:'transparent',color:'#fff',ts:'0 1px 2px rgba(0,0,0,0.8)'},
+        onClick:()=>this.setState({caps:c.id})};}),
+      capPosOp:s.caps==='off'?0.4:1,
+      capPositions:CAP_POS.map(c=>({...c,cursor:s.caps==='off'?'default':'pointer',bg:s.caps!=='off'&&c.id===s.capPos?'linear-gradient(100deg,#0042FF,#0068DF)':'transparent',onClick:()=>{if(s.caps!=='off') this.setState({capPos:c.id});}})),
+      doItOn:!!s.doIt,
+      doIt:s.doIt?{bg:'rgba(0,104,223,0.2)',border:'rgba(0,104,223,0.9)',glow:'0 0 16px rgba(0,104,223,0.35)',track:'linear-gradient(100deg,#0042FF,#0068DF)',knob:'14px',hint:'Describe your idea and I\'ll fill in the setup',ph:'e.g. 30s TikTok of Sainz at Monza…',inBorder:'rgba(0,104,223,0.7)'}:{bg:'rgba(255,255,255,0.04)',border:'rgba(255,255,255,0.16)',glow:'none',track:'rgba(255,255,255,0.18)',knob:'2px',hint:'Turn on to let AskAlbon build your setup',ph:'Ask a question…',inBorder:'rgba(255,255,255,0.14)'},
+      toggleDoIt:()=>this.setState(st=>st.doIt?{doIt:false}:{doIt:true,msgs:[...st.msgs,{from:'bot',text:'Do it for me is on. Describe the reel you have in mind and I\'ll set it up.'}]}),
+      notFix:!s.fix, capMenuOpen:!!s.capMenu&&!s.fix, capMenuRef:this.capMenuRef, capScalePct:((s.capScale-50)/80*100)+'%', capScaleVal:s.capScale, capScaleLbl:s.capScale+'%', capOff:s.caps==='off', capScaleCursor:s.caps==='off'?'default':'pointer', setCapScale:e=>this.setState({capScale:+e.target.value}), closeCapMenu:e=>{e&&e.stopPropagation(); this.setState({capMenu:false});}, toggleCapMenu:e=>{e&&e.stopPropagation(); this.setState(st=>({capMenu:!st.capMenu}));},
+      capBtn:{label:s.caps==='off'?'Captions off':(CAPS.find(c=>c.id===s.caps)||CAPS[1]).label,border:s.capMenu?'rgba(0,104,223,0.9)':'rgba(255,255,255,0.15)',bg:s.capMenu?'rgba(0,104,223,0.18)':'rgba(255,255,255,0.05)'},
+      chatOpen:s.chat, fabIn:()=>this.setState({fabHover:true}), fabOut:()=>this.setState({fabHover:false}), fabTipOp:s.fabHover&&!s.chat?1:0, fabTipTf:s.fabHover&&!s.chat?'none':'translateX(6px)', chatRef:this.chatRef, chatListRef:this.chatListRef, chatTyping:s.chatTyping, chatIn:s.chatIn, chatEmpty:!s.chatIn.trim(), chatCursor:s.chatIn.trim()?'pointer':'default', chatOpacity:s.chatIn.trim()?1:0.4,
+      toggleChat:()=>this.setState(st=>({chat:!st.chat})), setChatIn:e=>this.setState({chatIn:e.target.value}), sendChat:e=>{e.preventDefault(); this.askBot(s.chatIn);},
+      msgs:s.msgs.map(m=>m.from==='me'?{text:m.text,justify:'flex-end',bg:'#0068DF',radius:'16px 16px 4px 16px'}:{text:m.text,justify:'flex-start',bg:'rgba(255,255,255,0.08)',radius:'16px 16px 16px 4px'}),
+      showSuggest:s.msgs.length===1&&!s.chatTyping, suggests:FAQS.map(f=>({label:f[0],onClick:()=>this.askBot(f[0])})),
+      ctaLabel:gen?'GENERATING · '+Math.round(s.p*100)+'%':nReels>1?'GENERATE '+nReels:'GENERATE',
+      downloadLabel:nReels>1?'Download all '+nReels:'Download MP4',
+      audMeta:isAll?'6 reels · 4 languages · each styled for its audience':a.langLabel+' · style set automatically',
+      allBg:isAll?SEL:'transparent',
+      pickAll:()=>this.setState({aud:'all',open:null,...this.reset()}),
+      statusText:ready?'Ready · '+s.dur+'s · 9:16':gen?'Rendering…':'Preview · '+s.dur+'s',
+      generate:()=>{if(gen)return; if(!allConf){const t={...s.touched}; ['gp','drv','aud','sty'].forEach(k=>{if(!s.conf[k]) t[k]=true;}); this.setState({touched:t,open:null}); return;} const b=this.genRef.current; if(b&&b.animate){const sh=getComputedStyle(b).boxShadow; b.animate([{transform:'translateY(0)',boxShadow:sh},{transform:'translateY(5px)',boxShadow:'0 0 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 6px 18px rgba(0,82,255,0.5),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.2)',offset:0.35},{transform:'translateY(0)',boxShadow:sh}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'});} this.setState({phase:'gen',p:0,t:0,open:null});}
+    };
+  }
+}
+</script>
+</body>
+</html>
