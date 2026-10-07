@@ -97,19 +97,19 @@ function IXUsersSlide({ index }) {
 
 /* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. Laid out 3-up so Time Capsule wraps to sit below SparkPlug Studio and Ideation Studio reads second. */
 const IX_DECKS = [
-  { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'SparkPlug Studio turns raw Williams race data into cinematic, stylised animations',
+  { n:'01', eyebrow:'CONCEPT 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'SparkPlug Studio turns raw Williams race data into cinematic, stylised animations',
     backLabel:'THE WILLIAMS SPARKPLUG STUDIO', head:'Every race, a cinematic recap',
     body:'After every race, the Williams SparkPlug Studio turns race data, footage and media into a cinematic, high-energy animation, made with Higgsfield in a style tailored to each fan. A bespoke summary of the team’s day, built for Williams’ channels.',
     tags:['Race data', 'Higgsfield', 'Stylised'] },
-  { n:'02', eyebrow:'DECK 02', name:'Ideation Studio', img:'assets/ideation-studio.png', bg:'center / cover no-repeat', sub:'Ideation Studio gives Williams creative teams a streamlined way to ideate concepts and activations',
+  { n:'02', eyebrow:'CONCEPT 02', name:'Ideation Studio', img:'assets/ideation-studio.png', bg:'center / cover no-repeat', sub:'Ideation Studio gives Williams creative teams a streamlined way to ideate concepts and activations',
     backLabel:'THE WILLIAMS IDEATION STUDIO', head:'From blank page to pitch-ready, in minutes',
     body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations, turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
     tags:['Ideation', 'Concepts', 'Activations'] },
-  { n:'03', eyebrow:'DECK 03', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'AI Glasses give VIP guests an immersive AI experience through the paddock and pit lane',
+  { n:'03', eyebrow:'CONCEPT 03', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'AI Glasses give VIP guests an immersive AI experience through the paddock and pit lane',
     backLabel:'THE WILLIAMS AI ENGINEER', head:'Your own race engineer, in your ear',
     body:'A bespoke AI experience that places VIP guests and partners at the heart of the team during paddock and pit lane walks. A synthetic race engineer delivers live insights, heritage and sponsor stories on demand, while smart glasses capture every moment to relive long after the day.',
     tags:['Paddock', 'Pit lane', 'Smart glasses'] },
-  { n:'04', eyebrow:'DECK 04', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'Time Capsule takes fans on a generative VR journey through Williams history, powered by SparkPlug’s visuals',
+  { n:'04', eyebrow:'CONCEPT 04', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'Time Capsule takes fans on a generative VR journey through Williams history, powered by SparkPlug’s visuals',
     backLabel:'THE WILLIAMS TIME CAPSULE', head:'Step inside the Williams story',
     body:'A generative VR experience in the Williams fan zone at every Grand Prix. Narrated by Alex Albon, fans travel through the eras, step inside iconic cars in every Williams livery and relive legendary races, brought to life using SparkPlug Studio’s generated visuals. Powered by Claude AI and bespoke to each Grand Prix, no two journeys are the same.',
     tags:['Fan zone', 'VR', 'Claude AI'] },
