@@ -117,7 +117,7 @@ deck-stage *{font-synthesis:none}
 .ix-panel>div{transition:box-shadow .35s ease}.ix-panel:hover>div{box-shadow:0 0 0 1px rgba(0,104,223,.6),0 24px 60px rgba(0,104,223,.28)!important}
 </style></head><body>
 <deck-stage width="1920" height="1080" no-rail>
-<section data-label="Portal" data-screen-label="01 Portal"><div data-ix="IXPortalSlide"></div></section>
+<section data-label="Portal" data-screen-label="01 Portal" data-deck-skip><div data-ix="IXPortalSlide"></div></section>
 <section data-label="Overview" data-screen-label="02 Overview"><div data-ix="IXOverviewSlide"></div></section>
 <section data-label="Cover" data-screen-label="03 Cover"><div data-ix="IXCoverSlide"></div></section>
 <section data-label="Journey" data-screen-label="04 Journey"><div data-ix="IXJourneySlide"></div></section>
@@ -135,4 +135,18 @@ deck-stage *{font-synthesis:none}
 <script type="text/babel" src="ix-slides-b.jsx"></script>
 <script type="text/babel" src="ix-slides-c.jsx"></script>
 <script type="text/babel">document.querySelectorAll('[data-ix]').forEach((el,i)=>{const C=window[el.dataset.ix];ReactDOM.createRoot(el).render(<C index={i}/>);});</script>
+<script>
+(function(){
+  // The Portal (Concepts hub) isn't part of the AI Glasses deck — keep the
+  // slide-count/prev/next overlay hidden while it's showing, and only
+  // reveal it once a card has navigated into the actual deck.
+  var ds = document.querySelector('deck-stage');
+  function applyHubChrome(index){
+    var overlay = ds.shadowRoot && ds.shadowRoot.querySelector('.overlay');
+    if(overlay) overlay.style.display = index === 0 ? 'none' : '';
+  }
+  ds.addEventListener('slidechange', function(e){ applyHubChrome(e.detail.index); });
+  applyHubChrome(0);
+})();
+</script>
 </body></html>
