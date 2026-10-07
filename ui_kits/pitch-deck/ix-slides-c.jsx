@@ -103,7 +103,7 @@ const IX_DECKS = [
     tags:['Race data', 'Higgsfield', 'Stylised'] },
   { n:'02', eyebrow:'DECK 02', name:'Ideation Studio', grey:true, ph:'concept image to come', sub:'Ideation Studio gives Williams creative teams a streamlined way to ideate concepts and activations',
     backLabel:'THE WILLIAMS IDEATION STUDIO', head:'From blank page to pitch-ready, in minutes',
-    body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations — turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
+    body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations, turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
     tags:['Ideation', 'Concepts', 'Activations'] },
   { n:'03', eyebrow:'DECK 03', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'AI Glasses give VIP guests an immersive AI experience through the paddock and pit lane',
     backLabel:'THE WILLIAMS AI ENGINEER', head:'Your own race engineer, in your ear',

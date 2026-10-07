@@ -104,9 +104,9 @@
   </sc-if>
 
   <sc-if value="{{ walkActive }}">
-    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 2200ms cubic-bezier(.4,0,.2,1),top 2200ms cubic-bezier(.4,0,.2,1),width 2200ms cubic-bezier(.4,0,.2,1),height 2200ms cubic-bezier(.4,0,.2,1),opacity 700ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
+    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 1400ms cubic-bezier(.4,0,.2,1),top 1400ms cubic-bezier(.4,0,.2,1),width 1400ms cubic-bezier(.4,0,.2,1),height 1400ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
     <sc-if value="{{ walkShowCard }}">
-      <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 2200ms cubic-bezier(.4,0,.2,1),top 2200ms cubic-bezier(.4,0,.2,1),opacity 700ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
+      <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 1400ms cubic-bezier(.4,0,.2,1),top 1400ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
         <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1fc7ff">Step {{ walkStepNum }}/{{ walkTotal }} · {{ walkTitle }}</span>
         <p style="margin:0;font-size:13px;line-height:1.45;color:rgba(255,255,255,0.84)">{{ walkDesc }}</p>
         <div style="display:flex;align-items:center;gap:8px">
@@ -115,6 +115,15 @@
           </sc-if>
           <button onClick="{{ walkNext }}" disabled="{{ walkBtnDisabled }}" style="height:32px;padding:0 16px;border:0;border-radius:999px;background:{{ walkBtnBg }};color:{{ walkBtnColor }};font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:{{ walkBtnCursor }};transition:background 300ms ease,color 300ms ease" style-hover="filter:{{ walkBtnHover }}">{{ walkBtnLabel }}</button>
         </div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ postActive }}">
+    <div aria-hidden="true" style="position:fixed;z-index:410;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 650ms cubic-bezier(.4,0,.2,1),top 650ms cubic-bezier(.4,0,.2,1),width 650ms cubic-bezier(.4,0,.2,1),height 650ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ postHL.l }};top:{{ postHL.t }};width:{{ postHL.w }};height:{{ postHL.h }};opacity:{{ postHL.op }}"></div>
+    <sc-if value="{{ postShowText }}">
+      <div style="position:fixed;z-index:412;box-sizing:border-box;padding:14px 16px;border-radius:14px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);transition:left 650ms cubic-bezier(.4,0,.2,1),top 650ms cubic-bezier(.4,0,.2,1),opacity 550ms ease;left:{{ postCard.l }};top:{{ postCard.t }};width:{{ postCard.w }};opacity:{{ postCard.op }}">
+        <p style="margin:0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.9)">{{ postMsg }}</p>
       </div>
     </sc-if>
   </sc-if>
@@ -218,7 +227,7 @@
 
         <div style="position:relative;display:flex;flex-direction:column;gap:10px;padding:4px 4px 2px">
           <div style="display:flex;align-items:center;gap:12px">
-            <button onClick="{{ pToggle }}" aria-label="Play or pause" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;padding:0" style-hover="box-shadow:0 0 0 4px rgba(255,255,255,0.12)">
+            <button ref="{{ playToggleRef }}" onClick="{{ pToggle }}" aria-label="Play or pause" style="flex:none;width:34px;height:34px;border-radius:50%;border:0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;padding:0" style-hover="box-shadow:0 0 0 4px rgba(255,255,255,0.12)">
               <sc-if value="{{ pIsPlaying }}"><span style="width:3px;height:11px;border-radius:1px;background:rgb(10,12,20)"></span><span style="width:3px;height:11px;border-radius:1px;background:rgb(10,12,20)"></span></sc-if>
               <sc-if value="{{ pIsPaused }}" hint-placeholder-val="{{ true }}"><span style="width:0;height:0;margin-left:3px;border-left:10px solid rgb(10,12,20);border-top:6px solid transparent;border-bottom:6px solid transparent"></span></sc-if>
             </button>
@@ -261,7 +270,7 @@
               </sc-if>
             </div>
             </sc-if>
-            <button onClick="{{ toggleFix }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;height:36px;margin-bottom:4px;padding:0 14px 0 12px;border-radius:10px;border:1px solid {{ fixBtn.border }};background:{{ fixBtn.bg }};box-shadow:{{ fixBtn.glow }};color:#fff;cursor:pointer;font-size:12px;font-weight:700;transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1)" style-hover="filter:brightness(1.12)">
+            <button ref="{{ vfxFixBtnRef }}" onClick="{{ toggleFix }}" style="position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;height:36px;margin-bottom:4px;padding:0 14px 0 12px;border-radius:10px;border:1px solid {{ fixBtn.border }};background:{{ fixBtn.bg }};box-shadow:{{ fixBtn.glow }};color:#fff;cursor:pointer;font-size:12px;font-weight:700;transition:background 200ms cubic-bezier(.2,.7,.2,1),box-shadow 200ms cubic-bezier(.2,.7,.2,1)" style-hover="filter:brightness(1.12)">
               <svg viewBox="0 0 24 24" aria-hidden="true" style="flex:none;width:13px;height:13px;overflow:visible"><path d="M10 5C11.44 11.56 11.44 11.56 18 13C11.44 14.44 11.44 14.44 10 21C8.56 14.44 8.56 14.44 2 13C8.56 11.56 8.56 11.56 10 5Z" fill="#fff"></path><path d="M19 1C19.72 4.28 19.72 4.28 23 5C19.72 5.72 19.72 5.72 19 9C18.28 5.72 18.28 5.72 15 5C18.28 4.28 18.28 4.28 19 1Z" fill="#fff"></path><path d="M19.5 16.9C19.968 19.032 19.968 19.032 22.1 19.5C19.968 19.968 19.968 19.968 19.5 22.1C19.032 19.968 19.032 19.968 16.9 19.5C19.032 19.032 19.032 19.032 19.5 16.9Z" fill="#fff"></path></svg>{{ fixBtn.label }}
             </button>
           </div>
@@ -730,7 +739,7 @@
           </div>
           </sc-if>
           <sc-if value="{{ isReady }}">
-            <button onClick="{{ openPlayer }}" aria-label="Open reel" style="position:absolute;inset:0;padding:0;border:0;border-radius:10px;overflow:hidden;cursor:pointer;background:rgb(26,28,36)" style-hover="filter:brightness(1.08)">
+            <button ref="{{ previewBtnRef }}" onClick="{{ openPlayer }}" aria-label="Open reel" style="position:absolute;inset:0;padding:0;border:0;border-radius:10px;overflow:hidden;cursor:pointer;background:rgb(26,28,36)" style-hover="filter:brightness(1.08)">
               <img src="assets/thumb-placeholder.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%">
               <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,20,0) 45%,rgba(10,12,20,0.85))"></span>
               <span style="position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(255,255,255,0.16);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 10px 30px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center"><span style="width:0;height:0;margin-left:4px;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent"></span></span>
@@ -903,7 +912,7 @@ const WALK_STEPS=[
     selectApply:s=>({drv:['albon'],teamEdit:false,picked:{...s.picked,drv:true},conf:{...s.conf,drv:false}}),
     confirmApply:s=>({conf:{...s.conf,drv:true},open:null,phase:'idle',p:0,t:0}),
     apply:s=>({drv:['albon'],teamEdit:false,open:null,picked:{...s.picked,drv:true},conf:{...s.conf,drv:true},phase:'idle',p:0,t:0}) },
-  { ref:'audWrapRef', title:'Audience', desc:'Pick who the reel speaks to — it shapes the tone and language.', openKey:'aud', optionText:'Japan', hasConfirm:true,
+  { ref:'audWrapRef', title:'Audience', desc:'Pick who the reel speaks to. It shapes the tone and language.', openKey:'aud', optionText:'Japan', hasConfirm:true,
     selectApply:s=>({auds:['jp'],picked:{...s.picked,aud:true},conf:{...s.conf,aud:false}}),
     confirmApply:s=>({conf:{...s.conf,aud:true},open:null,phase:'idle',p:0,t:0}),
     apply:s=>({auds:['jp'],open:null,picked:{...s.picked,aud:true},conf:{...s.conf,aud:true},phase:'idle',p:0,t:0}) },
@@ -926,7 +935,7 @@ const WALK_STEPS=[
 ];
 
 class Component extends DCLogic {
-  state={intro:true,walkStep:null,walkRect:null,walkReady:false,chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
+  state={intro:true,walkStep:null,walkRect:null,walkReady:false,postStep:null,postRect:null,postText:'',chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
   fileRef=React.createRef();
   chatRef=React.createRef();
   capMenuRef=React.createRef();
@@ -952,10 +961,15 @@ class Component extends DCLogic {
   ratioWrapRef=React.createRef();
   qualityWrapRef=React.createRef();
   audioWrapRef=React.createRef();
+  previewBtnRef=React.createRef();
+  vfxFixBtnRef=React.createRef();
+  playToggleRef=React.createRef();
   leftRef=React.createRef();
   choiceRef=React.createRef();
   winRef=React.createRef();
   toDocRect(el){ if(!el) return null; const r=el.getBoundingClientRect(); const sx=window.scrollX||0,sy=window.scrollY||0; return {top:r.top+sy,left:r.left+sx,width:r.width,height:r.height}; }
+  toViewRect(el){ if(!el) return null; const r=el.getBoundingClientRect(); return {top:r.top,left:r.left,width:r.width,height:r.height}; }
+  viewRectOf(refName){ const ref=this[refName]; return this.toViewRect(ref&&ref.current); }
   rectOf(refName){const ref=this[refName]; return this.toDocRect(ref&&ref.current);}
   optionRect(refName,text){
     const ref=this[refName]; const root=ref&&ref.current; if(!root||!text) return null;
@@ -965,6 +979,7 @@ class Component extends DCLogic {
   }
   tickEl(refName){ const ref=this[refName]; const root=ref&&ref.current; return root&&root.querySelector('button[aria-label="Confirm"]'); }
   tickRect(refName){ return this.toDocRect(this.tickEl(refName)); }
+  popEl(el){ if(el&&el.animate) el.animate([{transform:'scale(1)'},{transform:'scale(1.3)'},{transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.34,1.56,.64,1)'}); }
   clearWalkTimers(){clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6);}
   goWalkStep(n){
     const step=WALK_STEPS[n];
@@ -972,11 +987,11 @@ class Component extends DCLogic {
     this.clearWalkTimers();
     this.setState({walkStep:n,walkRect:this.rectOf(step.ref),walkReady:false});
     if(step.card===false) return;
-    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),2200);
-    else if(step.hasConfirm) this._walkTo=setTimeout(()=>this.openAndPickConfirm(n),2200);
-    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),2200);
-    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),2200);
-    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),2200);
+    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),1250);
+    else if(step.hasConfirm) this._walkTo=setTimeout(()=>this.openAndPickConfirm(n),1250);
+    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),1250);
+    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),1250);
+    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),1250);
   }
   openAndPickConfirm(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -992,33 +1007,36 @@ class Component extends DCLogic {
           const tRect=this.tickRect(step.ref);
           if(tRect) this.setState({walkRect:tRect});
           this._walkTo5=setTimeout(()=>{
-            const tEl=this.tickEl(step.ref);
-            if(tEl&&tEl.animate) tEl.animate([{transform:'scale(1)'},{transform:'scale(1.4)'},{transform:'scale(1)'}],{duration:620,easing:'cubic-bezier(.34,1.56,.64,1)'});
+            this.popEl(this.tickEl(step.ref));
             this._walkTo6=setTimeout(()=>{
               this._skipUnconfirm=true;
               this.setState(st=>({...step.confirmApply(st)}),()=>{ if(this.state.walkStep===n) this.setState({walkReady:true}); });
-              setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },200);
-            },420);
-          },1900);
-        },1100);
-      },2000);
-    },1100);
+              setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },120);
+            },260);
+          },1150);
+        },650);
+      },1250);
+    },650);
   }
   openAndPick(n){
     const step=WALK_STEPS[n]; if(!step) return;
     this._skipUnconfirm=true;
     this.setState({open:step.openKey});
     this._walkTo2=setTimeout(()=>{
-      const oRect=this.optionRect(step.ref,step.optionText);
+      const oEl=this[step.ref]&&this[step.ref].current&&Array.from(this[step.ref].current.querySelectorAll('button')).find(b=>b.textContent.toLowerCase().includes(step.optionText.toLowerCase()));
+      const oRect=this.toDocRect(oEl);
       if(oRect) this.setState({walkRect:oRect});
-      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),2200);
-    },1100);
+      this._walkTo3=setTimeout(()=>{
+        this.popEl(oEl);
+        this._walkTo4=setTimeout(()=>this.applyWalkStep(n),320);
+      },950);
+    },650);
   }
   pickOption(n){
     const step=WALK_STEPS[n]; if(!step) return;
     const oRect=this.optionRect(step.ref,step.optionText);
     if(oRect) this.setState({walkRect:oRect});
-    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),2200);
+    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),1250);
   }
   runTypeAnim(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -1029,15 +1047,15 @@ class Component extends DCLogic {
       if(label){ const r=this.toDocRect(label); if(r) this.setState({walkRect:r}); }
       if(inp) inp.focus();
       const target=step.typeDur||''; let i=0;
-      const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo3=setTimeout(tick,260+Math.random()*260); else this._walkTo4=setTimeout(()=>this.applyWalkStep(n),1600); };
-      this._walkTo3=setTimeout(tick,700);
-    },900);
+      const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo3=setTimeout(tick,160+Math.random()*160); else this._walkTo4=setTimeout(()=>this.applyWalkStep(n),1000); };
+      this._walkTo3=setTimeout(tick,420);
+    },550);
   }
   applyWalkStep(n){
     const step=WALK_STEPS[n]; if(!step) return;
     this._skipUnconfirm=true;
     this.setState(st=>({...step.apply(st)}),()=>{ if(this.state.walkStep===n) this.setState({walkReady:true}); });
-    if(step.openKey||step.optionText||step.typeDur) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },200);
+    if(step.openKey||step.optionText||step.typeDur) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },120);
   }
   nextWalkStep(){
     const n=this.state.walkStep; if(n==null||!this.state.walkReady) return;
@@ -1052,13 +1070,114 @@ class Component extends DCLogic {
     this.clearWalkTimers();
     this.goWalkStep(n-1);
   }
+  clearPostTimers(){ (this._postTimers||[]).forEach(clearTimeout); this._postTimers=[]; }
+  postAfter(fn,ms){ const id=setTimeout(fn,ms); (this._postTimers=this._postTimers||[]).push(id); return id; }
+  startWatchPrompt(){
+    this.clearPostTimers();
+    this.setState({postStep:'watch', postRect:this.viewRectOf('previewBtnRef'), postText:'Your reel is ready. Tap to watch it.'});
+  }
+  startVfxIntro(){
+    this.clearPostTimers();
+    this.setState({postStep:'vfxIntro', postRect:this.viewRectOf('vfxFixBtnRef'), postText:'Noticed something to tweak? You can fix it seamlessly, right here.'});
+    this.postAfter(()=>this.runVfxDemo(),2200);
+  }
+  runVfxDemo(){
+    this.setState({postStep:'vfxDemo', postText:'', fix:true, box:null, choice:false, pPlay:false});
+    const target={x:0.36,y:0.10,w:0.28,h:0.14};
+    const mid={x:target.x+target.w/2,y:target.y+target.h/2};
+    const start={x:mid.x-0.01,y:mid.y-0.01,w:0.02,h:0.02};
+    this.postAfter(()=>{
+      this.setState({box:start});
+      const STEPS=16, STEP_MS=44;
+      let i=0;
+      const grow=()=>{
+        i++;
+        const t=i/STEPS, e=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+        const box={x:start.x+(target.x-start.x)*e, y:start.y+(target.y-start.y)*e, w:start.w+(target.w-start.w)*e, h:start.h+(target.h-start.h)*e};
+        this.setState({box});
+        const vr=this.toViewRect(this.vidRef.current);
+        if(vr) this.setState({postRect:{top:vr.top+box.y*vr.height,left:vr.left+box.x*vr.width,width:box.w*vr.width,height:box.h*vr.height}});
+        if(i<STEPS) this.postAfter(grow,STEP_MS);
+        else this.postAfter(()=>this.afterBoxDrawn(),750);
+      };
+      grow();
+    },700);
+  }
+  afterBoxDrawn(){
+    const tRect=this.toViewRect(this.tickEl('pillRef'));
+    if(tRect) this.setState({postRect:tRect});
+    this.postAfter(()=>{
+      this.popEl(this.tickEl('pillRef'));
+      this.postAfter(()=>{
+        this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0;
+        this.setState({choice:true});
+        this.postAfter(()=>this.afterConfirmBox(),700);
+      },330);
+    },750);
+  }
+  afterConfirmBox(){
+    const root=this.pillRef.current;
+    const typeBtn=root&&root.querySelector('button[aria-label="Describe the change"]');
+    const r=this.toViewRect(typeBtn);
+    if(r) this.setState({postRect:r});
+    this.postAfter(()=>{
+      this.popEl(typeBtn);
+      this.postAfter(()=>{
+        this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0;
+        this.setState({choice:'type',tip:null});
+        this.postAfter(()=>this.typeVfxNote(),600);
+      },330);
+    },750);
+  }
+  typeVfxNote(){
+    const root=this.pillRef.current; const inp=root&&root.querySelector('input');
+    if(inp){ inp.focus(); const r=this.toViewRect(inp); if(r) this.setState({postRect:r}); }
+    const target='Switch lights to red'; let i=0;
+    const tick=()=>{
+      i++; this.setState({fixNote:target.slice(0,i)});
+      if(i<target.length) this.postAfter(tick,55+Math.random()*70);
+      else this.postAfter(()=>this.afterTyped(),850);
+    };
+    this.postAfter(tick,380);
+  }
+  afterTyped(){
+    const root=this.pillRef.current;
+    const regenBtn=root&&Array.from(root.querySelectorAll('button')).find(b=>b.textContent.toLowerCase().includes('regen'));
+    const r=this.toViewRect(regenBtn);
+    if(r) this.setState({postRect:r});
+    this.postAfter(()=>{
+      this.popEl(regenBtn);
+      this.postAfter(()=>{
+        this.regenNow(0);
+        this.startPlayPrompt();
+      },330);
+    },750);
+  }
+  startPlayPrompt(){
+    this.setState({postStep:'play', postRect:this.viewRectOf('playToggleRef'), postText:'Press play to watch your updated reel.'});
+  }
+  clearPost(){ this.clearPostTimers(); this.setState({postStep:null,postRect:null,postText:''}); }
   componentDidUpdate(){
     if(this.state.walkStep!=null&&this._ps&&(this._ps.vw!==this.state.vw||this._ps.vh!==this.state.vh)){
       const step=WALK_STEPS[this.state.walkStep]; if(step) this.setState({walkRect:this.rectOf(step.ref)});
     }
     if(this.state.walkStep!=null&&this._ps&&this._ps.phase!=='gen'&&this.state.phase==='gen'){
+      if(this.state.walkStep===WALK_STEPS.length-1) this._awaitingReady=true;
       this.clearWalkTimers();
       this.setState({walkStep:null,walkRect:null});
+    }
+    if(this._awaitingReady&&this._ps&&this._ps.phase!=='ready'&&this.state.phase==='ready'){
+      this._awaitingReady=false;
+      this.startWatchPrompt();
+    }
+    if(this.state.postStep==='watch'&&this._ps&&!this._ps.player&&this.state.player){
+      this.startVfxIntro();
+    }
+    if(this.state.postStep!=null&&this._ps&&this._ps.player&&!this.state.player){
+      this.clearPost();
+    }
+    if(this.state.postStep==='play'&&this._ps&&!this._ps.pPlay&&this.state.pPlay){
+      this.clearPost();
     }
     const cm=this.capMenuRef.current; if(cm&&cm!==this._cmEl&&cm.animate) cm.animate([{opacity:0,transform:'translateY(6px) scale(0.97)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'}); this._cmEl=cm;
     if(this.state.chat&&!this._chatWas&&this.chatRef.current&&this.chatRef.current.animate) this.chatRef.current.animate([{opacity:0,transform:'translateY(12px) scale(0.92)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,1,.36,1)'});
@@ -1110,7 +1229,7 @@ class Component extends DCLogic {
     if(window.ResizeObserver){this.ro2=new ResizeObserver(()=>{const l=this.leftRef.current,p=this.promptRef.current; if(l&&p){const lh=l.offsetHeight, ph=p.offsetHeight; if(lh!==this.state.leftH||ph!==this.state.promptH) this.setState({leftH:lh,promptH:ph});}}); this.leftRef.current&&this.ro2.observe(this.leftRef.current); this.promptRef.current&&this.ro2.observe(this.promptRef.current);}
     if(el&&window.ResizeObserver){this.ro=new ResizeObserver(()=>{const b=el.getBoundingClientRect();this.setState({sw:b.width,sh:b.height});});this.ro.observe(el);}
   }
-  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6); clearTimeout(this._introTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
+  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6); clearTimeout(this._introTo); this.clearPostTimers(); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
   tick(){
     const s=this.state;
     if(s.phase==='gen'){const p=s.p+50/GEN; if(p>=1) this.setState({phase:'ready',p:1,t:0,reelVer:1,playing:this.props.autoplay??true}); else this.setState({p});}
@@ -1311,7 +1430,7 @@ class Component extends DCLogic {
       onPromptFocus:()=>this.setState({promptFocus:true}), onPromptBlur:()=>this.setState({promptFocus:false}),
       promptBorder:s.promptFocus?'rgba(110,170,255,0.6)':'rgba(255,255,255,0.09)',
       promptGlow:s.promptFocus?'0 0 0 3px rgba(0,104,223,0.15)':'none', promptRef:this.promptRef, leftRef:this.leftRef, rightH:s.leftH?Math.max(360,s.leftH-(s.promptH||0)-32)+'px':'auto',
-      gpWrapRef:this.gpWrapRef, drvWrapRef:this.drvWrapRef, audWrapRef:this.audWrapRef, styWrapRef:this.styWrapRef, lenWrapRef:this.lenWrapRef, ratioWrapRef:this.ratioWrapRef, qualityWrapRef:this.qualityWrapRef, audioWrapRef:this.audioWrapRef,
+      gpWrapRef:this.gpWrapRef, drvWrapRef:this.drvWrapRef, audWrapRef:this.audWrapRef, styWrapRef:this.styWrapRef, lenWrapRef:this.lenWrapRef, ratioWrapRef:this.ratioWrapRef, qualityWrapRef:this.qualityWrapRef, audioWrapRef:this.audioWrapRef, previewBtnRef:this.previewBtnRef, vfxFixBtnRef:this.vfxFixBtnRef, playToggleRef:this.playToggleRef,
       presets:PRESETS.map(p=>{const on=s.prompt===p.text; return {label:p.label,border:on?'rgba(150,195,255,0.9)':'rgba(0,104,223,0.3)',bg:on?'rgba(0,104,223,0.25)':'transparent',glow:on?'0 0 14px rgba(0,104,223,0.45)':'none',onClick:()=>this.setState(st=>({prompt:st.prompt===p.text?'':p.text,...this.reset()}))};}),
       doSave:()=>{clearTimeout(this.saveTo); this.setState({saved:true}); this.saveTo=setTimeout(()=>this.setState({saved:false}),1600);},
       toggleProj:()=>this.setState(st=>({open:st.open==='proj'?null:'proj'})),
@@ -1392,7 +1511,7 @@ class Component extends DCLogic {
       toggleDoIt:()=>this.setState(st=>st.doIt?{doIt:false}:{doIt:true,msgs:[...st.msgs,{from:'bot',text:'Do it for me is on. Describe the reel you have in mind and I\'ll set it up.'}]}),
       notFix:!s.fix, capMenuOpen:!!s.capMenu&&!s.fix, capMenuRef:this.capMenuRef, capScalePct:((s.capScale-50)/80*100)+'%', capScaleVal:s.capScale, capScaleLbl:s.capScale+'%', capOff:s.caps==='off', capScaleCursor:s.caps==='off'?'default':'pointer', setCapScale:e=>this.setState({capScale:+e.target.value}), closeCapMenu:e=>{e&&e.stopPropagation(); this.setState({capMenu:false});}, toggleCapMenu:e=>{e&&e.stopPropagation(); this.setState(st=>({capMenu:!st.capMenu}));},
       capBtn:{label:s.caps==='off'?'Captions off':(CAPS.find(c=>c.id===s.caps)||CAPS[1]).label,border:s.capMenu?'rgba(0,104,223,0.9)':'rgba(255,255,255,0.15)',bg:s.capMenu?'rgba(0,104,223,0.18)':'rgba(255,255,255,0.05)'},
-      introOpen:s.intro, startExperience:()=>{this.setState({intro:false}); clearTimeout(this._introTo); this._introTo=setTimeout(()=>this.goWalkStep(0),1400);},
+      introOpen:s.intro, startExperience:()=>{this.setState({intro:false}); clearTimeout(this._introTo); this._introTo=setTimeout(()=>this.goWalkStep(0),250);},
       ...(()=>{
         const wn=s.walkStep, wstep=wn!=null?WALK_STEPS[wn]:null, wr=s.walkRect;
         const vw2=s.vw||(typeof window!=='undefined'?window.innerWidth:1440);
@@ -1408,6 +1527,19 @@ class Component extends DCLogic {
           walkBtnBg:s.walkReady?'rgb(24,170,245)':'rgba(255,255,255,0.1)', walkBtnColor:s.walkReady?'#fff':'rgba(255,255,255,0.35)', walkBtnHover:s.walkReady?'brightness(1.12)':'none',
           walkHL:{l:(wr?wr.left-PAD:0)+'px',t:(wr?wr.top-PAD:0)+'px',w:(wr?wr.width+PAD*2:0)+'px',h:(wr?wr.height+PAD*2:0)+'px',op:wr?1:0},
           walkCard:{l:cardLeft+'px',t:cardTop+'px',op:wr?1:0,w:cardW+'px'},
+        };
+      })(),
+      ...(()=>{
+        const pr=s.postRect, active=!!pr, showText=active&&!!s.postText;
+        const vw2=s.vw||(typeof window!=='undefined'?window.innerWidth:1440);
+        const sy=(typeof window!=='undefined'?window.scrollY:0)||0;
+        const PAD=10, cardW=260, cardH=100, gap=20;
+        const cardLeft=pr?Math.min(Math.max(pr.left,16),Math.max(16,vw2-cardW-16)):16;
+        const cardTop=pr?Math.max(sy+8,pr.top-cardH-gap):8;
+        return {
+          postActive:active, postShowText:showText, postMsg:s.postText,
+          postHL:{l:(pr?pr.left-PAD:0)+'px',t:(pr?pr.top-PAD:0)+'px',w:(pr?pr.width+PAD*2:0)+'px',h:(pr?pr.height+PAD*2:0)+'px',op:active?1:0},
+          postCard:{l:cardLeft+'px',t:cardTop+'px',op:showText?1:0,w:cardW+'px'},
         };
       })(),
       chatOpen:s.chat, fabIn:()=>this.setState({fabHover:true}), fabOut:()=>this.setState({fabHover:false}), fabTipOp:s.fabHover&&!s.chat?1:0, fabTipTf:s.fabHover&&!s.chat?'none':'translateX(6px)', chatRef:this.chatRef, chatListRef:this.chatListRef, chatTyping:s.chatTyping, chatIn:s.chatIn, chatEmpty:!s.chatIn.trim(), chatCursor:s.chatIn.trim()?'pointer':'default', chatOpacity:s.chatIn.trim()?1:0.4,

@@ -5,8 +5,8 @@ const ixLead = { fontFamily:'var(--font-body)', fontWeight:400, fontSize:'var(--
 /* Placeholder race-engineer answers — edit to approved copy. Add qAudio / aAudio (asset paths) when recordings are ready; timings then follow the audio. */
 const IX_PROMPTS = [
   { l:111.953, t:83.392, r:7.64, side:'right', text:'Hey Williams, why are you using soft tyres?', a:'Softs give us the most grip over a short window. We want track position right now, so we’ll push hard and box a little earlier.' },
-  { l:1434, t:151.735, r:-14.3, side:'left', text:'Hey Williams, what’s the deal with Claude?', a:'Claude is one of our partners — look for it on the livery. Want me to point out where it sits on the car when we reach the garage?' },
-  { l:1469.574, t:780, r:16.68, side:'left', text:'Hey Williams, who is the current backup driver?', a:'Our reserve driver is on standby all weekend — in the simulator and ready to step in if the team needs them.' },
+  { l:1434, t:151.735, r:-14.3, side:'left', text:'Hey Williams, what’s the deal with Claude?', a:'Claude is one of our partners, look for it on the livery. Want me to point out where it sits on the car when we reach the garage?' },
+  { l:1469.574, t:780, r:16.68, side:'left', text:'Hey Williams, who is the current backup driver?', a:'Our reserve driver is on standby all weekend, in the simulator and ready to step in if the team needs them.' },
   { l:75, t:865.138, r:-7.7, side:'right', text:'Hey Williams, how fast is your average pit stop?', a:'The crew trains for stops in the two-to-three second range. Around twenty people, one car, perfectly in sync.' },
 ];
 
