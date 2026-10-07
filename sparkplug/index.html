@@ -100,6 +100,18 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ walkActive }}">
+    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:13px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 7px rgba(31,199,255,0.18),0 0 26px rgba(31,199,255,0.4);transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),width 650ms cubic-bezier(.22,1,.36,1),height 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
+    <div aria-hidden="true" style="position:absolute;z-index:341;pointer-events:none;width:22px;height:22px;transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkCur.l }};top:{{ walkCur.t }};opacity:{{ walkCur.op }}">
+      <svg width="22" height="22" viewBox="0 0 24 24" style="display:block;filter:drop-shadow(0 3px 6px rgba(0,20,80,0.6))"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="#0068DF" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+    </div>
+    <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 650ms cubic-bezier(.22,1,.36,1),top 650ms cubic-bezier(.22,1,.36,1),opacity 300ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1fc7ff">Step {{ walkStepNum }}/{{ walkTotal }} · {{ walkTitle }}</span>
+      <p style="margin:0;font-size:13px;line-height:1.45;color:rgba(255,255,255,0.84)">{{ walkDesc }}</p>
+      <button onClick="{{ walkNext }}" style="align-self:flex-start;height:32px;padding:0 16px;border:0;border-radius:999px;background:rgb(24,170,245);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="filter:brightness(1.12)">{{ walkBtnLabel }}</button>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ playerOpen }}">
     <div ref="{{ overlayRef }}" style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:radial-gradient(ellipse 60% 50% at 50% 45%,rgba(0,66,255,0.16),rgba(0,66,255,0) 70%),rgba(6,8,14,0.8);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2)">
       <div onClick="{{ closePlayer }}" style="position:absolute;inset:0"></div>
@@ -397,7 +409,7 @@
           <span style="font-size:15px;font-weight:700">Race</span>
         </div>
         <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px">
-        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+        <div ref="{{ gpWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
           <button onClick="{{ toggleGp }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.gp }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
             <sc-if value="{{ phd.gp }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select Grand Prix</span></sc-if>
             <sc-if value="{{ val.gp }}"><span style="width:30px;font-size:11px;font-weight:700;color:#0068DF">{{ gp.round }}</span><span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gp.name }} GP</span></sc-if>
@@ -417,7 +429,7 @@
             </div>
           </sc-if>
         </div>
-        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+        <div ref="{{ drvWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
           <button onClick="{{ toggleDrv }}" style="width:100%;display:flex;align-items:center;gap:10px;height:48px;padding:0 14px 0 {{ drvPadL }};box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.drv }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
             <sc-if value="{{ phd.drv }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select driver</span></sc-if>
             <sc-if value="{{ val.drv }}"><span style="display:flex;flex:none">
@@ -459,7 +471,7 @@
           <span style="font-size:15px;font-weight:700">Audience & style</span>
         </div>
         <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px">
-          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <div ref="{{ audWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
             <button onClick="{{ toggleAud }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.aud }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
               <sc-if value="{{ phd.aud }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select audience</span></sc-if><sc-if value="{{ val.aud }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ selLabel }}</span></sc-if>
               <span style="flex:none;width:6px;height:6px;border-right:1.5px solid rgba(255,255,255,0.8);border-bottom:1.5px solid rgba(255,255,255,0.8);transform:translateY(-2px) rotate(45deg);margin-right:2px"></span>
@@ -484,7 +496,7 @@
             </sc-if>
           </div>
 
-          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <div ref="{{ styWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
             <button onClick="{{ toggleStyle }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);box-shadow:{{ ring.sty }};background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1);padding-left:8px" style-hover="border-color:rgba(255,255,255,0.3)">
               <sc-if value="{{ phd.sty }}" hint-placeholder-val="{{ true }}"><span style="flex:1;min-width:0;font-size:15px;font-weight:500;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Select style</span></sc-if>
               <sc-if value="{{ val.sty }}"><span style="position:relative;flex:none;width:32px;height:32px;border-radius:6.46px;overflow:hidden;background:rgb(18,21,31)">
@@ -567,7 +579,7 @@
           <span style="font-size:15px;font-weight:700">Output</span>
         </div>
         <div style="display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr) minmax(0,0.75fr);gap:14px">
-          <div style="display:flex;flex-direction:column;gap:8px">
+          <div ref="{{ lenWrapRef }}" style="display:flex;flex-direction:column;gap:8px">
             <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Length</span>
             <div style="display:flex;gap:2px;padding:3px;height:48px;box-sizing:border-box;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09)">
               <sc-for list="{{ durations }}" as="u" hint-placeholder-count="3">
@@ -584,7 +596,7 @@
               </sc-if>
             </div>
           </div>
-          <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+          <div ref="{{ ratioWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
             <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Ratio</span>
             <button onClick="{{ toggleRatio }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1);padding:0 12px;gap:10px" style-hover="border-color:rgba(255,255,255,0.3)">
               <span style="width:18px;display:flex;justify-content:center"><span style="width:{{ ratio.gw }};height:{{ ratio.gh }};border:1.5px solid #fff;border-radius:2px;box-sizing:border-box"></span></span>
@@ -603,7 +615,7 @@
               </div>
             </sc-if>
           </div>
-          <div style="display:flex;flex-direction:column;gap:8px">
+          <div ref="{{ qualityWrapRef }}" style="display:flex;flex-direction:column;gap:8px">
             <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Quality</span>
             <div style="position:relative">
               <button onClick="{{ toggleQuality }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 12px;box-sizing:border-box;border-radius:12px;border:1px solid {{ q.border }};background:{{ q.bg }};box-shadow:{{ q.glow }};color:#fff;cursor:pointer;transition:border-color 160ms cubic-bezier(.2,.7,.2,1),background 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(150,195,255,0.7)">
@@ -623,7 +635,7 @@
             </div>
           </div>
         </div>
-        <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+        <div ref="{{ audioWrapRef }}" style="position:relative;display:flex;flex-direction:column;gap:8px">
           <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.5);padding-left:2px">Audio</span>
           <input type="file" ref="{{ audioRef }}" onChange="{{ onSong }}" accept="audio/*" style="display:none">
           <button onClick="{{ toggleAudio }}" style="width:100%;display:flex;align-items:center;gap:12px;height:48px;padding:0 14px 0 8px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);color:#fff;cursor:pointer;text-align:left;transition:border-color 160ms cubic-bezier(.2,.7,.2,1)" style-hover="border-color:rgba(255,255,255,0.3)">
@@ -865,8 +877,32 @@ const QUALITIES=[{id:'4K',use:'Ultra HD · default'},{id:'1080p',use:'Full HD'},
 const HOLD=2400, GEN=5200, SEL='rgba(0,104,223,0.18)';
 const fmt=b=>b>1e6?(b/1e6).toFixed(1)+' MB':Math.max(1,Math.round(b/1e3))+' KB';
 
+/* Scripted walkthrough: each step highlights a field; a Williams-blue cursor glides to it, opens the dropdown (where there is one), glides to the matching option and picks it — no user choice — then the step card's button advances. The final step's button fires the real generate action. */
+const WALK_STEPS=[
+  { ref:'gpWrapRef', title:'Grand Prix', desc:'Pick the Grand Prix this reel is built around.', openKey:'gp', optionText:'Monaco',
+    apply:s=>({gp:'R6',open:null,picked:{...s.picked,gp:true},conf:{...s.conf,gp:true},phase:'idle',p:0,t:0}) },
+  { ref:'drvWrapRef', title:'Driver', desc:'Choose which driver’s race the reel follows.', openKey:'drv', optionText:'Albon',
+    apply:s=>({drv:['albon'],teamEdit:false,open:null,picked:{...s.picked,drv:true},conf:{...s.conf,drv:true},phase:'idle',p:0,t:0}) },
+  { ref:'audWrapRef', title:'Audience', desc:'Pick who the reel speaks to — it shapes the tone and language.', openKey:'aud', optionText:'UK',
+    apply:s=>({auds:['uk'],open:null,picked:{...s.picked,aud:true},conf:{...s.conf,aud:true},phase:'idle',p:0,t:0}) },
+  { ref:'styWrapRef', title:'Style', desc:'Choose the visual style the reel is rendered in.', openKey:'style', optionText:'Anime',
+    apply:s=>({sty:'anime',langStyle:{...s.langStyle,uk:'anime'},open:null,picked:{...s.picked,sty:true},conf:{...s.conf,sty:true},phase:'idle',p:0,t:0}) },
+  { ref:'promptRef', title:'Scene focus', desc:'Optional. Focus the reel on one moment, or leave it blank for full highlights.', optionText:'Lights Out',
+    apply:s=>({prompt:'A tense, high impact race start, from the formation lap to lights out and the run into Turn 1',phase:'idle',p:0,t:0}) },
+  { ref:'lenWrapRef', title:'Length', desc:'Set how long the finished reel should be.', typeDur:'40',
+    apply:s=>({dur:'custom',customDur:'40',phase:'idle',p:0,t:0}) },
+  { ref:'ratioWrapRef', title:'Ratio', desc:'Choose the aspect ratio for where this reel will be posted.', openKey:'ratio', optionText:'16:9',
+    apply:s=>({ratio:'16:9',open:null,phase:'idle',p:0,t:0}) },
+  { ref:'qualityWrapRef', title:'Quality', desc:'Pick the render quality for the final export.', openKey:'quality', optionText:'4K',
+    apply:s=>({quality:'4K',open:null,phase:'idle',p:0,t:0}) },
+  { ref:'audioWrapRef', title:'Audio', desc:'Choose the soundtrack for the reel.', openKey:'audio', optionText:'Engine',
+    apply:s=>({audio:'engine',open:null,phase:'idle',p:0,t:0}) },
+  { ref:'genRef', title:'Generate', desc:'Everything’s set. Generate the reel.', auto:false, btn:'Generate',
+    apply:s=>({phase:'gen',p:0,t:0,open:null}) },
+];
+
 class Component extends DCLogic {
-  state={intro:true,chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
+  state={intro:true,walkStep:null,walkRect:null,chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
   fileRef=React.createRef();
   chatRef=React.createRef();
   capMenuRef=React.createRef();
@@ -884,10 +920,80 @@ class Component extends DCLogic {
   hlRowRef=React.createRef();
   genRef=React.createRef();
   promptRef=React.createRef();
+  gpWrapRef=React.createRef();
+  drvWrapRef=React.createRef();
+  audWrapRef=React.createRef();
+  styWrapRef=React.createRef();
+  lenWrapRef=React.createRef();
+  ratioWrapRef=React.createRef();
+  qualityWrapRef=React.createRef();
+  audioWrapRef=React.createRef();
   leftRef=React.createRef();
   choiceRef=React.createRef();
   winRef=React.createRef();
+  rectOf(refName){const ref=this[refName]; const el=ref&&ref.current; if(!el) return null; const r=el.getBoundingClientRect(); const sx=window.scrollX||0,sy=window.scrollY||0; return {top:r.top+sy,left:r.left+sx,width:r.width,height:r.height};}
+  optionRect(refName,text){
+    const ref=this[refName]; const root=ref&&ref.current; if(!root||!text) return null;
+    const t=text.toLowerCase();
+    const btn=Array.from(root.querySelectorAll('button')).find(b=>b.textContent.toLowerCase().includes(t));
+    if(!btn) return null;
+    const r=btn.getBoundingClientRect(); const sx=window.scrollX||0,sy=window.scrollY||0;
+    return {top:r.top+sy,left:r.left+sx,width:r.width,height:r.height};
+  }
+  clearWalkTimers(){clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3);}
+  goWalkStep(n){
+    const step=WALK_STEPS[n];
+    if(!step){this.setState({walkStep:null,walkRect:null}); return;}
+    this.clearWalkTimers();
+    this.setState({walkStep:n,walkRect:this.rectOf(step.ref)});
+    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),700);
+    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),700);
+    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),700);
+    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),900);
+  }
+  openAndPick(n){
+    const step=WALK_STEPS[n]; if(!step) return;
+    this._skipUnconfirm=true;
+    this.setState({open:step.openKey});
+    this._walkTo2=setTimeout(()=>{
+      const oRect=this.optionRect(step.ref,step.optionText);
+      if(oRect) this.setState({walkRect:oRect});
+      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),650);
+    },350);
+  }
+  pickOption(n){
+    const step=WALK_STEPS[n]; if(!step) return;
+    const oRect=this.optionRect(step.ref,step.optionText);
+    if(oRect) this.setState({walkRect:oRect});
+    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),650);
+  }
+  runTypeAnim(n){
+    const step=WALK_STEPS[n]; if(!step) return;
+    const target=step.typeDur||'';
+    this._skipUnconfirm=true;
+    this.setState({dur:'custom',customDur:''});
+    let i=0;
+    const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo2=setTimeout(tick,170); else this._walkTo3=setTimeout(()=>this.applyWalkStep(n),500); };
+    this._walkTo2=setTimeout(tick,250);
+  }
+  applyWalkStep(n){
+    const step=WALK_STEPS[n]; if(!step) return;
+    this._skipUnconfirm=true;
+    this.setState(st=>({...step.apply(st)}));
+    if(step.openKey||step.optionText) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },60);
+  }
+  nextWalkStep(){
+    const n=this.state.walkStep; if(n==null) return;
+    this.clearWalkTimers();
+    this.applyWalkStep(n);
+    const next=n+1;
+    if(next>=WALK_STEPS.length){this.setState({walkStep:null,walkRect:null}); return;}
+    this.goWalkStep(next);
+  }
   componentDidUpdate(){
+    if(this.state.walkStep!=null&&this._ps&&(this._ps.vw!==this.state.vw||this._ps.vh!==this.state.vh)){
+      const step=WALK_STEPS[this.state.walkStep]; if(step) this.setState({walkRect:this.rectOf(step.ref)});
+    }
     const cm=this.capMenuRef.current; if(cm&&cm!==this._cmEl&&cm.animate) cm.animate([{opacity:0,transform:'translateY(6px) scale(0.97)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'}); this._cmEl=cm;
     if(this.state.chat&&!this._chatWas&&this.chatRef.current&&this.chatRef.current.animate) this.chatRef.current.animate([{opacity:0,transform:'translateY(12px) scale(0.92)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,1,.36,1)'});
     const justOpened=this.state.chat&&!this._chatWas; this._chatWas=this.state.chat;
@@ -937,7 +1043,7 @@ class Component extends DCLogic {
     if(window.ResizeObserver){this.ro2=new ResizeObserver(()=>{const l=this.leftRef.current,p=this.promptRef.current; if(l&&p){const lh=l.offsetHeight, ph=p.offsetHeight; if(lh!==this.state.leftH||ph!==this.state.promptH) this.setState({leftH:lh,promptH:ph});}}); this.leftRef.current&&this.ro2.observe(this.leftRef.current); this.promptRef.current&&this.ro2.observe(this.promptRef.current);}
     if(el&&window.ResizeObserver){this.ro=new ResizeObserver(()=>{const b=el.getBoundingClientRect();this.setState({sw:b.width,sh:b.height});});this.ro.observe(el);}
   }
-  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
+  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._introTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
   tick(){
     const s=this.state;
     if(s.phase==='gen'){const p=s.p+50/GEN; if(p>=1) this.setState({phase:'ready',p:1,t:0,reelVer:1,playing:this.props.autoplay??true}); else this.setState({p});}
@@ -1138,6 +1244,7 @@ class Component extends DCLogic {
       onPromptFocus:()=>this.setState({promptFocus:true}), onPromptBlur:()=>this.setState({promptFocus:false}),
       promptBorder:s.promptFocus?'rgba(110,170,255,0.6)':'rgba(255,255,255,0.09)',
       promptGlow:s.promptFocus?'0 0 0 3px rgba(0,104,223,0.15)':'none', promptRef:this.promptRef, leftRef:this.leftRef, rightH:s.leftH?Math.max(360,s.leftH-(s.promptH||0)-32)+'px':'auto',
+      gpWrapRef:this.gpWrapRef, drvWrapRef:this.drvWrapRef, audWrapRef:this.audWrapRef, styWrapRef:this.styWrapRef, lenWrapRef:this.lenWrapRef, ratioWrapRef:this.ratioWrapRef, qualityWrapRef:this.qualityWrapRef, audioWrapRef:this.audioWrapRef,
       presets:PRESETS.map(p=>{const on=s.prompt===p.text; return {label:p.label,border:on?'rgba(150,195,255,0.9)':'rgba(0,104,223,0.3)',bg:on?'rgba(0,104,223,0.25)':'transparent',glow:on?'0 0 14px rgba(0,104,223,0.45)':'none',onClick:()=>this.setState(st=>({prompt:st.prompt===p.text?'':p.text,...this.reset()}))};}),
       doSave:()=>{clearTimeout(this.saveTo); this.setState({saved:true}); this.saveTo=setTimeout(()=>this.setState({saved:false}),1600);},
       toggleProj:()=>this.setState(st=>({open:st.open==='proj'?null:'proj'})),
@@ -1218,7 +1325,23 @@ class Component extends DCLogic {
       toggleDoIt:()=>this.setState(st=>st.doIt?{doIt:false}:{doIt:true,msgs:[...st.msgs,{from:'bot',text:'Do it for me is on. Describe the reel you have in mind and I\'ll set it up.'}]}),
       notFix:!s.fix, capMenuOpen:!!s.capMenu&&!s.fix, capMenuRef:this.capMenuRef, capScalePct:((s.capScale-50)/80*100)+'%', capScaleVal:s.capScale, capScaleLbl:s.capScale+'%', capOff:s.caps==='off', capScaleCursor:s.caps==='off'?'default':'pointer', setCapScale:e=>this.setState({capScale:+e.target.value}), closeCapMenu:e=>{e&&e.stopPropagation(); this.setState({capMenu:false});}, toggleCapMenu:e=>{e&&e.stopPropagation(); this.setState(st=>({capMenu:!st.capMenu}));},
       capBtn:{label:s.caps==='off'?'Captions off':(CAPS.find(c=>c.id===s.caps)||CAPS[1]).label,border:s.capMenu?'rgba(0,104,223,0.9)':'rgba(255,255,255,0.15)',bg:s.capMenu?'rgba(0,104,223,0.18)':'rgba(255,255,255,0.05)'},
-      introOpen:s.intro, startExperience:()=>this.setState({intro:false}),
+      introOpen:s.intro, startExperience:()=>{this.setState({intro:false}); clearTimeout(this._introTo); this._introTo=setTimeout(()=>this.goWalkStep(0),1400);},
+      ...(()=>{
+        const wn=s.walkStep, wstep=wn!=null?WALK_STEPS[wn]:null, wr=s.walkRect;
+        const vw2=s.vw||(typeof window!=='undefined'?window.innerWidth:1440);
+        const sy=(typeof window!=='undefined'?window.scrollY:0)||0;
+        const cardW=272, cardH=150, gap=14, cx=wr?wr.left+wr.width/2:0, cy=wr?wr.top+wr.height/2:0;
+        const cardLeft=wr?Math.min(Math.max(wr.left,16),Math.max(16,vw2-cardW-16)):16;
+        const cardTop=wr?Math.max(sy+8,wr.top-cardH-gap):8;
+        return {
+          walkActive:!!wstep, walkStepNum:wn!=null?wn+1:0, walkTotal:WALK_STEPS.length,
+          walkTitle:wstep?wstep.title:'', walkDesc:wstep?wstep.desc:'', walkBtnLabel:wstep?(wstep.btn||'Next step'):'',
+          walkNext:()=>this.nextWalkStep(),
+          walkHL:{l:(wr?wr.left:0)+'px',t:(wr?wr.top:0)+'px',w:(wr?wr.width:0)+'px',h:(wr?wr.height:0)+'px',op:wr?1:0},
+          walkCur:{l:(cx-3)+'px',t:(cy-3)+'px',op:wr?1:0},
+          walkCard:{l:cardLeft+'px',t:cardTop+'px',op:wr?1:0,w:cardW+'px'},
+        };
+      })(),
       chatOpen:s.chat, fabIn:()=>this.setState({fabHover:true}), fabOut:()=>this.setState({fabHover:false}), fabTipOp:s.fabHover&&!s.chat?1:0, fabTipTf:s.fabHover&&!s.chat?'none':'translateX(6px)', chatRef:this.chatRef, chatListRef:this.chatListRef, chatTyping:s.chatTyping, chatIn:s.chatIn, chatEmpty:!s.chatIn.trim(), chatCursor:s.chatIn.trim()?'pointer':'default', chatOpacity:s.chatIn.trim()?1:0.4,
       toggleChat:()=>this.setState(st=>({chat:!st.chat})), setChatIn:e=>this.setState({chatIn:e.target.value}), sendChat:e=>{e.preventDefault(); this.askBot(s.chatIn);},
       msgs:s.msgs.map(m=>m.from==='me'?{text:m.text,justify:'flex-end',bg:'#0068DF',radius:'16px 16px 4px 16px'}:{text:m.text,justify:'flex-start',bg:'rgba(255,255,255,0.08)',radius:'16px 16px 16px 4px'}),
