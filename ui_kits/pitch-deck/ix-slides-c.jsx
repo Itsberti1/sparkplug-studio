@@ -95,7 +95,7 @@ function IXUsersSlide({ index }) {
   );
 }
 
-/* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. Laid out as a 2x2 grid so Time Capsule sits below SparkPlug Studio and Ideation Studio reads second. */
+/* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. Laid out 3-up so Time Capsule wraps to sit below SparkPlug Studio and Ideation Studio reads second. */
 const IX_DECKS = [
   { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'Turning race data into cinematic Williams animations',
     backLabel:'THE WILLIAMS SPARKPLUG STUDIO', head:'Every race, a cinematic recap',
@@ -105,14 +105,14 @@ const IX_DECKS = [
     backLabel:'THE WILLIAMS IDEATION STUDIO', head:'From blank page to pitch-ready, in minutes',
     body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations — turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
     tags:['Ideation', 'Concepts', 'Activations'] },
-  { n:'03', eyebrow:'DECK 03', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'A generative VR journey through the Williams story, brought to life with SparkPlug’s cinematic visuals',
-    backLabel:'THE WILLIAMS TIME CAPSULE', head:'Step inside the Williams story',
-    body:'A generative VR experience in the Williams fan zone at every Grand Prix. Narrated by Alex Albon, fans travel through the eras, step inside iconic cars in every Williams livery and relive legendary races, brought to life using SparkPlug Studio’s generated visuals. Powered by Claude AI and bespoke to each Grand Prix, no two journeys are the same.',
-    tags:['Fan zone', 'VR', 'Claude AI'] },
-  { n:'04', eyebrow:'DECK 04', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'An immersive AI experience for guests in the paddock and pit lane',
+  { n:'03', eyebrow:'DECK 03', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'An immersive AI experience for guests in the paddock and pit lane',
     backLabel:'THE WILLIAMS AI ENGINEER', head:'Your own race engineer, in your ear',
     body:'A bespoke AI experience that places VIP guests and partners at the heart of the team during paddock and pit lane walks. A synthetic race engineer delivers live insights, heritage and sponsor stories on demand, while smart glasses capture every moment to relive long after the day.',
     tags:['Paddock', 'Pit lane', 'Smart glasses'] },
+  { n:'04', eyebrow:'DECK 04', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'A generative VR journey through the Williams story, brought to life with SparkPlug’s cinematic visuals',
+    backLabel:'THE WILLIAMS TIME CAPSULE', head:'Step inside the Williams story',
+    body:'A generative VR experience in the Williams fan zone at every Grand Prix. Narrated by Alex Albon, fans travel through the eras, step inside iconic cars in every Williams livery and relive legendary races, brought to life using SparkPlug Studio’s generated visuals. Powered by Claude AI and bespoke to each Grand Prix, no two journeys are the same.',
+    tags:['Fan zone', 'VR', 'Claude AI'] },
 ];
 const IXD_S = 330;
 function IXDeckCard({ u }) {
@@ -142,7 +142,7 @@ function IXPortalSlide({ index }) {
         <B fx="up" d={200}><h2 style={{ margin:0, fontFamily:'var(--font-display)', fontWeight:500, fontSize:68, lineHeight:'72px', letterSpacing:'-0.015em', color:'#fff' }}>The Concepts</h2></B>
         <B fx="up" d={320} style={{ marginTop:16 }}><p style={{ margin:0, fontWeight:300, fontSize:28, lineHeight:'38px', color:'rgba(255,255,255,0.72)' }}>Four concepts exploring how creative AI could shape the future of the Williams brand</p></B>
       </div>
-      <div style={{ position:'absolute', left:0, right:0, top:380, display:'grid', gridTemplateColumns:`repeat(2, ${IXD_S}px)`, gridAutoRows:`${IXD_S}px`, columnGap:28, rowGap:28, justifyContent:'center', zIndex:5 }}>
+      <div style={{ position:'absolute', left:0, right:0, top:380, display:'grid', gridTemplateColumns:`repeat(3, ${IXD_S}px)`, gridAutoRows:`${IXD_S}px`, columnGap:28, rowGap:28, justifyContent:'center', zIndex:5 }}>
         {IX_DECKS.map((u, i) => (
           <B key={u.n} fx="pop" d={450 + i * 150}><IXDeckCard u={u} /></B>
         ))}
