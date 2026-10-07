@@ -93,9 +93,7 @@
           <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(31,199,255,0.35),rgba(0,66,255,0) 65%)"></div>
           <img src="assets/albon-bot.png" alt="" style="position:relative;width:100%;height:100%;pointer-events:none;filter:drop-shadow(0 8px 14px rgba(0,10,50,0.5))"></img>
         </div>
-        <span style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#1fc7ff">AskAlbon</span>
-        <span style="margin-top:3px;font-size:11px;font-weight:500;letter-spacing:0.04em;color:rgba(255,255,255,0.4)">Your Williams race engineer</span>
-        <h3 style="margin:18px 0 0;font-size:21px;font-weight:700;color:#fff;letter-spacing:-0.01em">Hi Team</h3>
+        <h3 style="margin:0;font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.01em">Hi Team</h3>
         <p style="margin:10px 0 0;font-size:14.5px;line-height:1.55;color:rgba(255,255,255,0.68);text-wrap:pretty">This is a walkthrough experience. The tool isn't active right now, but I'll guide you step by step to your final output.</p>
         <button onClick="{{ startExperience }}" style="position:relative;overflow:hidden;width:100%;height:52px;flex:none;border:0;border-radius:14px;margin-top:24px;background:radial-gradient(120% 140% at 50% 0%,#7fb6ff 0%,#2f7bff 32%,#0052ff 62%,#0036d6 100%);color:#fff;font-size:16px;font-weight:600;letter-spacing:0.02em;cursor:pointer;text-shadow:0 1px 2px rgba(0,20,90,0.45);box-shadow:0 5px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 12px 30px rgba(0,82,255,0.5),0 0 40px rgba(0,104,223,0.3),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.25),inset 0 -8px 18px rgba(0,30,140,0.35);transition:transform 120ms cubic-bezier(.2,.7,.2,1),box-shadow 160ms cubic-bezier(.2,.7,.2,1),filter 160ms linear" style-hover="filter:brightness(1.08) saturate(1.1)" style-active="transform:translateY(3px);box-shadow:0 2px 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 8px 22px rgba(0,82,255,0.45),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.22)">
           <span style="position:absolute;inset:0;border-radius:inherit;background:radial-gradient(90% 70% at 50% -10%,rgba(255,255,255,0.28),rgba(255,255,255,0) 70%);pointer-events:none"></span>
@@ -106,19 +104,16 @@
   </sc-if>
 
   <sc-if value="{{ walkActive }}">
-    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),width 1100ms cubic-bezier(.4,0,.2,1),height 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
-    <div aria-hidden="true" style="position:absolute;z-index:341;pointer-events:none;width:22px;height:22px;transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkCur.l }};top:{{ walkCur.t }};opacity:{{ walkCur.op }}">
-      <svg width="22" height="22" viewBox="0 0 24 24" style="display:block;filter:drop-shadow(0 3px 6px rgba(0,20,80,0.6))"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="#0068DF" stroke="#ffffff" stroke-width="1.4" stroke-linejoin="round"></path></svg>
-    </div>
+    <div aria-hidden="true" style="position:absolute;z-index:340;pointer-events:none;border-radius:18px;box-shadow:0 0 0 2px rgba(31,199,255,0.95),0 0 0 8px rgba(31,199,255,0.16),0 0 30px rgba(31,199,255,0.4);transition:left 2200ms cubic-bezier(.4,0,.2,1),top 2200ms cubic-bezier(.4,0,.2,1),width 2200ms cubic-bezier(.4,0,.2,1),height 2200ms cubic-bezier(.4,0,.2,1),opacity 700ms ease;left:{{ walkHL.l }};top:{{ walkHL.t }};width:{{ walkHL.w }};height:{{ walkHL.h }};opacity:{{ walkHL.op }}"></div>
     <sc-if value="{{ walkShowCard }}">
-      <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 1100ms cubic-bezier(.4,0,.2,1),top 1100ms cubic-bezier(.4,0,.2,1),opacity 450ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
+      <div style="position:absolute;z-index:342;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(180deg,rgb(22,25,35),rgb(15,17,26));border:1px solid rgba(110,170,255,0.3);box-shadow:0 20px 50px rgba(0,0,0,0.55),0 0 20px rgba(0,66,255,0.18);display:flex;flex-direction:column;gap:10px;transition:left 2200ms cubic-bezier(.4,0,.2,1),top 2200ms cubic-bezier(.4,0,.2,1),opacity 700ms ease;left:{{ walkCard.l }};top:{{ walkCard.t }};width:{{ walkCard.w }};opacity:{{ walkCard.op }}">
         <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1fc7ff">Step {{ walkStepNum }}/{{ walkTotal }} · {{ walkTitle }}</span>
         <p style="margin:0;font-size:13px;line-height:1.45;color:rgba(255,255,255,0.84)">{{ walkDesc }}</p>
         <div style="display:flex;align-items:center;gap:8px">
           <sc-if value="{{ walkCanBack }}">
             <button onClick="{{ walkPrev }}" style="height:32px;padding:0 14px;border:1px solid rgba(255,255,255,0.18);border-radius:999px;background:transparent;color:rgba(255,255,255,0.75);font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="border-color:rgba(255,255,255,0.4);color:#fff">Back</button>
           </sc-if>
-          <button onClick="{{ walkNext }}" style="height:32px;padding:0 16px;border:0;border-radius:999px;background:rgb(24,170,245);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:pointer" style-hover="filter:brightness(1.12)">{{ walkBtnLabel }}</button>
+          <button onClick="{{ walkNext }}" disabled="{{ walkBtnDisabled }}" style="height:32px;padding:0 16px;border:0;border-radius:999px;background:{{ walkBtnBg }};color:{{ walkBtnColor }};font-size:12px;font-weight:700;letter-spacing:0.04em;cursor:{{ walkBtnCursor }};transition:background 300ms ease,color 300ms ease" style-hover="filter:{{ walkBtnHover }}">{{ walkBtnLabel }}</button>
         </div>
       </div>
     </sc-if>
@@ -896,8 +891,9 @@ const fmt=b=>b>1e6?(b/1e6).toFixed(1)+' MB':Math.max(1,Math.round(b/1e3))+' KB';
 /* Every photo/image the tool can show, fetched up front on load so nothing pops in later (dropdown thumbnails, scene stills, etc). */
 const PRELOAD_IMAGES=['assets/albon-bot.png','assets/car.jpg','assets/claude-spark.png','assets/driver-albon.png','assets/driver-browning.png','assets/driver-chadwick.png','assets/driver-sainz.png','assets/grandstand.png','assets/monaco-albon.png','assets/pitlane.png','assets/proj-drivers.png','assets/proj-japan.png','assets/proj-miami.png','assets/proj-monaco.png','assets/proj-monza.png','assets/proj-silverstone.png','assets/shots/final-1.png','assets/shots/shot-1-v2.png','assets/shots/shot-1.png','assets/sparkplug-logo.png','assets/style-anime.png','assets/style-marvel-v2.png','assets/style-pixar-v2.png','assets/thumb-placeholder.png','assets/w-mark-blue.png','assets/williams-wordmark-white.png'];
 function preloadImages(list){ return list.map(src=>{ const img=new Image(); img.src=src; return img; }); }
+const PRELOADED_IMAGES=preloadImages(PRELOAD_IMAGES);
 
-/* Scripted walkthrough: each step highlights a field (framed consistently — the control only, never the label) while a Williams-blue cursor glides to it. Fields with a pick-then-confirm tick (gp/driver/audience/style) are selected, then the cursor glides to the tick and "clicks" it. Other dropdowns (ratio/quality/audio) pick directly. The final step shows only the highlight — the cursor fades out there so the user presses the real Generate button themselves. */
+/* Scripted walkthrough: a single highlight box glides slowly between fields (framed consistently — the control only, never the label) and the box movement alone carries the motion, no cursor icon. Fields with a pick-then-confirm tick (gp/driver/audience/style) are selected, then the box glides onto the tick, which pops as it's "clicked". Other dropdowns (ratio/quality/audio) pick directly. The final step shows only the highlight on the real Generate button — the user presses it themselves. */
 const WALK_STEPS=[
   { ref:'gpWrapRef', title:'Grand Prix', desc:'Pick the Grand Prix this reel is built around.', openKey:'gp', optionText:'Monaco', hasConfirm:true,
     selectApply:s=>({gp:'R6',picked:{...s.picked,gp:true},conf:{...s.conf,gp:false}}),
@@ -930,7 +926,7 @@ const WALK_STEPS=[
 ];
 
 class Component extends DCLogic {
-  state={intro:true,walkStep:null,walkRect:null,walkCursorGone:false,chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
+  state={intro:true,walkStep:null,walkRect:null,walkReady:false,chat:false,msgs:[{from:'bot',text:'Hi, I\'m AskAlbon. Ask me anything, or turn on Do it for me and describe your idea. I\'ll set up the reel for you.'}],caps:'off',capPos:'bottom',capScale:100,doIt:false,capMenu:false,chatIn:'',chatTyping:false,conf:{gp:false,drv:false,aud:false,sty:false},picked:{gp:false,drv:false,aud:false,sty:false},touched:{},prompt:'',promptFocus:false,vfxClips:[],saved:false,tip:null,player:false,pt:0,pPlay:false,fix:false,box:null,drawing:false,choice:false,regen:null,toast:null,vw:typeof window!=='undefined'?window.innerWidth:1440,vh:typeof window!=='undefined'?window.innerHeight:900,audio:'engine',song:null,teamEdit:true,drv:['albon','sainz'],help:false,gp:'R15',auds:['uk'],langStyle:{},dragLang:null,dropTarget:null,dur:30,customDur:45,sty:'anime',project:'monaco',lb:null,ratio:'16:9',quality:'4K',open:null,file:null,drag:false,phase:'idle',p:0,t:0,playing:true,sw:0,sh:0};
   fileRef=React.createRef();
   chatRef=React.createRef();
   capMenuRef=React.createRef();
@@ -967,25 +963,20 @@ class Component extends DCLogic {
     const btn=Array.from(root.querySelectorAll('button')).find(b=>b.textContent.toLowerCase().includes(t));
     return this.toDocRect(btn);
   }
-  tickRect(refName){
-    const ref=this[refName]; const root=ref&&ref.current; if(!root) return null;
-    return this.toDocRect(root.querySelector('button[aria-label="Confirm"]'));
-  }
-  clearWalkTimers(){clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5);}
+  tickEl(refName){ const ref=this[refName]; const root=ref&&ref.current; return root&&root.querySelector('button[aria-label="Confirm"]'); }
+  tickRect(refName){ return this.toDocRect(this.tickEl(refName)); }
+  clearWalkTimers(){clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6);}
   goWalkStep(n){
     const step=WALK_STEPS[n];
-    if(!step){this.setState({walkStep:null,walkRect:null,walkCursorGone:false}); return;}
+    if(!step){this.setState({walkStep:null,walkRect:null}); return;}
     this.clearWalkTimers();
-    this.setState({walkStep:n,walkRect:this.rectOf(step.ref),walkCursorGone:false});
-    if(step.card===false){
-      this._walkTo=setTimeout(()=>{ if(this.state.walkStep===n) this.setState({walkCursorGone:true}); },1300);
-      return;
-    }
-    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),1300);
-    else if(step.hasConfirm) this._walkTo=setTimeout(()=>this.openAndPickConfirm(n),1300);
-    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),1300);
-    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),1300);
-    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),1300);
+    this.setState({walkStep:n,walkRect:this.rectOf(step.ref),walkReady:false});
+    if(step.card===false) return;
+    if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),2200);
+    else if(step.hasConfirm) this._walkTo=setTimeout(()=>this.openAndPickConfirm(n),2200);
+    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),2200);
+    else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),2200);
+    else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),2200);
   }
   openAndPickConfirm(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -1001,13 +992,17 @@ class Component extends DCLogic {
           const tRect=this.tickRect(step.ref);
           if(tRect) this.setState({walkRect:tRect});
           this._walkTo5=setTimeout(()=>{
-            this._skipUnconfirm=true;
-            this.setState(st=>({...step.confirmApply(st)}));
-            setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },80);
-          },1000);
-        },550);
-      },1100);
-    },650);
+            const tEl=this.tickEl(step.ref);
+            if(tEl&&tEl.animate) tEl.animate([{transform:'scale(1)'},{transform:'scale(1.4)'},{transform:'scale(1)'}],{duration:620,easing:'cubic-bezier(.34,1.56,.64,1)'});
+            this._walkTo6=setTimeout(()=>{
+              this._skipUnconfirm=true;
+              this.setState(st=>({...step.confirmApply(st)}),()=>{ if(this.state.walkStep===n) this.setState({walkReady:true}); });
+              setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },200);
+            },420);
+          },1900);
+        },1100);
+      },2000);
+    },1100);
   }
   openAndPick(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -1016,39 +1011,40 @@ class Component extends DCLogic {
     this._walkTo2=setTimeout(()=>{
       const oRect=this.optionRect(step.ref,step.optionText);
       if(oRect) this.setState({walkRect:oRect});
-      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),1250);
-    },650);
+      this._walkTo3=setTimeout(()=>this.applyWalkStep(n),2200);
+    },1100);
   }
   pickOption(n){
     const step=WALK_STEPS[n]; if(!step) return;
     const oRect=this.optionRect(step.ref,step.optionText);
     if(oRect) this.setState({walkRect:oRect});
-    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),1250);
+    this._walkTo2=setTimeout(()=>this.applyWalkStep(n),2200);
   }
   runTypeAnim(n){
     const step=WALK_STEPS[n]; if(!step) return;
     this._skipUnconfirm=true;
     this.setState({dur:'custom',customDur:''});
     this._walkTo2=setTimeout(()=>{
-      const ref=this[step.ref]; const root=ref&&ref.current; const inp=root&&root.querySelector('input');
-      if(inp){ inp.focus(); const r=this.toDocRect(inp); if(r) this.setState({walkRect:r}); }
+      const ref=this[step.ref]; const root=ref&&ref.current; const label=root&&root.querySelector('label'); const inp=root&&root.querySelector('input');
+      if(label){ const r=this.toDocRect(label); if(r) this.setState({walkRect:r}); }
+      if(inp) inp.focus();
       const target=step.typeDur||''; let i=0;
-      const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo3=setTimeout(tick,160+Math.random()*180); else this._walkTo4=setTimeout(()=>this.applyWalkStep(n),850); };
-      this._walkTo3=setTimeout(tick,350);
-    },550);
+      const tick=()=>{ i++; this._skipUnconfirm=true; this.setState({customDur:target.slice(0,i)}); if(i<target.length) this._walkTo3=setTimeout(tick,260+Math.random()*260); else this._walkTo4=setTimeout(()=>this.applyWalkStep(n),1600); };
+      this._walkTo3=setTimeout(tick,700);
+    },900);
   }
   applyWalkStep(n){
     const step=WALK_STEPS[n]; if(!step) return;
     this._skipUnconfirm=true;
-    this.setState(st=>({...step.apply(st)}));
-    if(step.openKey||step.optionText||step.typeDur) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },80);
+    this.setState(st=>({...step.apply(st)}),()=>{ if(this.state.walkStep===n) this.setState({walkReady:true}); });
+    if(step.openKey||step.optionText||step.typeDur) setTimeout(()=>{ if(this.state.walkStep===n){ const r=this.rectOf(step.ref); if(r) this.setState({walkRect:r}); } },200);
   }
   nextWalkStep(){
-    const n=this.state.walkStep; if(n==null) return;
+    const n=this.state.walkStep; if(n==null||!this.state.walkReady) return;
     this.clearWalkTimers();
     this.applyWalkStep(n);
     const next=n+1;
-    if(next>=WALK_STEPS.length){this.setState({walkStep:null,walkRect:null,walkCursorGone:false}); return;}
+    if(next>=WALK_STEPS.length){this.setState({walkStep:null,walkRect:null}); return;}
     this.goWalkStep(next);
   }
   prevWalkStep(){
@@ -1062,7 +1058,7 @@ class Component extends DCLogic {
     }
     if(this.state.walkStep!=null&&this._ps&&this._ps.phase!=='gen'&&this.state.phase==='gen'){
       this.clearWalkTimers();
-      this.setState({walkStep:null,walkRect:null,walkCursorGone:false});
+      this.setState({walkStep:null,walkRect:null});
     }
     const cm=this.capMenuRef.current; if(cm&&cm!==this._cmEl&&cm.animate) cm.animate([{opacity:0,transform:'translateY(6px) scale(0.97)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'}); this._cmEl=cm;
     if(this.state.chat&&!this._chatWas&&this.chatRef.current&&this.chatRef.current.animate) this.chatRef.current.animate([{opacity:0,transform:'translateY(12px) scale(0.92)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,1,.36,1)'});
@@ -1095,7 +1091,7 @@ class Component extends DCLogic {
   onSbDown=e=>{const el=this._pl; if(!el) return; e.preventDefault(); const y0=e.clientY, s0=el.scrollTop, track=el.clientHeight-12, ratio=el.scrollHeight/track; const mv=ev=>{el.scrollTop=s0+(ev.clientY-y0)*ratio;}; const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);}; window.addEventListener('pointermove',mv); window.addEventListener('pointerup',up);};
   lbStep(d){const i=PROJECTS.findIndex(p=>p.id===this.state.lb), n=PROJECTS[i+d]; if(n) this.setState({lb:n.id});}
   componentDidMount(){
-    this._preloaded=preloadImages(PRELOAD_IMAGES);
+    this._preloaded=PRELOADED_IMAGES;
     this._init=this.state;
     this._ps=this.state;
     this._urls=[];
@@ -1114,7 +1110,7 @@ class Component extends DCLogic {
     if(window.ResizeObserver){this.ro2=new ResizeObserver(()=>{const l=this.leftRef.current,p=this.promptRef.current; if(l&&p){const lh=l.offsetHeight, ph=p.offsetHeight; if(lh!==this.state.leftH||ph!==this.state.promptH) this.setState({leftH:lh,promptH:ph});}}); this.leftRef.current&&this.ro2.observe(this.leftRef.current); this.promptRef.current&&this.ro2.observe(this.promptRef.current);}
     if(el&&window.ResizeObserver){this.ro=new ResizeObserver(()=>{const b=el.getBoundingClientRect();this.setState({sw:b.width,sh:b.height});});this.ro.observe(el);}
   }
-  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._introTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
+  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6); clearTimeout(this._introTo); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
   tick(){
     const s=this.state;
     if(s.phase==='gen'){const p=s.p+50/GEN; if(p>=1) this.setState({phase:'ready',p:1,t:0,reelVer:1,playing:this.props.autoplay??true}); else this.setState({p});}
@@ -1401,15 +1397,16 @@ class Component extends DCLogic {
         const wn=s.walkStep, wstep=wn!=null?WALK_STEPS[wn]:null, wr=s.walkRect;
         const vw2=s.vw||(typeof window!=='undefined'?window.innerWidth:1440);
         const sy=(typeof window!=='undefined'?window.scrollY:0)||0;
-        const PAD=10, cardW=272, cardH=150, gap=22, cx=wr?wr.left+wr.width/2:0, cy=wr?wr.top+wr.height/2:0;
+        const PAD=10, cardW=272, cardH=150, gap=22;
         const cardLeft=wr?Math.min(Math.max(wr.left,16),Math.max(16,vw2-cardW-16)):16;
         const cardTop=wr?Math.max(sy+8,wr.top-cardH-gap):8;
         return {
           walkActive:!!wstep, walkShowCard:!!wstep&&wstep.card!==false, walkStepNum:wn!=null?wn+1:0, walkTotal:WALK_STEPS.length,
           walkTitle:wstep?wstep.title:'', walkDesc:wstep?wstep.desc:'', walkBtnLabel:wstep?(wstep.btn||'Next step'):'',
           walkNext:()=>this.nextWalkStep(), walkPrev:()=>this.prevWalkStep(), walkCanBack:wn!=null&&wn>0,
+          walkBtnDisabled:!s.walkReady, walkBtnCursor:s.walkReady?'pointer':'default',
+          walkBtnBg:s.walkReady?'rgb(24,170,245)':'rgba(255,255,255,0.1)', walkBtnColor:s.walkReady?'#fff':'rgba(255,255,255,0.35)', walkBtnHover:s.walkReady?'brightness(1.12)':'none',
           walkHL:{l:(wr?wr.left-PAD:0)+'px',t:(wr?wr.top-PAD:0)+'px',w:(wr?wr.width+PAD*2:0)+'px',h:(wr?wr.height+PAD*2:0)+'px',op:wr?1:0},
-          walkCur:{l:(cx-3)+'px',t:(cy-3)+'px',op:(wr&&!s.walkCursorGone)?1:0},
           walkCard:{l:cardLeft+'px',t:cardTop+'px',op:wr?1:0,w:cardW+'px'},
         };
       })(),
