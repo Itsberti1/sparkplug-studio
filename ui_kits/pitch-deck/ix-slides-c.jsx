@@ -95,32 +95,37 @@ function IXUsersSlide({ index }) {
   );
 }
 
-/* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. */
+/* Portal: one card per idea deck. Cards flip for detail; play buttons are placeholders until the decks are linked. Laid out as a 2x2 grid so Time Capsule sits below SparkPlug Studio and Ideation Studio reads second. */
 const IX_DECKS = [
-  { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'A cinematic race recap, generated every Grand Prix',
+  { n:'01', eyebrow:'DECK 01', name:'SparkPlug Studio', href:'../../sparkplug/index.html', img:'assets/sparkplug-studio.png', bg:'12% 0% / auto 100% no-repeat', ph:'creator studio image to come', sub:'Turning race data into cinematic Williams animations',
     backLabel:'THE WILLIAMS SPARKPLUG STUDIO', head:'Every race, a cinematic recap',
-    body:'After every race, the Williams SparkPlug Studio ingests race data, footage and media to generate a cinematic, high-energy video in a bespoke comic-style aesthetic, made with Higgsfield. A stylised summary of the team’s day, built for Williams’ channels.',
+    body:'After every race, the Williams SparkPlug Studio turns race data, footage and media into a cinematic, high-energy animation in a bespoke comic-style aesthetic, made with Higgsfield. A stylised summary of the team’s day, built for Williams’ channels.',
     tags:['Race data', 'Higgsfield', 'Comic style'] },
-  { n:'02', eyebrow:'DECK 02', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'An immersive AI experience for guests in the paddock and pit lane',
+  { n:'02', eyebrow:'DECK 02', name:'Ideation Studio', grey:true, ph:'concept image to come', sub:'Where Williams creative teams spin up ideas, fast',
+    backLabel:'THE WILLIAMS IDEATION STUDIO', head:'From blank page to pitch-ready, in minutes',
+    body:'A streamlined AI studio that helps Williams creative teams rapidly ideate, shape and pressure-test new concepts and activations — turning a rough brief into a pitch-ready direction in a fraction of the usual time.',
+    tags:['Ideation', 'Concepts', 'Activations'] },
+  { n:'03', eyebrow:'DECK 03', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'A generative VR journey through the Williams story, brought to life with SparkPlug’s cinematic visuals',
+    backLabel:'THE WILLIAMS TIME CAPSULE', head:'Step inside the Williams story',
+    body:'A generative VR experience in the Williams fan zone at every Grand Prix. Narrated by Alex Albon, fans travel through the eras, step inside iconic cars in every Williams livery and relive legendary races, brought to life using SparkPlug Studio’s generated visuals. Powered by Claude AI and bespoke to each Grand Prix, no two journeys are the same.',
+    tags:['Fan zone', 'VR', 'Claude AI'] },
+  { n:'04', eyebrow:'DECK 04', name:'AI Glasses', go:1, img:'assets/ai-engineer-glasses-v3.png', bg:'center / cover no-repeat', ph:'ai engineer image to come', sub:'An immersive AI experience for guests in the paddock and pit lane',
     backLabel:'THE WILLIAMS AI ENGINEER', head:'Your own race engineer, in your ear',
     body:'A bespoke AI experience that places VIP guests and partners at the heart of the team during paddock and pit lane walks. A synthetic race engineer delivers live insights, heritage and sponsor stories on demand, while smart glasses capture every moment to relive long after the day.',
     tags:['Paddock', 'Pit lane', 'Smart glasses'] },
-  { n:'03', eyebrow:'DECK 03', name:'Time Capsule', img:'assets/time-capsule-vr.png', bg:'59% 0% / auto 100% no-repeat', ph:'time capsule image to come', sub:'A generative VR journey through Williams history',
-    backLabel:'THE WILLIAMS TIME CAPSULE', head:'Step inside the Williams story',
-    body:'A generative VR experience in the Williams fan zone at every Grand Prix. Narrated by Alex Albon, fans travel through the eras, step inside iconic cars in every Williams livery and relive legendary races. Powered by Claude AI and bespoke to each Grand Prix, no two journeys are the same.',
-    tags:['Fan zone', 'VR', 'Claude AI'] },
 ];
+const IXD_S = 330;
 function IXDeckCard({ u }) {
   return (
-    <div className="ix-user" style={{ position:'relative', width:Math.round(IXU_S * 1.12), height:Math.round(IXU_S * 1.12), borderRadius:'var(--radius-photo)', overflow:'hidden', boxShadow:ixuGlow, background: u.img ? `url(${u.img}) ${u.bg}` : 'repeating-linear-gradient(135deg, #121725 0 14px, #0e1220 14px 28px)' }}>
-      {!u.img && <span style={{ position:'absolute', left:0, right:0, top:'30%', textAlign:'center', fontFamily:'ui-monospace, Menlo, monospace', fontSize:14, letterSpacing:'0.08em', color:'rgba(255,255,255,0.4)' }}>{u.ph}</span>}
-      <div style={{ position:'absolute', left:0, right:0, bottom:0, height:300, background:'linear-gradient(180deg, rgba(10,12,20,0) 0%, rgba(10,12,20,0.65) 40%, rgba(10,12,20,0.94) 100%)' }} />
-      <div style={{ position:'absolute', left:30, right:30, bottom:28, display:'flex', flexDirection:'column', alignItems:'flex-start', gap:6, fontFamily:'var(--font-display)' }}>
-        <span style={{ fontSize:15, fontWeight:500, letterSpacing:'0.16em', color:'rgb(31,199,255)', fontVariantNumeric:'tabular-nums' }}>{u.eyebrow}</span>
-        <span style={{ fontSize:28, fontWeight:500, lineHeight:'32px', color:'#fff', whiteSpace:'nowrap' }}>{u.name}</span>
-        <span style={{ fontFamily:'var(--font-body)', fontSize:20, fontWeight:300, lineHeight:'28px', color:'rgba(255,255,255,0.82)', textWrap:'pretty' }}>{u.sub}</span>
-        <button type="button" aria-label={'Open ' + u.name} className={u.href || u.go != null ? 'ix-lift' : ''} disabled={!(u.href || u.go != null)} onClick={(e) => { e.stopPropagation(); if (u.href) { window.location.href = u.href; } else if (u.go != null) { const d = document.querySelector('deck-stage'); d && d.goTo(u.go); } }} style={{ marginTop:16, height:50, padding:'0 26px 0 20px', gap:13, borderRadius:999, border:0, cursor: u.href || u.go != null ? 'pointer' : 'default', opacity: u.href || u.go != null ? 1 : 0.4, display:'flex', alignItems:'center', fontFamily:'var(--font-display)', fontSize:18, fontWeight:600, letterSpacing:'0.12em', color:'#fff', background:'rgb(24,170,245)', boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.35)' }}>
-          <div style={{ width:0, height:0, borderTop:'8px solid transparent', borderBottom:'8px solid transparent', borderLeft:'13px solid #fff' }} />
+    <div className="ix-user" style={{ position:'relative', width:IXD_S, height:IXD_S, borderRadius:'var(--radius-photo)', overflow:'hidden', boxShadow:ixuGlow, background: u.img ? `url(${u.img}) ${u.bg}` : (u.grey ? 'var(--wr-grey-200)' : 'repeating-linear-gradient(135deg, #121725 0 14px, #0e1220 14px 28px)') }}>
+      {!u.img && <span style={{ position:'absolute', left:0, right:0, top:'30%', textAlign:'center', fontFamily:'ui-monospace, Menlo, monospace', fontSize:11, letterSpacing:'0.08em', color: u.grey ? 'rgba(10,12,20,0.4)' : 'rgba(255,255,255,0.4)' }}>{u.ph}</span>}
+      <div style={{ position:'absolute', left:0, right:0, bottom:0, height:200, background:'linear-gradient(180deg, rgba(10,12,20,0) 0%, rgba(10,12,20,0.65) 40%, rgba(10,12,20,0.94) 100%)' }} />
+      <div style={{ position:'absolute', left:20, right:20, bottom:18, display:'flex', flexDirection:'column', alignItems:'flex-start', gap:4, fontFamily:'var(--font-display)' }}>
+        <span style={{ fontSize:11, fontWeight:500, letterSpacing:'0.16em', color:'rgb(31,199,255)', fontVariantNumeric:'tabular-nums' }}>{u.eyebrow}</span>
+        <span style={{ fontSize:19, fontWeight:500, lineHeight:'22px', color:'#fff', whiteSpace:'nowrap' }}>{u.name}</span>
+        <span style={{ fontFamily:'var(--font-body)', fontSize:13, fontWeight:300, lineHeight:'18px', color:'rgba(255,255,255,0.82)', textWrap:'pretty' }}>{u.sub}</span>
+        <button type="button" aria-label={'Open ' + u.name} className={u.href || u.go != null ? 'ix-lift' : ''} disabled={!(u.href || u.go != null)} onClick={(e) => { e.stopPropagation(); if (u.href) { window.location.href = u.href; } else if (u.go != null) { const d = document.querySelector('deck-stage'); d && d.goTo(u.go); } }} style={{ marginTop:10, height:34, padding:'0 18px 0 14px', gap:9, borderRadius:999, border:0, cursor: u.href || u.go != null ? 'pointer' : 'default', opacity: u.href || u.go != null ? 1 : 0.4, display:'flex', alignItems:'center', fontFamily:'var(--font-display)', fontSize:13, fontWeight:600, letterSpacing:'0.1em', color:'#fff', background:'rgb(24,170,245)', boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.35)' }}>
+          <div style={{ width:0, height:0, borderTop:'6px solid transparent', borderBottom:'6px solid transparent', borderLeft:'10px solid #fff' }} />
           START
         </button>
       </div>
@@ -135,9 +140,9 @@ function IXPortalSlide({ index }) {
         <B fx="fade" d={40}><IXDS.WilliamsLogo src={IXA('logo/williams-wordmark-white.png')} width={190} /></B>
         <B fx="wipe" d={120} style={{ width:305, height:1.5, margin:'30px 0', background:'linear-gradient(90deg, rgba(0,104,223,0) 0%, #0068DF 50%, rgba(0,104,223,0) 100%)' }} />
         <B fx="up" d={200}><h2 style={{ margin:0, fontFamily:'var(--font-display)', fontWeight:500, fontSize:68, lineHeight:'72px', letterSpacing:'-0.015em', color:'#fff' }}>The Concepts</h2></B>
-        <B fx="up" d={320} style={{ marginTop:16 }}><p style={{ margin:0, fontWeight:300, fontSize:28, lineHeight:'38px', color:'rgba(255,255,255,0.72)' }}>Three concepts exploring how creative AI could shape the future of the Williams brand</p></B>
+        <B fx="up" d={320} style={{ marginTop:16 }}><p style={{ margin:0, fontWeight:300, fontSize:28, lineHeight:'38px', color:'rgba(255,255,255,0.72)' }}>Four concepts exploring how creative AI could shape the future of the Williams brand</p></B>
       </div>
-      <div style={{ position:'absolute', left:0, right:0, top:400, display:'flex', justifyContent:'center', alignItems:'flex-start', gap:44, zIndex:5 }}>
+      <div style={{ position:'absolute', left:0, right:0, top:380, display:'grid', gridTemplateColumns:`repeat(2, ${IXD_S}px)`, gridAutoRows:`${IXD_S}px`, columnGap:28, rowGap:28, justifyContent:'center', zIndex:5 }}>
         {IX_DECKS.map((u, i) => (
           <B key={u.n} fx="pop" d={450 + i * 150}><IXDeckCard u={u} /></B>
         ))}
