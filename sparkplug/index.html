@@ -16,6 +16,13 @@
   <link rel="stylesheet" href="../tokens/figma/fig-typography.css">
   <link rel="stylesheet" href="../styles.css">
   <script src="../_ds_bundle.js"></script>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="prefetch" href="../ui_kits/pitch-deck/Interactive%20Deck.html" as="document">
+  <link rel="prefetch" href="../ui_kits/pitch-deck/deck-stage.js">
+  <link rel="prefetch" href="../ui_kits/pitch-deck/ix-core.jsx">
+  <link rel="prefetch" href="../ui_kits/pitch-deck/ix-slides-a.jsx">
+  <link rel="prefetch" href="../ui_kits/pitch-deck/ix-slides-b.jsx">
+  <link rel="prefetch" href="../ui_kits/pitch-deck/ix-slides-c.jsx">
   <style>
     html,body{margin:0;background:rgb(10,12,20);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
     a{color:#fff;text-decoration:none}a:hover{color:#0068DF}
@@ -994,6 +1001,10 @@ class Component extends DCLogic {
   tickRect(refName){ return this.toDocRect(this.tickEl(refName)); }
   popEl(el){ if(el&&el.animate) el.animate([{transform:'scale(1)'},{transform:'scale(1.3)'},{transform:'scale(1)'}],{duration:520,easing:'cubic-bezier(.34,1.56,.64,1)'}); }
   clearWalkTimers(){clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6);}
+  loadVideos(){
+    if(this._videosLoading) return; this._videosLoading=true;
+    [['url1','assets/reel.mp4'],['url2','assets/reel-v2.mp4'],['url3','assets/reel-final.mp4']].forEach(([k,f])=>fetch(f).then(r=>r.blob()).then(b=>{const u=URL.createObjectURL(b); this._urls.push(u); this.setState({[k]:u});}).catch(()=>this.setState({[k]:f})));
+  }
   goWalkStep(n){
     const step=WALK_STEPS[n];
     if(!step){this.setState({walkStep:null,walkRect:null}); return;}
@@ -1002,7 +1013,7 @@ class Component extends DCLogic {
     if(step.card===false) return;
     if(step.typeDur) this._walkTo=setTimeout(()=>this.runTypeAnim(n),1250);
     else if(step.hasConfirm) this._walkTo=setTimeout(()=>this.openAndPickConfirm(n),1250);
-    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),1250);
+    else if(step.openKey) this._walkTo=setTimeout(()=>this.openAndPick(n),700);
     else if(step.optionText) this._walkTo=setTimeout(()=>this.pickOption(n),1250);
     else if(step.auto!==false) this._walkTo=setTimeout(()=>this.applyWalkStep(n),1250);
   }
@@ -1041,9 +1052,9 @@ class Component extends DCLogic {
       if(oRect) this.setState({walkRect:oRect});
       this._walkTo3=setTimeout(()=>{
         this.popEl(oEl);
-        this._walkTo4=setTimeout(()=>this.applyWalkStep(n),320);
-      },950);
-    },650);
+        this._walkTo4=setTimeout(()=>this.applyWalkStep(n),200);
+      },550);
+    },400);
   }
   pickOption(n){
     const step=WALK_STEPS[n]; if(!step) return;
@@ -1101,20 +1112,24 @@ class Component extends DCLogic {
     const start={x:mid.x-0.01,y:mid.y-0.01,w:0.02,h:0.02};
     this.postAfter(()=>{
       this.setState({box:start});
-      const STEPS=16, STEP_MS=44;
-      let i=0;
-      const grow=()=>{
-        i++;
-        const t=i/STEPS, e=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-        const box={x:start.x+(target.x-start.x)*e, y:start.y+(target.y-start.y)*e, w:start.w+(target.w-start.w)*e, h:start.h+(target.h-start.h)*e};
-        this.setState({box});
-        const vr=this.toViewRect(this.vidRef.current);
-        if(vr) this.setState({postRect:{top:vr.top+box.y*vr.height,left:vr.left+box.x*vr.width,width:box.w*vr.width,height:box.h*vr.height}});
-        if(i<STEPS) this.postAfter(grow,STEP_MS);
-        else this.postAfter(()=>this.afterBoxDrawn(),750);
-      };
-      grow();
-    },700);
+      const vr0=this.toViewRect(this.vidRef.current);
+      if(vr0) this.setState({postRect:{top:vr0.top+start.y*vr0.height,left:vr0.left+start.x*vr0.width,width:start.w*vr0.width,height:start.h*vr0.height}});
+      this.postAfter(()=>{
+        const STEPS=30, STEP_MS=58;
+        let i=0;
+        const grow=()=>{
+          i++;
+          const t=i/STEPS, e=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+          const box={x:start.x+(target.x-start.x)*e, y:start.y+(target.y-start.y)*e, w:start.w+(target.w-start.w)*e, h:start.h+(target.h-start.h)*e};
+          this.setState({box});
+          const vr=this.toViewRect(this.vidRef.current);
+          if(vr) this.setState({postRect:{top:vr.top+box.y*vr.height,left:vr.left+box.x*vr.width,width:box.w*vr.width,height:box.h*vr.height}});
+          if(i<STEPS) this.postAfter(grow,STEP_MS);
+          else this.postAfter(()=>this.afterBoxDrawn(),1150);
+        };
+        grow();
+      },900);
+    },900);
   }
   afterBoxDrawn(){
     const tRect=this.toViewRect(this.tickEl('pillRef'));
@@ -1124,9 +1139,9 @@ class Component extends DCLogic {
       this.postAfter(()=>{
         this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0;
         this.setState({choice:true});
-        this.postAfter(()=>this.afterConfirmBox(),700);
-      },330);
-    },750);
+        this.postAfter(()=>this.afterConfirmBox(),1050);
+      },450);
+    },1150);
   }
   afterConfirmBox(){
     const root=this.pillRef.current;
@@ -1138,9 +1153,9 @@ class Component extends DCLogic {
       this.postAfter(()=>{
         this.pillW=this.pillRef.current?this.pillRef.current.offsetWidth:0;
         this.setState({choice:'type',tip:null});
-        this.postAfter(()=>this.typeVfxNote(),600);
-      },330);
-    },750);
+        this.postAfter(()=>this.typeVfxNote(),900);
+      },450);
+    },1150);
   }
   typeVfxNote(){
     const root=this.pillRef.current; const inp=root&&root.querySelector('input');
@@ -1148,10 +1163,10 @@ class Component extends DCLogic {
     const target='Switch lights to red'; let i=0;
     const tick=()=>{
       i++; this.setState({fixNote:target.slice(0,i)});
-      if(i<target.length) this.postAfter(tick,55+Math.random()*70);
-      else this.postAfter(()=>this.afterTyped(),850);
+      if(i<target.length) this.postAfter(tick,75+Math.random()*90);
+      else this.postAfter(()=>this.afterTyped(),1200);
     };
-    this.postAfter(tick,380);
+    this.postAfter(tick,550);
   }
   afterTyped(){
     const root=this.pillRef.current;
@@ -1163,8 +1178,8 @@ class Component extends DCLogic {
       this.postAfter(()=>{
         this.regenNow(0);
         this.startPlayPrompt();
-      },330);
-    },750);
+      },450);
+    },1150);
   }
   startPlayPrompt(){
     this.setState({postStep:'play', postRect:this.viewRectOf('playToggleRef'), postText:'Press play to watch your updated reel.'});
@@ -1231,9 +1246,9 @@ class Component extends DCLogic {
     this._init=this.state;
     this._ps=this.state;
     this._urls=[];
-    [['url1','assets/reel.mp4'],['url2','assets/reel-v2.mp4'],['url3','assets/reel-final.mp4']].forEach(([k,f])=>fetch(f).then(r=>r.blob()).then(b=>{const u=URL.createObjectURL(b); this._urls.push(u); this.setState({[k]:u});}).catch(()=>this.setState({[k]:f})));
     this.iv=setInterval(()=>this.tick(),50);
     this.onResize=()=>this.setState({vw:window.innerWidth,vh:window.innerHeight}); window.addEventListener('resize',this.onResize);
+    this.onPostScroll=()=>{ if(this.state.postStep==='watch'){ const r=this.viewRectOf('previewBtnRef'); if(r) this.setState({postRect:r}); } }; window.addEventListener('scroll',this.onPostScroll,{passive:true});
     this.onKey=e=>{if(this.state.lb){ if(e.key==='Escape'){this.setState({lb:null,lbClean:false,open:null});return;} if(e.key==='ArrowRight'){this.lbStep(1);return;} if(e.key==='ArrowLeft'){this.lbStep(-1);return;} } if(e.key==='Escape'&&this.state.player){ if(this.state.fix) this.setState({fix:false,box:null,choice:false}); else this.closeAnim(); }}; window.addEventListener('keydown',this.onKey);
     this.tipIv=setInterval(()=>{
       const st=this.state, front=st.tipFront||'A', cur=front==='A'?(st.tipA ?? 0):(st.tipB ?? 1), next=(cur+1)%TIPS.length, back=front==='A'?'B':'A';
@@ -1246,7 +1261,7 @@ class Component extends DCLogic {
     if(window.ResizeObserver){this.ro2=new ResizeObserver(()=>{const l=this.leftRef.current,p=this.promptRef.current; if(l&&p){const lh=l.offsetHeight, ph=p.offsetHeight; if(lh!==this.state.leftH||ph!==this.state.promptH) this.setState({leftH:lh,promptH:ph});}}); this.leftRef.current&&this.ro2.observe(this.leftRef.current); this.promptRef.current&&this.ro2.observe(this.promptRef.current);}
     if(el&&window.ResizeObserver){this.ro=new ResizeObserver(()=>{const b=el.getBoundingClientRect();this.setState({sw:b.width,sh:b.height});});this.ro.observe(el);}
   }
-  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6); clearTimeout(this._introTo); this.clearPostTimers(); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
+  componentWillUnmount(){ (this._urls||[]).forEach(u=>URL.revokeObjectURL(u));window.removeEventListener('resize',this.onResize); window.removeEventListener('scroll',this.onPostScroll); window.removeEventListener('keydown',this.onKey); clearTimeout(this.toastTo); clearTimeout(this.vfxTo); clearInterval(this.iv); clearInterval(this.tipIv); clearTimeout(this.tipTo); clearTimeout(this._walkTo); clearTimeout(this._walkTo2); clearTimeout(this._walkTo3); clearTimeout(this._walkTo4); clearTimeout(this._walkTo5); clearTimeout(this._walkTo6); clearTimeout(this._introTo); this.clearPostTimers(); this.ro&&this.ro.disconnect(); this.ro2&&this.ro2.disconnect();}
   tick(){
     const s=this.state;
     if(s.phase==='gen'){const p=s.p+50/GEN; if(p>=1) this.setState({phase:'ready',p:1,t:0,reelVer:1,playing:this.props.autoplay??true}); else this.setState({p});}
@@ -1579,7 +1594,7 @@ class Component extends DCLogic {
       allBg:isAll?SEL:'transparent',
       pickAll:()=>this.setState({aud:'all',open:null,...this.reset()}),
       statusText:ready?'Ready · '+s.dur+'s · 9:16':gen?'Rendering…':'Preview · '+s.dur+'s',
-      generate:()=>{if(gen)return; if(!allConf){const t={...s.touched}; ['gp','drv','aud','sty'].forEach(k=>{if(!s.conf[k]) t[k]=true;}); this.setState({touched:t,open:null}); return;} const b=this.genRef.current; if(b&&b.animate){const sh=getComputedStyle(b).boxShadow; b.animate([{transform:'translateY(0)',boxShadow:sh},{transform:'translateY(5px)',boxShadow:'0 0 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 6px 18px rgba(0,82,255,0.5),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.2)',offset:0.35},{transform:'translateY(0)',boxShadow:sh}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'});} this.setState({phase:'gen',p:0,t:0,open:null});}
+      generate:()=>{if(gen)return; if(!allConf){const t={...s.touched}; ['gp','drv','aud','sty'].forEach(k=>{if(!s.conf[k]) t[k]=true;}); this.setState({touched:t,open:null}); return;} const b=this.genRef.current; if(b&&b.animate){const sh=getComputedStyle(b).boxShadow; b.animate([{transform:'translateY(0)',boxShadow:sh},{transform:'translateY(5px)',boxShadow:'0 0 0 #0026a8,0 0 0 1px rgba(120,175,255,0.35),0 6px 18px rgba(0,82,255,0.5),inset 0 0 0 1px rgba(255,255,255,0.12),inset 0 2px 6px rgba(255,255,255,0.2)',offset:0.35},{transform:'translateY(0)',boxShadow:sh}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'});} this.loadVideos(); this.setState({phase:'gen',p:0,t:0,open:null});}
     };
   }
 }
